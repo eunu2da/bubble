@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
         
         const newParticipant = {
             id: socket.id,
-            emoji: data.emoji,  // 이모지가 없을 경우 랜덤 선택
+            emoji: data.emoji,   // 이모지가 없을 경우 랜덤 선택
             x: Math.random() * 750,
             y: Math.random() * 550
         };
