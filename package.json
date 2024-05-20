@@ -4,10 +4,11 @@
     "description": "",
     "main": "server/index.js",
     "scripts": {
-      "start": "node server/index.js"
+        "start": "node server/index.js"
     },
     "dependencies": {
-      "express": "^4.17.1",
-      "socket.io": "^4.0.0"
+        "express": "^4.17.1",
+        "socket.io": "^4.0.0",
+        "vue": "^3.4.27"
     }
-  }
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Final Stand</title>
+    <link rel="stylesheet" href="client.css">
+</head>
+<body>
+    <div id="main-screen">
+        <img id="main-image">
+        <button id="enter-button" class="button">입장</button>
+    </div>
+
+    <div id="myCharacter" style="display: none;">
+      <h1 class="myCharacter"></h1>
+    </div>
+    <div id="game-area" style="display: none;"></div>
+    <h1 id="numOfsurvivors" style="color:white; display: none;"></h1> 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
