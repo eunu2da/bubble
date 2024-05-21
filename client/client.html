@@ -2,22 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">    
     <title>Final Stand</title>
     <link rel="stylesheet" href="client.css">
 </head>
 <body>
-    <div id="main-screen">
-        <img id="main-image">
-        <button id="enter-button" class="button">입장</button>
+    <div id="main-screen" >
+        <h3 id="numOfsurvivors" style="color: rgba(255, 255, 255, 0.5);"></h3>
+        <div id="enter-button" class="enter-button">
+            <div class="container">
+                <img class="enter_button_img" crossorigin="anonymous" src="https://media-public.canva.com/EA-MA/MAFbYWEA-MA/1/tl.png" draggable="false" alt="Start button">
+            </div>
+        </div> 
     </div>
 
-    <div id="myCharacter" style="display: none;">
-      <h1 class="myCharacter"></h1>
+    <div class="container">
+    
+    <div class="layout_container">
+    <div id="back-button" style="display: none;">
+        <div class="back-button">
+            <img class="back_button_img" crossorigin="anonymous" src="https://media-public.canva.com/G9aC0/MAFZirG9aC0/1/t.png" draggable="false" alt="Go Back">
+        </div>
     </div>
+
+        <div id="myCharacter" style="flex: 1; display: none;">
+            <h3 class="myCharacter"></h3>
+        </div>
+        <div id="placeholder" style="display: none; flex: 2;">
+            <!-- 왼쪽 공간, 필요하다면 추가 정보나 그래픽 표시 -->
+            <div id="currentSurvivors" style=" display: none;"></div>
+        </div>
+    </div>
+    
+    
     <div id="game-area" style="display: none;"></div>
-    <h1 id="numOfsurvivors" style="color:white; display: none;"></h1> 
+    <h3 id="numOfsurvivors" style="color:white; display: none;"></h3> 
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
 </body>

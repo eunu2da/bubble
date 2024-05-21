@@ -2,9 +2,6 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
-const fs = require('fs');
-const filePath = 'storage/clientCount.txt'; // 파일 경로를 변수로 선언
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -32,8 +29,10 @@ io.on('connection', (socket) => {
         const newParticipant = {
             id: socket.id,
             emoji: data.emoji,   // 이모지가 없을 경우 랜덤 선택
-            x: Math.random() * 750,
-            y: Math.random() * 550
+            // x: Math.random() * 260,
+            // y: Math.random() * 300
+            x: Math.random() * data.gameAreaSize.top,  // 참가자의 x축으로 계산
+            y: Math.random() * data.gameAreaSize.right,   // 참가자의 y축으로 계산
         };
 
         participants.push(newParticipant);
