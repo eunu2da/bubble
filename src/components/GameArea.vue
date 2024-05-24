@@ -37,9 +37,7 @@ export default {
       if(data == '') {
         setTimeout(() => this.startBubbleGeneration(), 1000);
       }  
-    //this.$refs.gameArea.$el.
    });
-
    this.detectCollisions();
   },
 

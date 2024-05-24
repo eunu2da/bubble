@@ -24,6 +24,7 @@ io.on('connection', (socket) => {
             emoji: data.emoji,
             x: Math.random() * data.gameAreaSize.right,
             y: Math.random() * data.gameAreaSize.top,
+            bubbleCount : 0,
         };
 
         participants.push(newParticipant);
@@ -39,6 +40,12 @@ io.on('connection', (socket) => {
             io.emit('positionUpdate', participant);
         }
     });
+
+    
+    socket.on('bubbleBuster', (data) => {
+     io.emit('bubbleBuster', data);  
+    });
+
 
     socket.on('goBack', () => {
         participants = participants.filter(p => p.id !== socket.id);
@@ -61,10 +68,9 @@ io.on('connection', (socket) => {
     socket.on('startGame', () => {
 
         const gameInstructions = [
-            '이 게임은 생존자가 한 명이 될 때까지 자리를 빼앗는 게임입니다.',
-            '다음 단계로 넘어갈 때마다 원이 랜덤으로 줄어드는데요.',
-            '랜덤의 자리에 원이 배치되니 유의하시고',
-            '그럼 마지막 원을 향해 다 같이 달려볼까요?',
+            '이 게임은 방울을 많이 터트리는 사람이 우승하는 게임이에요.',
+            '어떤 방울 안에는 특별한 선물도 들어있답니다~ㅎㅎ',
+            '그럼 준비하시고 ~',
             3,
             2,
             1,
@@ -78,11 +84,19 @@ io.on('connection', (socket) => {
             } else {
               // 모든 지침을 전송한 후에 마지막으로 빈 문자열을 보냄
               io.emit('gameInstructions', '');
+              setTimeout(() => {
+                io.emit('gameEnd');
+              }, 60000); // 60초 후에 게임 종료
             }
           }
-          // 시작
-          sendInstruction(0);
+          sendInstruction(0); // 시작    
     });
+
+    //게임종료
+    socket.on('endGame', () => {
+        io.emit('gameEnd');
+        console.log('게임이 종료되었습니다.');
+      });
 });
 
 // 정적 파일 serve

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MainScreen @enter-game="enterGame" ref="mainScreen" />
-    <div class="container">
+    <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd"/>
+    <div class="container" v-if="!gameEnd">
       <div class="layout_container">
         <div id="back-button" v-if="showBackButton">
           <div class="back-button">
@@ -20,8 +20,8 @@
         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
           {{ survivorsCountText }}
         </div>
-        <div id="bubbleCount" class="survivorCount" v-if="gameStart">
-          {{ bubbleCountText }}
+        <div class="survivorCount" v-if="gameStart">
+          남은 종료 시간 : {{remainingTime}} {{ bubbleCountText }}          
         </div>
         <div id="currentPosition" class="currentPosition" v-if="showGameArea">
           {{ currentPosition }}
@@ -49,13 +49,15 @@
         <p>{{ gameInstructions }}</p>
       </div>
     </div>
-    </div>
+  </div>
+  <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false"/>
   </div>
 </template>
-
 <script>
 import MainScreen from '@/components/MainScreen.vue';
 import GameArea from '@/components/GameArea.vue';
+import WinnerModal from '@/components/WinnerModal.vue';
+
 
 import io from 'socket.io-client';
 var socket = io();
@@ -63,7 +65,8 @@ var socket = io();
 export default {
   components: {
     MainScreen,
-    GameArea
+    GameArea,
+    WinnerModal
   },
   data() {
     return {
@@ -75,11 +78,15 @@ export default {
       currentSurvivorsText: '',
       showGameArea: false,
       survivorsCountText: '접속 인원: 0',
-      bubbleCountText: '버블 갯수 : 0',
+      bubbleCountText: '  버블 갯수 : 0',
       currentPosition: '',
       moveInterval: null,
       gameInstructions: '',
       gameStart: false,
+      timerInterval: null, 
+      gameEnd: false,
+      showWinnerModal: false,
+      remainingTime: '',
     };
   },
   methods: {
@@ -150,7 +157,23 @@ export default {
       }
     },
     updateBubbleCount(count) {
-      this.bubbleCountText = '버블 갯수: ' + count;
+      this.bubbleCountText = '  버블 갯수: ' + count;
+      socket.emit('bubbleBuster', {id : socket.id, emoji: this.myEmoji, bCount : count});
+    },
+    startTimer() {
+      //this.remainingTime = 60;  // 게임 시간 60초로 설정
+      this.remainingTime = 60;
+      this.timerInterval = setInterval(() => {
+        this.remainingTime--; 
+        if (this.remainingTime <= 0) {
+          clearInterval(this.timerInterval);
+          socket.emit('endGame');
+        }
+      }, 1000);
+    },
+    handleGameEnd() {
+        this.gameEnd = true;
+        this.showWinnerModal = true; // 모달 표시
     },
   },
 
@@ -170,6 +193,7 @@ export default {
         this.myEmoji = currentUser.emoji;
         this.showMyCharacter = true;
         console.log('Current User Emoji:', this.myEmoji);
+        
       } else {
         console.log('Current user not found in participants.');
       }
@@ -186,15 +210,19 @@ export default {
 
    socket.on('gameInstructions', (data) => {
     console.log('게임 지침:', data);
-    this.gameInstructions = data;
-    if(data == '') {
-      //게임 지침이 끝나고 난뒤 발생하는 버블
+    this.gameInstructions = data; //게임 지침 설명 text
+    if(data == '') {              //게임 지침이 끝나고 난뒤 발생하는 버블
       console.log('bubbleStart !');
-      this.gameStart = true;
+      this.gameStart = true;      //접속자 수 => 버블 갯수
+      this.startTimer();
     }
-    //this.$refs.gameArea.$el.
-   });
+  });
 
+    socket.on('gameEnd', () => {
+      
+      clearInterval(this.timerInterval);
+      this.handleGameEnd();
+    });
    
   },
 };
@@ -290,7 +318,7 @@ body {
   color: white;
   padding: 10px;
   border-radius: 10px;
-  font-size: 1.5rem;
+  font-size: 1rem;
   z-index: 1000;
 }
 

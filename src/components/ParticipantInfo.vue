@@ -3,7 +3,7 @@
     <h2>접속자🦰</h2>
     <p>{{survivorsCountText}}</p>
     <div v-for="info in participantInfos" :key="info.id">
-      {{ info.emoji }} {{ info.id }}
+        {{ info.emoji}} {{info.id}} {{info.count}}
     </div>
   </div>
 </template>
@@ -25,10 +25,15 @@ export default {
     });
 
     socket.on('updateParticipants', (participants) => {
-    console.log(` ${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
-    this.participantInfos = participants;
-    this.survivorsCountText = `접속 인원: ${participants.length}`;
+      console.log(` ${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
+      this.participantInfos = participants;
+      this.survivorsCountText = `접속 인원: ${participants.length}`;
     });
+
+    // socket.on('bubbleBuster', (data) => {
+    
+    //   this.participantInfos.push({ id: data.id, emoji: data.emoji, count: data.bCount  });
+    // });
   } 
 };
 

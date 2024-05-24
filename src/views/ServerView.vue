@@ -3,6 +3,7 @@
     <div class="dashboard-section">
       <ParticipantInfo :participantInfos="participantInfos" />
     </div>
+    
     <div class="dashboard-section">
       <div class="entranceNum-info" id="participantCount">
         <button class="start-game" @click="startGame">start 🏃‍♀️</button>
@@ -27,16 +28,24 @@ export default {
     };
   },
   methods: {
+  
     startGame() {
-      // 게임 시작 로직
-      socket.emit('startGame');
+     socket.emit('startGame');
     }
   },
+
   mounted() {
-      socket.on('updateClientCount', (data) => {
+    socket.on('updateClientCount', (data) => {
       this.participantInfos.push({ id: data.socketId, emoji: data.emoji });
     });
+
+    socket.on('updateClientCount', (data) => {
+      this.participantInfos.push({ id: data.socketId, emoji: data.emoji });
+    });
+
   }
+
+
 };
 </script>
 
