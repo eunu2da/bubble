@@ -1,14 +1,26 @@
 {
     "name": "final-stand",
     "version": "1.0.0",
-    "description": "",
-    "main": "server/index.js",
+    "description": "Final Stand game",
+    "main": "index.js",
     "scripts": {
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint",
         "start": "node server/index.js"
     },
     "dependencies": {
+        "core-js": "^3.6.5",
         "express": "^4.17.1",
+        "path": "^0.12.7",
         "socket.io": "^4.0.0",
-        "vue": "^3.4.27"
+        "socket.io-client": "^4.7.5",
+        "vue": "^2.6.11",
+        "vue-router": "^3.6.5",
+        "vue-socket.io": "^3.0.10"
+    },
+    "devDependencies": {
+        "@vue/cli-plugin-babel": "~4.5.0",
+        "@vue/cli-service": "~4.5.0"
     }
 }
