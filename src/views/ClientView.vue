@@ -15,10 +15,13 @@
       </div>
       <div class="game_area_wrapper">
         <div class="game_area_container">
-          <GameArea v-if="showGameArea" :participants="participants" ref="gameArea" />
+          <GameArea v-if="showGameArea" :participants="participants" ref="gameArea"  @updateBubbleCount="updateBubbleCount"/>
         </div>
-        <div id="survivorCount" class="survivorCount">
+        <div id="survivorCount" class="survivorCount" v-if="!gameStart">
           {{ survivorsCountText }}
+        </div>
+        <div id="bubbleCount" class="survivorCount" v-if="gameStart">
+          {{ bubbleCountText }}
         </div>
         <div id="currentPosition" class="currentPosition" v-if="showGameArea">
           {{ currentPosition }}
@@ -72,9 +75,11 @@ export default {
       currentSurvivorsText: '',
       showGameArea: false,
       survivorsCountText: '접속 인원: 0',
+      bubbleCountText: '버블 갯수 : 0',
       currentPosition: '',
       moveInterval: null,
       gameInstructions: '',
+      gameStart: false,
     };
   },
   methods: {
@@ -135,7 +140,7 @@ export default {
         this.move(direction);
       }, 100);
     },
-    stopMoving() {``
+    stopMoving() {
       clearInterval(this.moveInterval);
     },
     updateCurrentPosition() {
@@ -143,6 +148,9 @@ export default {
       if (currentUser) {
         this.currentPosition = `X: ${currentUser.x.toFixed(1)}, Y: ${currentUser.y.toFixed(1)}, ${currentUser.id}`;
       }
+    },
+    updateBubbleCount(count) {
+      this.bubbleCountText = '버블 갯수: ' + count;
     },
   },
 
@@ -179,7 +187,15 @@ export default {
    socket.on('gameInstructions', (data) => {
     console.log('게임 지침:', data);
     this.gameInstructions = data;
+    if(data == '') {
+      //게임 지침이 끝나고 난뒤 발생하는 버블
+      console.log('bubbleStart !');
+      this.gameStart = true;
+    }
+    //this.$refs.gameArea.$el.
    });
+
+   
   },
 };
 </script>

@@ -31,14 +31,6 @@ io.on('connection', (socket) => {
         io.emit('updateParticipants', participants);
     });
 
-    // socket.on('updateParticipantPosition', (updatedParticipant) => {
-    //     const index = participants.findIndex(p => p.id === updatedParticipant.id);
-    //     if (index !== -1) {
-    //         participants[index] = updatedParticipant;
-    //         io.emit('updateParticipants', participants);
-    //     }
-    // });
-
     socket.on('updateParticipantPosition', (updatedParticipant) => {
         const participant = participants.find(p => p.id === updatedParticipant.id);
         if (participant) {
@@ -67,15 +59,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('startGame', () => {
-        // setTimeout(() => io.emit('gameInstructions', '이 게임은 생존자가 한 명이 될 때까지 자리를 빼앗는 게임입니다'), 1000);
 
-        // setTimeout(() => io.emit('gameInstructions', '다음 단계로 넘어갈 때마다 원이 랜덤으로 줄어드는데요.'), 1000);
-        // setTimeout(() => io.emit('gameInstructions', '랜덤의 자리에 원이 배치되니 유의하시고'), 1000);
-        // setTimeout(() => io.emit('gameInstructions', '그럼 마지막 원을 향해 다 같이 달려볼까요?'), 1000);
-        // setTimeout(() => io.emit('gameInstructions', 3), 1000);
-        // setTimeout(() => io.emit('gameInstructions', 2), 2000);
-        // setTimeout(() => io.emit('gameInstructions', 1), 3000);
-        // setTimeout(() => io.emit('gameInstructions'), 4000);
         const gameInstructions = [
             '이 게임은 생존자가 한 명이 될 때까지 자리를 빼앗는 게임입니다.',
             '다음 단계로 넘어갈 때마다 원이 랜덤으로 줄어드는데요.',
@@ -96,7 +80,6 @@ io.on('connection', (socket) => {
               io.emit('gameInstructions', '');
             }
           }
-          
           // 시작
           sendInstruction(0);
     });
