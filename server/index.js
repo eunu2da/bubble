@@ -2,10 +2,14 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
+const cors = require('cors'); // CORS 패키지 추가
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
+// CORS 미들웨어 추가
+app.use(cors());
 
 let participants = []; // 연결된 참가자들을 저장할 배열
 const emojis = ['🙈', '🐶', '🐱', '🦄', '🐑', '🐿️', '🐼', '🐽', '🦊', '🐯', '🐔', '🐌', '🪼', '🐋', '🪰', '🐙', '🦢', '🦉', '🐤'];
