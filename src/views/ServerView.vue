@@ -5,9 +5,11 @@
     </div>
     
     <div class="dashboard-section">
+      <h3> {{ survivorsCountText }}</h3>
       <div class="entranceNum-info" id="participantCount">
         <button class="start-game" @click="startGame">start 🏃‍♀️</button>
       </div>
+    
     </div>
   </div>
 </template>
@@ -24,7 +26,8 @@ export default {
   },
   data() {
     return {
-      participantInfos: []
+      participantInfos: [],
+      survivorsCountText:'접속인원 0명',
     };
   },
   methods: {
@@ -33,16 +36,25 @@ export default {
      socket.emit('startGame');
     }
   },
+  
 
   mounted() {
-    socket.on('updateClientCount', (data) => {
-      this.participantInfos.push({ id: data.socketId, emoji: data.emoji });
-    });
-
-    socket.on('updateClientCount', (data) => {
-      this.participantInfos.push({ id: data.socketId, emoji: data.emoji });
-    });
-
+    
+  socket.on('updateParticipants', (participants) => {
+        console.log(` ${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
+        this.participantInfos = participants;
+        this.survivorsCountText = `접속 인원: ${participants.length}명`;
+        
+        const currentUser = participants.find(p => p.id === socket.id);
+        if (currentUser) {
+          this.myEmoji = currentUser.emoji;
+          this.showMyCharacter = true;
+          console.log('Current User Emoji:', this.myEmoji);
+          
+        } else {
+          console.log('Current user not found in participants.');
+        }
+      });
   }
 
 
@@ -68,6 +80,7 @@ export default {
 .entranceNum-info {
   width: 140px;
   height: 50px;
+  margin-top : 40px;
 }
 
 .start-game {

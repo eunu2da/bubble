@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
         console.log(`참가자 ${socket.id} 와의 연결이 끊어졌습니다.`);
         console.log('현재 참가자는 ' + participants.length + '명입니다.');
         io.emit('updateParticipants', participants);
-        io.emit('updateClientCount', participants);
+        //io.emit('updateClientCount', participants);
     });
 
     socket.on('disconnect', () => {
@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
         console.log('현재 참가자는 ' + participants.length + '명입니다.');
         console.log('======================================================');
         io.emit('updateParticipants', participants);
-        io.emit('updateClientCount', participants);
+        //io.emit('updateClientCount', participants);
     });
 
     socket.on('startGame', () => {
