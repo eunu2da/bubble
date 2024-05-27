@@ -61,6 +61,7 @@ export default {
         if (this.remainingTime <= 0) {
           clearInterval(this.timerInterval);
           socket.emit('endGame');
+          this.remainingTime = 0;
         }
       }, 1000);
     },
@@ -98,7 +99,6 @@ export default {
       } else {
         this.participantInfos.push({ id: data.id, emoji: data.emoji, bCount: data.bCount });
       }
-
       this.participantInfos.sort((a, b) => b.bCount - a.bCount);
     });
     
