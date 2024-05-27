@@ -162,7 +162,7 @@ export default {
     },
     startTimer() {
       //this.remainingTime = 60;  // 게임 시간 60초로 설정
-      this.remainingTime = 60;
+      this.remainingTime = 119;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; 
         if (this.remainingTime <= 0) {
@@ -377,13 +377,12 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  border-radius: 5%;
+  border-radius: 20px;
   transform: translate(-50%, -50%);
   background-color: rgba(0, 0, 0, 0.8); /* 배경색 및 투명도 조정 */
   color: white;
-  padding: 10px;
+  padding: 5px 5px 5px 5px;
   max-width: 80%;
-  line-height: 1em;
 }
 
 

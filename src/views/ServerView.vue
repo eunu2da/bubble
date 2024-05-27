@@ -1,63 +1,97 @@
 <template>
   <div id="host-info">
     <div class="dashboard-section">
-      <ParticipantInfo :participantInfos="participantInfos" />
+     
+
+      <div v-if="isWaiting">      
+        <h2 class="parti">접속자🦰</h2>
+        <div v-for="info in participantInfos" :key="info.id">
+          {{ info.emoji }} {{ info.id }}
+        </div>
+      </div>
+      <div v-if="recordStart">      
+        <h1 class="record">record🏆</h1>
+        <div v-for="info in participantInfos" :key="info.id">
+          {{ info.emoji }} {{ info.id }} {{ info.count }}ㄴ
+        </div>
+      </div>
+      <div class="survivorCount" v-if="recordStart">
+          {{remainingTimeTxt}}
+      </div>
     </div>
     
-    <div class="dashboard-section">
-      <h3> {{ survivorsCountText }}</h3>
+    <div v-if="isWaiting">
+      <h3 class="parti-num">{{ survivorsCountText }}</h3>
       <div class="entranceNum-info" id="participantCount">
         <button class="start-game" @click="startGame">start 🏃‍♀️</button>
       </div>
-    
     </div>
   </div>
 </template>
 
 <script>
-import ParticipantInfo from '@/components/ParticipantInfo.vue';
-
 import io from 'socket.io-client';
 var socket = io();
 
 export default {
-  components: {
-    ParticipantInfo
-  },
   data() {
     return {
       participantInfos: [],
-      survivorsCountText:'접속인원 0명',
+      survivorsCountText: '접속인원 0명',
+      isWaiting: true,
+      recordStart : false,  
+      remainingTimeTxt: '참가자들에게 게임 설명중 ...',
     };
   },
   methods: {
-  
     startGame() {
-     socket.emit('startGame');
-    }
-  },
-  
+      if (this.participantInfos.length == 0) {
+        alert('접속중인 참가자가 없어요!');
+      }else{
+        this.isWaiting = false; // 버튼 비활성화
+        this.recordStart =  true;
+        socket.emit('startGame');
+      }
+    },
 
-  mounted() {
-    
-  socket.on('updateParticipants', (participants) => {
-        console.log(` ${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
-        this.participantInfos = participants;
-        this.survivorsCountText = `접속 인원: ${participants.length}명`;
-        
-        const currentUser = participants.find(p => p.id === socket.id);
-        if (currentUser) {
-          this.myEmoji = currentUser.emoji;
-          this.showMyCharacter = true;
-          console.log('Current User Emoji:', this.myEmoji);
-          
-        } else {
-          console.log('Current user not found in participants.');
+    startTimer() {
+      this.remainingTime = 119;
+      this.timerInterval = setInterval(() => {
+        this.remainingTimeTxt = `남은 종료 시간 :${this.remainingTime--}`; 
+        if (this.remainingTime <= 0) {
+          clearInterval(this.timerInterval);
+          socket.emit('endGame');
         }
-      });
-  }
+      }, 1000);
+    },
+  },
+  mounted() {
+    socket.on('connect', () => {
+      console.log('주최자가 접속하였습니다~', socket.id);
+    });
 
+    socket.on('updateParticipants', (participants) => {
+      console.log(` ${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
+      this.participantInfos = participants;
+      this.survivorsCountText = `접속 인원: ${participants.length}명`;
 
+      const currentUser = participants.find((p) => p.id === socket.id);
+      if (currentUser) {
+        this.myEmoji = currentUser.emoji;
+        this.showMyCharacter = true;
+        console.log('Current User Emoji:', this.myEmoji);
+      } else {
+        console.log('Current user not found in participants.');
+      }
+    });
+
+    socket.on('gameInstructions', (data) => {
+    if(data == '') {              
+      this.startTimer();
+    }
+  });
+   
+  },
 };
 </script>
 
@@ -68,33 +102,63 @@ export default {
 }
 
 .dashboard-section {
-  margin: 22px;
-  padding: 15px;
-  text-align: center;
+  margin: 20px;
+  padding: 20px;
   color: white;
-  background-color: #282c34;
+  background-color: #000000;
   border-radius: 10px;
+  width: 700px;
+  height: 300px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .entranceNum-info {
   width: 140px;
   height: 50px;
-  margin-top : 40px;
+  margin-top: 40px;
 }
 
 .start-game {
-  width: 100%;
-  background-color: #4e8bff;
+  background-color: #4caf50;
   color: white;
-  padding: 10px;
+  margin: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 40px;
+  margin-top: 70px;
+  width: 140px;
+}
+ 
+.participant-info {
+  width: 300px;
 }
 
-.start-game:hover {
-  background-color: #669cff;
+.record {
+  text-align: center;
+  color: gold;
+}
+
+.parti{
+  text-align: center;
+}
+
+.parti-num {
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+  padding: 30px;
+  z-index: 1000;
+}
+
+.survivorCount {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1rem;
+  z-index: 1000;
 }
 </style>

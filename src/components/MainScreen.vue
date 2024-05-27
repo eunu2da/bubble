@@ -18,6 +18,7 @@ export default {
   methods: {
     enterGame() {
       document.getElementById('main-screen').style.display='none';
+    
       this.$emit('enter-game');
     }
   }
