@@ -21,6 +21,7 @@
           {{ survivorsCountText }}
         </div>
         <div class="survivorCount" v-if="gameStart">
+          <span>my rank 🏆 </span>
           남은 종료 시간 : {{remainingTime}} {{ bubbleCountText }}          
         </div>
         <div id="currentPosition" class="currentPosition" v-if="showGameArea">
@@ -162,7 +163,7 @@ export default {
     },
     startTimer() {
       //this.remainingTime = 60;  // 게임 시간 60초로 설정
-      this.remainingTime = 119;
+      this.remainingTime = 120;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; 
         if (this.remainingTime <= 0) {

@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
               io.emit('gameInstructions', '');
               setTimeout(() => {
                 io.emit('gameEnd');
-              }, 60000); // 60초 후에 게임 종료
+              }, 120000); // 120초 후에 게임 종료
             }
           }
           sendInstruction(0); // 시작    

@@ -11,8 +11,8 @@
       </div>
       <div v-if="recordStart">      
         <h1 class="record">record🏆</h1>
-        <div v-for="info in participantInfos" :key="info.id">
-          {{ info.emoji }} {{ info.id }} {{ info.count }}ㄴ
+        <div v-for="info in participantInfos" :key="info.id" >
+          {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
         </div>
       </div>
       <div class="survivorCount" v-if="recordStart">
@@ -86,10 +86,22 @@ export default {
     });
 
     socket.on('gameInstructions', (data) => {
-    if(data == '') {              
-      this.startTimer();
-    }
-  });
+      if(data == '') {              
+       this.startTimer();
+     }
+    });
+
+    socket.on('bubbleBuster', (data) => {
+      const currentUserIndex = this.participantInfos.findIndex((p) => p.id === data.id);
+      if (currentUserIndex !== -1) {
+        this.participantInfos[currentUserIndex].bCount = data.bCount;
+      } else {
+        this.participantInfos.push({ id: data.id, emoji: data.emoji, bCount: data.bCount });
+      }
+
+      this.participantInfos.sort((a, b) => b.bCount - a.bCount);
+    });
+    
    
   },
 };
