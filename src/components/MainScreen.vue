@@ -41,7 +41,7 @@ export default {
   height: 50px; /* 버튼 높이 */
   cursor: pointer;
   border-radius: 8px;
-  background-color: #4CAF50; /* 버튼 배경색 */
+  background-color: rgba(0,0,255,.5);
   color: white; /* 버튼 글자색 */
   font-size: 1.5rem; /* 버튼 글자 크기 */
   display: flex;
@@ -50,6 +50,10 @@ export default {
   animation: floating 3s ease-in-out infinite;
   border: none; /* 테두리 제거 */
   margin-top: 20px; /* 버튼 간격 조정 */
+}
+
+.enter-button button:active {
+  background-color: rgba(255, 253, 238, .49);
 }
 
 @keyframes floating {

@@ -81,13 +81,14 @@ export default {
 <style scoped>
 #game-area {
   overflow: hidden;
-  background-color: #151561;
-  border: 6px solid rgb(74 69 255 / 42%);
-  border-radius: 15px;
+  background-color: rgb(255 255 255 / 41%);
+  border: 4px solid hsl(0deg 0% 100% / 28%);
+  border-radius: 1px;
   padding: 0px;
-  width: 90vw;
-  height: 70vh;
+  width: 99vw;
+  height: 98vh;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .bubble {
@@ -126,17 +127,10 @@ export default {
 
 
 .participant {
-  width: 50px;
-  height: 50px;
-  background-color: #4caf50;
-  border-radius: 50%;
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 2.5rem;
-  color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  border: 2px solid white;
+  font-size: 3.5rem;
   position: absolute;
   transition: all 0.3s ease;
 }

@@ -7,10 +7,13 @@
           <div class="back-button">
             <img class="back_button_img" src="https://media-public.canva.com/G9aC0/MAFZirG9aC0/1/t.png" draggable="false" alt="Go Back" @click="goBack">
           </div>
-          <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter">
+          <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter" @click="showSocketId">
             <h3 class="me">It's me</h3>
             <span class="myCharacter">{{ myEmoji }}</span>
-          </div>  
+          </div>
+          <div id="currentPosition" class="currentPosition" v-if="showGameArea">
+          {{ currentPosition }}
+          </div> 
         </div>
       </div>
       <div class="game_area_wrapper">
@@ -24,9 +27,9 @@
           <span>my rank 🏆 </span>
           남은 종료 시간 : {{remainingTime}} {{ bubbleCountText }}          
         </div>
-        <div id="currentPosition" class="currentPosition" v-if="showGameArea">
-          {{ currentPosition }}
-        </div>
+       <div class="fullscreen-buttons">
+          <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
+      </div>
       </div>
       <div class="controls" v-if="showGameArea">
         <div class="direction-buttons">
@@ -46,12 +49,12 @@
         가로 모드로 돌리면 더 재밌게 게임을 즐기실 수 있습니다!
       </div>
       <div v-if="gameInstructions" class="game-instructions">
-      <div class="game-instructions-content">
-        <p>{{ gameInstructions }}</p>
+        <div class="game-instructions-content">
+          <p>{{ gameInstructions }}</p>
+        </div>
       </div>
     </div>
-  </div>
-  <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false"/>
+    <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false"/>
   </div>
 </template>
 <script>
@@ -91,6 +94,7 @@ export default {
     };
   },
   methods: {
+    
     enterGame() {
       this.showGameArea = true;
       this.showBackButton = true;
@@ -154,7 +158,7 @@ export default {
     updateCurrentPosition() {
       const currentUser = this.participants.find(p => p.id === socket.id);
       if (currentUser) {
-        this.currentPosition = `X: ${currentUser.x.toFixed(1)}, Y: ${currentUser.y.toFixed(1)}, ${currentUser.id}`;
+        this.currentPosition = `X: ${currentUser.x.toFixed(1)}, Y: ${currentUser.y.toFixed(1)}`;
       }
     },
     updateBubbleCount(count) {
@@ -176,7 +180,29 @@ export default {
         this.gameEnd = true;
         this.showWinnerModal = true; // 모달 표시
     },
+    
+    //아이폰은 홈 화면 추가
+    toggleFullscreen() {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen().then(() => {
+        document.getElementById('fullscreen-toggle').textContent = '전체 화면 끄기';
+      }).catch((err) => {
+        console.log(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        document.getElementById('fullscreen-toggle').textContent = '전체 화면 켜기';
+      }).catch((err) => {
+        console.log(`Error attempting to exit full-screen mode: ${err.message} (${err.name})`);
+      });
+    }
   },
+
+  showSocketId() {
+    alert(`나의 소켓 ID는 ${socket.id} 입니다 !`);
+  }
+},
 
   mounted() {
 
@@ -233,6 +259,7 @@ export default {
 body {
   user-select: none; /* 텍스트 복사 방지 */
   touch-action: manipulation; /* 터치로 확대 방지 */
+  background-color: #e4e4ff;
 }
 
 #orientation-warning {
@@ -295,10 +322,10 @@ body {
 
 .myEmojiBox {
   width: 80px;
-  margin: 0px;
+  margin-top: 40px;
   height: 90px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
+  border: 2px solid rgb(255 255 255 / 50%);
+  border-radius: 20px;
   text-align: center;
 }
 
@@ -314,8 +341,8 @@ body {
 .survivorCount {
   position: fixed;
   top: 10px;
-  right: 20px;
-  background-color: rgba(0, 0, 0, .5);
+  right: 150px;
+  background-color: rgb(0 0 0 / 18%);
   color: white;
   padding: 10px;
   border-radius: 10px;
@@ -324,14 +351,14 @@ body {
 }
 
 .currentPosition {
-  margin-top: 5px;
-  background-color: rgba(0,0,0,.5);
+  margin-top: 6px;
+  background-color: rgb(0 0 0 / 14%);
   color: white;
+  width: 70px;
   padding: 5px;
   border-radius: 5px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: center;
-  margin: 0px 0px 60px 0px;
 }
 
 .controls {
@@ -350,16 +377,16 @@ body {
   width: 40px;
   height: 40px;
   margin: 5px;
-  font-size: 1.2rem;
-  background-color: #4CAF50;
+  font-size: 1.2rem; 
+  background-color: rgba(0,0,255,.5);
   color: white;
   border: none;
   border-radius: 50%;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 20%);
 }
 
 .direction-buttons button:active {
-  background-color: #45a049;
+  background-color: rgba(255, 253, 238, .49);
 }
 
 @media only screen and (max-width: 660px) and (orientation: portrait) {
@@ -386,9 +413,22 @@ body {
   max-width: 80%;
 }
 
-
-
 .game-instructions-content {
   opacity: 0.8; /* dim 효과를 위한 투명도 조정 */
 }
+
+ .fullscreen-buttons button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: rgb(0 0 0 / 18%);
+  border: rgb(0 0 0 / 18%);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1rem;
+  z-index: 1000;
+} 
+
+
 </style>
