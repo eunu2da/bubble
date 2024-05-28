@@ -14,10 +14,13 @@ app.use(cors());
 let participants = []; // 연결된 참가자들을 저장할 배열
 const emojis = ['🙈', '🐶', '🐱', '🦄', '🐑', '🐿️', '🐼', '🐽', '🦊', '🐯', '🐔', '🐌', '🪼', '🐋', '🪰', '🐙', '🦢', '🦉', '🐤'];
 let currentEmojiIndex = 0; // 이모지를 순서대로 할당하기 위해 이모지 인덱스 변수 선언
+let hostId = '';
 
 const PORT = process.env.PORT || 4000;
 
 io.on('connection', (socket) => {
+
+  socket.emit('currentclientCount', participants.length);
 
     socket.on('newParticipant', (data) => {
         data.emoji = emojis[currentEmojiIndex];
@@ -44,7 +47,6 @@ io.on('connection', (socket) => {
             io.emit('positionUpdate', participant);
         }
     });
-
     
     socket.on('bubbleBuster', (data) => {
      io.emit('bubbleBuster', data);  
@@ -56,17 +58,14 @@ io.on('connection', (socket) => {
         console.log(`참가자 ${socket.id} 와의 연결이 끊어졌습니다.`);
         console.log('현재 참가자는 ' + participants.length + '명입니다.');
         io.emit('updateParticipants', participants);
-        //io.emit('updateClientCount', participants);
     });
 
     socket.on('disconnect', () => {
         participants = participants.filter(p => p.id !== socket.id);
-
         console.log(`참가자 ${socket.id} 와의 연결이 끊어졌습니다.`);
         console.log('현재 참가자는 ' + participants.length + '명입니다.');
         console.log('======================================================');
         io.emit('updateParticipants', participants);
-        //io.emit('updateClientCount', participants);
     });
 
     socket.on('startGame', () => {
@@ -95,12 +94,13 @@ io.on('connection', (socket) => {
           }
           sendInstruction(0); // 시작    
     });
+    
 
     //게임종료
     socket.on('endGame', () => {
         io.emit('gameEnd');
         console.log('게임이 종료되었습니다.');
-      });
+    });
 });
 
 // 정적 파일 serve

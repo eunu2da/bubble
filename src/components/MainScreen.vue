@@ -1,7 +1,7 @@
 <template>
   <div id="main-screen" ref="MainScreen">
     <h3 id="numOfsurvivors">{{ survivorsCount }}</h3>
-    <button @click="enterGame" class="enter-button">Enter Game</button>
+    <button @click="enterGame"  class="enter-button"> 게임 입장 하기</button>
     <div id="orientation-warning">
       가로 모드로 돌리면 더 재밌게 게임을 즐기실 수 있습니다 !
     </div>
@@ -9,19 +9,21 @@
 </template>
 
 <script>
+
+import io from 'socket.io-client';
+const socket = io();
+
 export default {
   data() {
     return {
-      survivorsCount: ''
+      survivorsCount: '',
     };
   },
   methods: {
     enterGame() {
-      document.getElementById('main-screen').style.display='none';
-    
       this.$emit('enter-game');
     }
-  }
+  },
 };
 </script>
 
@@ -37,19 +39,20 @@ export default {
 }
 
 .enter-button {
-  width: 200px; /* 버튼 너비 */
+  width: 300px; /* 버튼 너비 */
   height: 50px; /* 버튼 높이 */
   cursor: pointer;
   border-radius: 8px;
-  background-color: rgba(0,0,255,.5);
   color: white; /* 버튼 글자색 */
-  font-size: 1.5rem; /* 버튼 글자 크기 */
+  font-size: 1rem; /* 버튼 글자 크기 */
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: floating 3s ease-in-out infinite;
+  letter-spacing: 1px;
   border: none; /* 테두리 제거 */
-  margin-top: 20px; /* 버튼 간격 조정 */
+  animation: floating 3s ease-in-out infinite;
+  background-color: rgba(0,0,255,.5);
+
 }
 
 .enter-button button:active {

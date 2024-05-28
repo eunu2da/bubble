@@ -20,9 +20,9 @@
         <div class="game_area_container">
           <GameArea v-if="showGameArea" :participants="participants" ref="gameArea"  @updateBubbleCount="updateBubbleCount"/>
         </div>
-        <div id="survivorCount" class="survivorCount" v-if="!gameStart">
-          {{ survivorsCountText }}
-        </div>
+         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
+         접속인원 : {{ survivorsCount }} 명
+        </div> 
         <div class="survivorCount" v-if="gameStart">
           <span>my rank 🏆 </span>
           남은 종료 시간 : {{remainingTime}} {{ bubbleCountText }}          
@@ -81,7 +81,7 @@ export default {
       showPlaceholder: false,
       currentSurvivorsText: '',
       showGameArea: false,
-      survivorsCountText: '접속 인원: 0',
+      survivorsCount: 0,
       bubbleCountText: '  버블 갯수 : 0',
       currentPosition: '',
       moveInterval: null,
@@ -91,11 +91,14 @@ export default {
       gameEnd: false,
       showWinnerModal: false,
       remainingTime: '',
+      isDescribing: false,
     };
   },
   methods: {
-    
+
     enterGame() {
+      
+      document.getElementById('main-screen').style.display='none';
       this.showGameArea = true;
       this.showBackButton = true;
       this.showMyCharacter = true;
@@ -115,15 +118,37 @@ export default {
       });
     },
     goBack() {
-      socket.emit('goBack');
-      this.showGameArea = false;
-      this.showBackButton = false;
-      this.showMyCharacter = false;
-      this.showPlaceholder = true;
-      this.showNumOfSurvivors = true;
-      this.$refs.mainScreen.$el.display = 'block';
-    },
+  switch (true) {
+    case this.isDescribing == true:
+      alert('지금은 게임 설명중이에요.');
+      break;
+    case this.remainingTime > 0:
+      if (confirm('현재 게임중이에요. 그래도 나가시겠습니까?')) {
+        socket.emit('goBack');
+        this.showGameArea = false;
+        this.showBackButton = false;
+        this.showMyCharacter = false;
+        this.showPlaceholder = true;
+        this.showNumOfSurvivors = true;
+        document.getElementById('main-screen').style.display = 'block';
+      }
+      break;
+    case this.remainingTime == 0:
+      if (confirm('뒤로 나가면 소켓연결이 끊어집니다. 그래도 나가시겠습니까?')) {
+        socket.emit('goBack');
+        this.showGameArea = false;
+        this.showBackButton = false;
+        this.showMyCharacter = false;
+        this.showPlaceholder = true;
+        this.showNumOfSurvivors = true;
+        document.getElementById('main-screen').style.display = 'block';
+      }
+      break;
+  }
+},
+
     move(direction) {
+      
       console.log(`Move ${direction}`);
       let currentUser = this.participants.find(p => p.id === socket.id);
       if (currentUser) {
@@ -206,14 +231,14 @@ export default {
 
   mounted() {
 
-    socket.on('connect', () => {
-      console.log('소켓 연결', socket.id);
+    socket.on('currentclientCount', (clientCount) => {
+      this.survivorsCount = clientCount;
     });
 
     socket.on('updateParticipants', (participants) => {
-      console.log(` ${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
+      console.log(`${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
       this.participants = participants;
-      this.survivorsCountText = `접속 인원: ${participants.length}`;
+      this.survivorsCount = participants.length;
       this.updateCurrentPosition();
       const currentUser = participants.find(p => p.id === socket.id);
       if (currentUser) {
@@ -238,19 +263,18 @@ export default {
    socket.on('gameInstructions', (data) => {
     console.log('게임 지침:', data);
     this.gameInstructions = data; //게임 지침 설명 text
+    this.isDescribing = true;
     if(data == '') {              //게임 지침이 끝나고 난뒤 발생하는 버블
       console.log('bubbleStart !');
+      this.isDescribing = false;  //설명 종료
       this.gameStart = true;      //접속자 수 => 버블 갯수
       this.startTimer();
     }
   });
-
     socket.on('gameEnd', () => {
-      
       clearInterval(this.timerInterval);
       this.handleGameEnd();
     });
-   
   },
 };
 </script>
@@ -407,7 +431,8 @@ body {
   left: 50%;
   border-radius: 20px;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8); /* 배경색 및 투명도 조정 */
+  background-color: rgba(0,0,0,.18);/* 배경색 및 투명도 조정 */
+  border: rgba(0,0,0,.18);
   color: white;
   padding: 5px 5px 5px 5px;
   max-width: 80%;

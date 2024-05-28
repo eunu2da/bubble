@@ -49,7 +49,6 @@ body, html {
     height: 120.675px;
     cursor: pointer;
     border-radius: 8px;
-    animation: floating 3s ease-in-out infinite;
     margin-top: 20px; /* 버튼 간격 조정 */
 }
 

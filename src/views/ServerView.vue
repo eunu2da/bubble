@@ -59,17 +59,15 @@ export default {
       this.timerInterval = setInterval(() => {
         this.remainingTimeTxt = `남은 종료 시간 :${this.remainingTime--}`; 
         if (this.remainingTime <= 0) {
-          clearInterval(this.timerInterval);
+          clearInterval(this.timedrInterval);
           socket.emit('endGame');
           this.remainingTime = 0;
         }
       }, 1000);
     },
   },
+
   mounted() {
-    socket.on('connect', () => {
-      console.log('주최자가 접속하였습니다~', socket.id);
-    });
 
     socket.on('updateParticipants', (participants) => {
       console.log(` ${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
@@ -101,7 +99,6 @@ export default {
       }
       this.participantInfos.sort((a, b) => b.bCount - a.bCount);
     });
-    
    
   },
 };
