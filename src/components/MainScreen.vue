@@ -1,7 +1,7 @@
 <template>
   <div id="main-screen" ref="MainScreen">
     <h3 id="numOfsurvivors">{{ survivorsCount }}</h3>
-    <button @click="enterGame"  class="enter-button"> 게임 입장 하기</button>
+    <button @click="enterGame" :disabled="gameStarted" class="enter-button"> {{gameStateTxt}}</button>
     <div id="orientation-warning">
       가로 모드로 돌리면 더 재밌게 게임을 즐기실 수 있습니다 !
     </div>
@@ -17,11 +17,36 @@ export default {
   data() {
     return {
       survivorsCount: '',
+      gameStateTxt: '게임 입장하기',
+      gameStarted: false,
     };
+  },
+  mounted(){
+
+    socket.emit('checkGameStatus');
+
+     socket.on('gameAlreadyStarted', () => {
+      this.gameStateTxt = '게임 진행중'; 
+      this.gameStarted = true; //게임 입장하기 버튼 비활
+    });
+
+    socket.on('gameNotStarted', () => {
+      this.gameStateTxt = '게임 입장하기';
+      this.gameStarted = false;
+    });
+
+    socket.on('gameEnd', () => {
+      this.gameStateTxt = '게임 입장하기';
+      this.gameStarted = false;
+    });
+
   },
   methods: {
     enterGame() {
-      this.$emit('enter-game');
+
+      if(!this.gameStarted){
+        this.$emit('enter-game');
+      }
     }
   },
 };
@@ -54,6 +79,12 @@ export default {
   background-color: rgba(0,0,255,.5);
 
 }
+
+.enter-button:disabled {
+  background-color: rgba(128, 128, 128, 0.5); /* 비활성화된 버튼 배경색 */
+  cursor: not-allowed; /* 커서 변경 */
+}
+
 
 .enter-button button:active {
   background-color: rgba(255, 253, 238, .49);

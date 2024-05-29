@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd"/>
+    <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
     <div class="container" v-if="!gameEnd">
       <div class="layout_container">
         <div id="back-button" v-if="showBackButton">
@@ -24,12 +24,13 @@
                   @touchstart="runAction()" @touchend="runStop()" class="run-button">run!</button>
         </div>
         </div>
-         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
-         접속인원 : {{ survivorsCount }} 명
+        <div id="survivorCount" class="survivorCount" v-if="!gameStart">
+         접속중인 인원 : {{ survivorsCount }} 명
         </div> 
-        <div class="survivorCount" v-if="gameStart">
-          <span>my rank 🏆 </span>
-          남은 종료 시간 : {{remainingTime}} {{ bubbleCountText }}          
+        <div class="game_progress_status" v-if="gameStart">
+          <span style="margin-right: 80px;">my rank 🏆 </span>
+          <span style="margin-right: 80px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
+          <span> {{ bubbleCountText }}</span>            
         </div>
        <div class="fullscreen-buttons">
           <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
@@ -86,7 +87,7 @@ export default {
       currentSurvivorsText: '',
       showGameArea: false,
       survivorsCount: 0,
-      bubbleCountText: '  버블 갯수 : 0',
+      bubbleCountText: '터트린 🫧 갯수 : 0',
       currentPosition: '',
       moveInterval: null,
       gameInstructions: '',
@@ -98,6 +99,7 @@ export default {
       isDescribing: false,
       isRun: false,
       direction: null,
+      gameEndSent: false
     };
   },
   methods: {
@@ -206,17 +208,19 @@ export default {
       }
     },
     updateBubbleCount(count) {
-      this.bubbleCountText = '  버블 갯수: ' + count;
+      this.bubbleCountText = '터트린 🫧 갯수: ' + count;
       socket.emit('bubbleBuster', {id : socket.id, emoji: this.myEmoji, bCount : count});
     },
     startTimer() {
       //this.remainingTime = 60;  // 게임 시간 60초로 설정
-      this.remainingTime = 120;
+      this.remainingTime = 30;
+      this.gameEndSent = false;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; 
-        if (this.remainingTime <= 0) {
+        if (this.remainingTime <= 0 && !this.gameEndSent) {
           clearInterval(this.timerInterval);
-          socket.emit('endGame');
+         // socket.emit('endGame');
+          this.gameEndSent = true; // 게임 종료 상태를 true로
         }
       }, 1000);
     },
@@ -366,8 +370,8 @@ body {
 }
 
 .myEmojiBox {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border: 2px solid rgb(255 255 255 / 50%);
   border-radius: 20px;
   text-align: center;
@@ -379,10 +383,23 @@ body {
 }
 
 .myCharacter {
-  font-size: 2.6rem;
+  font-size: 2.1rem;
 }
 
 .survivorCount {
+  position: fixed;
+  top: 10px;
+  right:150px;
+  background-color: rgb(0 0 0 / 18%);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1rem;
+  z-index: 1000;
+}
+
+.game_progress_status {
+  width: 65%;
   position: fixed;
   top: 10px;
   right: 150px;
@@ -393,6 +410,7 @@ body {
   font-size: 1rem;
   z-index: 1000;
 }
+
 
 .currentPosition {
   margin-top: 6px;
@@ -482,7 +500,7 @@ body {
   background-color: rgba(0,0,0,.18); 
   border: rgba(0,0,0,.18);
   color: white;
-  padding: 5px 5px 5px 5px;
+  padding: 0px 20px;
   max-width: 80%;
 }
 

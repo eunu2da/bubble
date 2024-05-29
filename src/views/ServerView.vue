@@ -55,7 +55,7 @@ export default {
     },
 
     startTimer() {
-      this.remainingTime = 119;
+      this.remainingTime = 30;
       this.timerInterval = setInterval(() => {
         this.remainingTimeTxt = `남은 종료 시간 :${this.remainingTime--}`; 
         if (this.remainingTime <= 0) {
@@ -106,19 +106,14 @@ export default {
 
 <style scoped>
 #host-info {
-  display: flex;
-  width: 90%;
+  width: 100vw;
+  height: 98vh;
 }
 
 .dashboard-section {
-  margin: 20px;
-  padding: 20px;
+   
   color: white;
-  background-color: #000000;
-  border-radius: 10px;
-  width: 700px;
-  height: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  background-color: rgb(0 0 255 / 0%);
 }
 
 .entranceNum-info {

@@ -14,7 +14,8 @@ app.use(cors());
 let participants = []; // 연결된 참가자들을 저장할 배열
 const emojis = ['🙈', '🐶', '🐱', '🦄', '🐑', '🐿️', '🐼', '🐽', '🦊', '🐯', '🐔', '🐌', '🪼', '🐋', '🪰', '🐙', '🦢', '🦉', '🐤'];
 let currentEmojiIndex = 0; // 이모지를 순서대로 할당하기 위해 이모지 인덱스 변수 선언
-let hostId = '';
+let gameEnded = true;     // 게임 종료 상태
+let gameStarted = false;   // 게임 시작 상태
 
 const PORT = process.env.PORT || 4000;
 
@@ -22,7 +23,16 @@ io.on('connection', (socket) => {
 
   socket.emit('currentclientCount', participants.length);
 
+  socket.on('checkGameStatus', () => {
+    if (gameStarted) {
+      socket.emit('gameAlreadyStarted');
+    } else {
+      socket.emit('gameNotStarted');
+    }
+  });
+  
     socket.on('newParticipant', (data) => {
+
         data.emoji = emojis[currentEmojiIndex];
         currentEmojiIndex = (currentEmojiIndex + 1) % emojis.length;
 
@@ -69,6 +79,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('startGame', () => {
+        gameStarted = true;
+        gameEnded = false; // 게임 시작 시 게임 종료 상태를 초기화
 
         const gameInstructions = [
             '이 게임은 방울을 많이 터트리는 사람이 우승하는 게임이에요.',
@@ -88,19 +100,28 @@ io.on('connection', (socket) => {
               // 모든 지침을 전송한 후에 마지막으로 빈 문자열을 보냄
               io.emit('gameInstructions', '');
               setTimeout(() => {
-                io.emit('gameEnd');
-              }, 120000); // 120초 후에 게임 종료
+                if(!gameEnded){
+                  io.emit('gameEnd');
+                  console.log('게임이 종료되었습니다.');
+                  gameStarted = false;
+                  gameEnded = true; // 게임 종료 상태 true
+                }
+              }, 30000); // 120초 후에 게임 종료
             }
           }
           sendInstruction(0); // 시작    
     });
     
-
-    //게임종료
-    socket.on('endGame', () => {
-        io.emit('gameEnd');
-        console.log('게임이 종료되었습니다.');
-    });
+        // 게임 종료
+      //   socket.on('endGame', () => {
+      //     if (!gameEnded) { // 게임이 아직 종료되지 않은 경우에만 종료
+      //         io.emit('gameEnd');
+      //         console.log('게임이 종료되었습니다.');
+      //         gameStarted = true;
+      //         gameEnded = true; // 게임 종료 상태를 true로 설정
+      //     }
+      // });
+ 
 });
 
 // 정적 파일 serve
