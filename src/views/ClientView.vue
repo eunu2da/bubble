@@ -19,6 +19,9 @@
       <div class="game_area_wrapper">
         <div class="game_area_container">
           <GameArea v-if="showGameArea" :participants="participants" ref="gameArea"  @updateBubbleCount="updateBubbleCount"/>
+        <div class="run-controls" v-if="showGameArea">
+          <button @mousedown="startMoving('run')" @touchstart="startMoving('run')" class="run-button">run!</button>
+        </div>
         </div>
          <div id="survivorCount" class="survivorCount" v-if="!gameStart">
          접속인원 : {{ survivorsCount }} 명
@@ -31,7 +34,7 @@
           <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
       </div>
       </div>
-      <div class="controls" v-if="showGameArea">
+      <div class="direct-controls" v-if="showGameArea">
         <div class="direction-buttons">
           <button @mousedown="startMoving('up')" @mouseup="stopMoving" @mouseleave="stopMoving"
                   @touchstart="startMoving('up')" @touchend="stopMoving">↑</button>
@@ -108,6 +111,9 @@ export default {
       this.$nextTick(() => {
         if (this.$refs.gameArea) {
           var gameAreaSize = this.$refs.gameArea.$el.getBoundingClientRect();
+          
+          this.gameAreaHeight = gameAreaSize.height;
+          this.gameAreaWidth = gameAreaSize.width;
           var areaSize = {
             top: gameAreaSize.height,
             right: gameAreaSize.width
@@ -281,8 +287,8 @@ export default {
 
 <style scoped>
 body {
-  user-select: none; /* 텍스트 복사 방지 */
-  touch-action: manipulation; /* 터치로 확대 방지 */
+  user-select: none; 
+  touch-action: manipulation; 
   background-color: #e4e4ff;
 }
 
@@ -335,19 +341,20 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px; /* 버튼 아래로 약간의 여백 추가 */
+  margin-top: 20px;
 }
 
 .game_area_container {
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-grow: 1;
 }
 
 .myEmojiBox {
   width: 80px;
-  margin-top: 40px;
-  height: 90px;
+  height: 80px;
   border: 2px solid rgb(255 255 255 / 50%);
   border-radius: 20px;
   text-align: center;
@@ -359,7 +366,7 @@ body {
 }
 
 .myCharacter {
-  font-size: 3rem;
+  font-size: 2.6rem;
 }
 
 .survivorCount {
@@ -378,17 +385,23 @@ body {
   margin-top: 6px;
   background-color: rgb(0 0 0 / 14%);
   color: white;
-  width: 70px;
-  padding: 5px;
+  width: 60px;
+  padding: 0px 10px;
   border-radius: 5px;
   font-size: 0.9rem;
   text-align: center;
 }
 
-.controls {
+.direct-controls {
   position: fixed;
   bottom: 20px;
   left: 20px;
+}
+
+.run-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
 
 .direction-buttons {
@@ -398,19 +411,41 @@ body {
 }
 
 .direction-buttons button {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   margin: 5px;
   font-size: 1.2rem; 
   background-color: rgba(0,0,255,.5);
   color: white;
   border: none;
   border-radius: 50%;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 20%);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  outline: none;
+}
+
+.direction-buttons button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, hsl(0deg 0% 100% / 40%), rgb(255 255 244));
+  transition: all 0.3s ease;
+  z-index: 1;
 }
 
 .direction-buttons button:active {
-  background-color: rgba(255, 253, 238, .49);
+  background-color: rgba(0, 0, 255, 0.7);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(2px);
+}
+
+.direction-buttons button:active::before {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
 }
 
 @media only screen and (max-width: 660px) and (orientation: portrait) {
@@ -431,7 +466,7 @@ body {
   left: 50%;
   border-radius: 20px;
   transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,.18);/* 배경색 및 투명도 조정 */
+  background-color: rgba(0,0,0,.18); 
   border: rgba(0,0,0,.18);
   color: white;
   padding: 5px 5px 5px 5px;
@@ -439,7 +474,7 @@ body {
 }
 
 .game-instructions-content {
-  opacity: 0.8; /* dim 효과를 위한 투명도 조정 */
+  opacity: 0.8;  
 }
 
  .fullscreen-buttons button {
@@ -455,5 +490,48 @@ body {
   z-index: 1000;
 } 
 
+.run-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px; 
+  height: 50px;
+  font-size: 1.2rem; 
+  background-color: rgba(0,0,255,.34);  
+  color: white; 
+  border: none; 
+  border-radius: 50%; 
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+  transition: all 0.3s ease;  
+  outline: none;
+  z-index: 1000;
+  cursor: pointer;
+  position: relative; 
+  -webkit-tap-highlight-color: transparent; 
+}
+
+.run-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, hsl(0deg 0% 100% / 40%), rgb(255 255 244));
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.run-button:active {
+  background-color: rgba(255, 69, 0, 0.7); 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
+  transform: translateY(2px);  
+}
+
+.run-button:active::before {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+  transform: translateY(2px); 
+}
 
 </style>

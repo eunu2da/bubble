@@ -81,8 +81,8 @@ export default {
 <style scoped>
 #game-area {
   overflow: hidden;
-  background-color: rgb(255 255 255 / 41%);
-  border: 4px solid hsl(0deg 0% 100% / 28%);
+  background-color: rgb(0 0 255 / 34%);
+  border: 4px solid rgba(0,0,255,.2);
   border-radius: 1px;
   padding: 0px;
   width: 99vw;
@@ -130,7 +130,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 3.5rem;
+  font-size: 3rem;
   position: absolute;
   transition: all 0.3s ease;
 }
