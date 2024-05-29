@@ -20,7 +20,8 @@
         <div class="game_area_container">
           <GameArea v-if="showGameArea" :participants="participants" ref="gameArea"  @updateBubbleCount="updateBubbleCount"/>
         <div class="run-controls" v-if="showGameArea">
-          <button @mousedown="startMoving('run')" @touchstart="startMoving('run')" class="run-button">run!</button>
+          <button @mousedown="runAction()" @mouseup="runStop()" @mouseleave="runStop()"
+                  @touchstart="runAction()" @touchend="runStop()" class="run-button">run!</button>
         </div>
         </div>
          <div id="survivorCount" class="survivorCount" v-if="!gameStart">
@@ -36,15 +37,15 @@
       </div>
       <div class="direct-controls" v-if="showGameArea">
         <div class="direction-buttons">
-          <button @mousedown="startMoving('up')" @mouseup="stopMoving" @mouseleave="stopMoving"
-                  @touchstart="startMoving('up')" @touchend="stopMoving">↑</button>
+          <button @mousedown="startMoving('up')" @mouseup="stopMoving('up')" @mouseleave="stopMoving('up')"
+                  @touchstart="startMoving('up')" @touchend="stopMoving('up')">↑</button>
           <div>
-            <button @mousedown="startMoving('left')" @mouseup="stopMoving" @mouseleave="stopMoving"
-                    @touchstart="startMoving('left')" @touchend="stopMoving">←</button>
-            <button @mousedown="startMoving('down')" @mouseup="stopMoving" @mouseleave="stopMoving"
-                    @touchstart="startMoving('down')" @touchend="stopMoving">↓</button>
-            <button @mousedown="startMoving('right')" @mouseup="stopMoving" @mouseleave="stopMoving"
-                    @touchstart="startMoving('right')" @touchend="stopMoving">→</button>
+            <button @mousedown="startMoving('left')" @mouseup="stopMoving('left')" @mouseleave="stopMoving('left')"
+                    @touchstart="startMoving('left')" @touchend="stopMoving('left')" >←</button>
+            <button @mousedown="startMoving('down')" @mouseup="stopMoving('down')" @mouseleave="stopMoving('down')"
+                    @touchstart="startMoving('down')" @touchend="stopMoving('down')" >↓</button>
+            <button @mousedown="startMoving('right')" @mouseup="stopMoving('right')" @mouseleave="stopMoving('right')"
+                    @touchstart="startMoving('right')" @touchend="stopMoving('right')">→</button>
           </div>
         </div>
       </div>
@@ -95,6 +96,8 @@ export default {
       showWinnerModal: false,
       remainingTime: '',
       isDescribing: false,
+      isRun: false,
+      direction: null,
     };
   },
   methods: {
@@ -154,30 +157,39 @@ export default {
 },
 
     move(direction) {
-      
+     
       console.log(`Move ${direction}`);
       let currentUser = this.participants.find(p => p.id === socket.id);
       if (currentUser) {
         switch (direction) {
           case 'up':
-            currentUser.y -= 10;
+           currentUser.y -= this.isRun ? 20 : 10; //윗 방향키를 클릭 + run =>  20씩 증가
             break;
           case 'down':
-            currentUser.y += 10;
+            currentUser.y += this.isRun ? 20 : 10;
             break;
           case 'left':
-            currentUser.x -= 10;
+            currentUser.x -= this.isRun ? 20 : 10;
             break;
           case 'right':
-            currentUser.x += 10;
+            currentUser.x += this.isRun ? 20 : 10;
             break;
         }
+        
         console.log(`나의 현재 위치는 x: ${currentUser.x}, y: ${currentUser.y}`);
         socket.emit('updateParticipantPosition', currentUser);
         this.updateCurrentPosition();
       }
     },
+
+    runAction(){
+      this.isRun = true;
+    },
+    runStop(){
+      this.isRun = false;   
+    },
     startMoving(direction) {
+  
       this.move(direction);
       this.moveInterval = setInterval(() => {
         this.move(direction);
@@ -186,6 +198,7 @@ export default {
     stopMoving() {
       clearInterval(this.moveInterval);
     },
+     
     updateCurrentPosition() {
       const currentUser = this.participants.find(p => p.id === socket.id);
       if (currentUser) {
