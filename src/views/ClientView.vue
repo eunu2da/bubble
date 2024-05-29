@@ -28,8 +28,8 @@
          접속중인 인원 : {{ survivorsCount }} 명
         </div> 
         <div class="game_progress_status" v-if="gameStart">
-          <span style="margin-right: 80px;">my rank 🏆 </span>
-          <span style="margin-right: 80px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
+          <span style="margin-right: 60px;">my rank 🏆 </span>
+          <span style="margin-right: 60px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
           <span> {{ bubbleCountText }}</span>            
         </div>
        <div class="fullscreen-buttons">

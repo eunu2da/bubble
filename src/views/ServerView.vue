@@ -26,6 +26,7 @@
         <button class="start-game" @click="startGame">start 🏃‍♀️</button>
       </div>
     </div>
+    <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false" />
   </div>
 </template>
 
@@ -41,7 +42,16 @@ export default {
       isWaiting: true,
       recordStart : false,  
       remainingTimeTxt: '참가자들에게 게임 설명중 ...',
+      timerInterval: null,
+      remainingTime: 0,
+      howWinnerModal: false,
+      winner: null
     };
+  },
+  computed: {
+    sortedParticipantInfos() {
+      return [...this.participantInfos].sort((a, b) => b.bCount - a.bCount);
+    }
   },
   methods: {
     startGame() {
@@ -59,12 +69,19 @@ export default {
       this.timerInterval = setInterval(() => {
         this.remainingTimeTxt = `남은 종료 시간 :${this.remainingTime--}`; 
         if (this.remainingTime <= 0) {
-          clearInterval(this.timedrInterval);
+          clearInterval(this.timerInterval);
           socket.emit('endGame');
-          this.remainingTime = 0;
+          this.endGame();
         }
       }, 1000);
     },
+
+    endGame() {
+      socket.emit('endGame');
+      const winner = this.sortedParticipantInfos[0];
+      this.winner = winner;
+      this.showWinnerModal = true;
+    }
   },
 
   mounted() {
