@@ -13,19 +13,21 @@
           </div>
         </div>
       </div>
-      <div v-if="recordStart">      
+      <div v-if="!isWaiting">      
         <h1 class="title">record🏆</h1>
         <div class="participant-list">
           <div v-for="(info, index) in sortedParticipantInfos" :key="info.id" :class="['rank-info', rankClass(index)]">
-            {{ index + 1 }}등: {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
+            <div v-if="info.bCount">
+             {{ index + 1 }}등: {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div v-if="isWaiting">
-      <button class="start-game" @click="startGame">start 🏃‍♀️</button> 
+      <button class="start-game" @click="startGame">{{clickState}}</button> 
     </div>
-    <div class="survivorCount" v-if="recordStart">{{remainingTimeTxt}}
+    <div class="survivorCount" v-if="!isWaiting">남은 종료 시간 : {{remainingTime}}
     </div>
    
     <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false" />
@@ -42,12 +44,11 @@ export default {
       participantInfos: [],
       survivorsCountText: '접속인원 0명',
       isWaiting: true,
-      recordStart : false,  
-      remainingTimeTxt: '참가자들에게 게임 설명중 ...',
       timerInterval: null,
       remainingTime: 0,
       howWinnerModal: false,
-      winner: null
+      winner: null,
+      clickState: 'start 🏃‍♀️',
     };
   },
   computed: {
@@ -60,16 +61,17 @@ export default {
       if (this.participantInfos.length == 0) {
         alert('접속중인 참가자가 없어요!');
       }else{
-        this.isWaiting = false; // 버튼 비활성화
-        this.recordStart =  true;
-        socket.emit('startGame');
+       socket.emit('startGame');
       }
+
+
     },
 
     startTimer() {
       this.remainingTime = 180;
+      this.isWaiting = false;
       this.timerInterval = setInterval(() => {
-        this.remainingTimeTxt = `남은 종료 시간 :${this.remainingTime--}`; 
+        this.remainingTime--; 
         if (this.remainingTime <= 0) {
           clearInterval(this.timerInterval);
           socket.emit('endGame');
@@ -119,7 +121,9 @@ export default {
 
     socket.on('gameInstructions', (data) => {
       if(data == '') {              
-       this.startTimer();
+        this.startTimer();
+     }else{
+      this.clickState = "참가자들에게 게임설명중입니다...";
      }
     });
 
@@ -157,7 +161,7 @@ body {
 }
 
 .participant-list {
-  max-height: 80vh; 
+  max-height: 50vh; 
   overflow-y: auto; 
 }
 
@@ -194,7 +198,7 @@ body {
 
 
 .participant-info {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   color: #ffffff;
   text-align: center;
   margin: 10px 0;
@@ -233,7 +237,7 @@ body {
 
 .other-ranks {
   font-size: 1.25rem;
-  color: #4935ff;
+  color: hsla(0,0%,100%,.8);
 }
 
 .survivorCount {
