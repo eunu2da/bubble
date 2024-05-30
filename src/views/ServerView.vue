@@ -1,29 +1,34 @@
 <template>
-  <div id="host-info">
+  <div id="host-info" class="container">
     <div class="dashboard-section">
       <div v-if="isWaiting">      
-        <h2 class="parti">접속자🦰</h2>
-        <div v-for="info in participantInfos" :key="info.id">
-          {{ info.emoji }} {{ info.id }}
+        <h2 class="title">접속자🦰</h2>
+        <h3 class="participant-num">{{ survivorsCountText }}</h3>
+        <div class="participant-list">
+          <div v-if="participantInfos.length == 0" class="participant-info">
+            <h2 class="noParti">접속중인 참가자가 없어요.🫨</h2>
+          </div>
+          <div v-for="info in participantInfos" :key="info.id" class="participant-info">
+            {{ info.emoji }} {{ info.id }}
+          </div>
         </div>
       </div>
       <div v-if="recordStart">      
-        <h1 class="record">record🏆</h1>
-        <div v-for="(info, index) in sortedParticipantInfos" :key="info.id" :class="rankClass(index)">
-          {{ index + 1 }}등: {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
+        <h1 class="title">record🏆</h1>
+        <div class="participant-list">
+          <div v-for="(info, index) in sortedParticipantInfos" :key="info.id" :class="['rank-info', rankClass(index)]">
+            {{ index + 1 }}등: {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
+          </div>
         </div>
       </div>
       <div class="survivorCount" v-if="recordStart">
           {{remainingTimeTxt}}
       </div>
     </div>
-    
     <div v-if="isWaiting">
-      <h3 class="parti-num">{{ survivorsCountText }}</h3>
-      <div class="entranceNum-info" id="participantCount">
-        <button class="start-game" @click="startGame">start 🏃‍♀️</button>
-      </div>
+      <button class="start-game" @click="startGame">start 🏃‍♀️</button> 
     </div>
+   
     <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false" />
   </div>
 </template>
@@ -92,7 +97,7 @@ export default {
         case 2:
           return 'third-place';
         default:
-          return '';
+          return 'other-ranks';
       }
     },
   },
@@ -139,83 +144,108 @@ export default {
 </script>
 
 <style scoped>
+
 #host-info {
   width: 100vw;
   height: 98vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  user-select: none; 
+  touch-action: manipulation; 
+}
+
+.participant-list {
+  max-height: 50vh; 
+  overflow-y: auto; 
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }
 
 .dashboard-section {
-   
-  color: white;
-  background-color: rgb(0 0 255 / 0%);
+  width: 100%;
+  background-color: rgba(0, 0, 255, 0.1);
+  height : 100%;
 }
 
-.entranceNum-info {
-  width: 140px;
-  height: 50px;
-  margin-top: 40px;
+.title {
+  font-size: 1.5rem;
+  text-align: center;
+  color: hsla(0,0%,100%,.5);
+  margin-bottom: 20px;
 }
 
-.start-game {
-  background-color: #4caf50;
-  color: white;
-  margin: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 40px;
-  margin-top: 70px;
-  width: 140px;
-}
- 
 .participant-info {
-  width: 300px;
-}
-
-.record {
+  font-size: 1.5rem;
+  color: hsla(0,0%,100%,.38);
   text-align: center;
-  color: gold;
+  margin: 10px 0;
 }
 
-.parti{
+.rank-info {
+  font-size: 1.5rem;
   text-align: center;
-}
-
-.parti-num {
-  background-color: rgba(0, 0, 0, .5);
-  color: white;
-  padding: 30px;
-  z-index: 1000;
-}
-
-.survivorCount {
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  background-color: rgba(0, 0, 0, .5);
-  color: white;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 1rem;
-  z-index: 1000;
+  margin: 10px 0;
 }
 
 .first-place {
   font-size: 2rem;
   font-weight: bold;
-  color: gold;
+  color: #ff0000; /* 금색 */
 }
 
 .second-place {
   font-size: 1.75rem;
   font-weight: bold;
-  color: silver;
+  color: #ff5100; /* 은색 */
 }
 
 .third-place {
   font-size: 1.5rem;
   font-weight: bold;
-  color: bronze;
+  color: #ffbb00; /* 동색 */
+}
+
+.other-ranks {
+  font-size: 1.25rem;
+  color: #4935ff;
+}
+
+.survivorCount {
+  font-size: 1.2rem;
+  text-align: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.participant-num {
+  color: white;
+  background-color: hsla(0,0%,100%,.38);
+  padding: 10px;
+  text-align: center;
+}
+ 
+.start-game {
+  font-size: 1.5rem;
+  color: white;
+  background-color: rgba(0,0,255,.5);
+  padding: 10px;
+  border: none; 
+  width: 100vw; 
+}
+
+.noparti {
+  color : hsl(0deg 0% 100%/40%);
 }
 
 </style>
