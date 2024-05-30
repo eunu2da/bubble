@@ -5,7 +5,7 @@
         <h2 class="title">접속자🦰</h2>
         <h3 class="participant-num">{{ survivorsCountText }}</h3>
         <div class="participant-list">
-          <div v-if="participantInfos.length == 0" class="participant-info">
+          <div v-if="participantInfos.length == 0" class="noParticipant">
             <h2 class="noParti">접속중인 참가자가 없어요.🫨</h2>
           </div>
           <div v-for="info in participantInfos" :key="info.id" class="participant-info">
@@ -21,12 +21,11 @@
           </div>
         </div>
       </div>
-      <div class="survivorCount" v-if="recordStart">
-          {{remainingTimeTxt}}
-      </div>
     </div>
     <div v-if="isWaiting">
       <button class="start-game" @click="startGame">start 🏃‍♀️</button> 
+    </div>
+    <div class="survivorCount" v-if="recordStart">{{remainingTimeTxt}}
     </div>
    
     <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false" />
@@ -147,9 +146,9 @@ export default {
 
 #host-info {
   width: 100vw;
-  height: 98vh;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
 }
 
 body {
@@ -158,7 +157,7 @@ body {
 }
 
 .participant-list {
-  max-height: 50vh; 
+  max-height: 80vh; 
   overflow-y: auto; 
 }
 
@@ -172,18 +171,36 @@ body {
 
 .dashboard-section {
   width: 100%;
-  background-color: rgba(0, 0, 255, 0.1);
+  background-color: rgb(93 0 255 / 78%);
   height : 100%;
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   text-align: center;
-  color: hsla(0,0%,100%,.5);
+  color: #ffffff;
   margin-bottom: 20px;
+  animation: floating 3s ease-in-out infinite;
 }
 
+@keyframes floating {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -3px);
+  }
+}
+
+
 .participant-info {
+  font-size: 1.5rem;
+  color: #ffffff;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.noParticipant {
   font-size: 1.5rem;
   color: hsla(0,0%,100%,.38);
   text-align: center;
@@ -205,13 +222,13 @@ body {
 .second-place {
   font-size: 1.75rem;
   font-weight: bold;
-  color: #ff5100; /* 은색 */
+  color: #ff5100;  
 }
 
 .third-place {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffbb00; /* 동색 */
+  color: #ffbb00;  
 }
 
 .other-ranks {
@@ -223,14 +240,16 @@ body {
   font-size: 1.2rem;
   text-align: center;
   color: white;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0,0,255,.34);
   padding: 10px;
   border-radius: 10px;
+  width: 100%;
+  font-weight : bold;
 }
 
 .participant-num {
   color: white;
-  background-color: hsla(0,0%,100%,.38);
+  background-color: rgba(0,0,0,.18);
   padding: 10px;
   text-align: center;
 }
@@ -238,7 +257,7 @@ body {
 .start-game {
   font-size: 1.5rem;
   color: white;
-  background-color: rgba(0,0,255,.5);
+  background-color: rgba(0,0,255,.2);
   padding: 10px;
   border: none; 
   width: 100vw; 
