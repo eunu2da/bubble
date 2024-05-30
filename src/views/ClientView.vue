@@ -28,7 +28,7 @@
          접속중인 인원 : {{ survivorsCount }} 명
         </div> 
         <div class="game_progress_status" v-if="gameStart">
-          <span style="margin-right: 60px;">my rank 🏆 </span>
+          <span style="margin-right: 60px;">my rank 🏆: {{currentRank}} </span>
           <span style="margin-right: 60px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
           <span> {{ bubbleCountText }}</span>            
         </div>
@@ -99,7 +99,10 @@ export default {
       isDescribing: false,
       isRun: false,
       direction: null,
-      gameEndSent: false
+      gameEndSent: false,
+      currentRank: '',
+      bubbleCount: '',
+      firstPlace: '',
     };
   },
   methods: {
@@ -287,17 +290,27 @@ export default {
     console.log('게임 지침:', data);
     this.gameInstructions = data; //게임 지침 설명 text
     this.isDescribing = true;
-    if(data == '') {              //게임 지침이 끝나고 난뒤 발생하는 버블
-      console.log('bubbleStart !');
-      this.isDescribing = false;  //설명 종료
-      this.gameStart = true;      //접속자 수 => 버블 갯수
-      this.startTimer();
-    }
-  });
+      if(data == '') {              //게임 지침이 끝나고 난뒤 발생하는 버블
+        console.log('bubbleStart !');
+        this.isDescribing = false;  //설명 종료
+        this.gameStart = true;      //접속자 수 => 버블 갯수
+        this.startTimer();
+      }
+   });
+    
+   socket.on('rankUpdate', (data) => {
+      console.log('나의 현재 랭킹 정보:', data);
+      this.currentRank = data.rank;
+      this.bubbleCount = data.bCount;
+      this.firstPlace = data.firstPlace;
+    });
+
     socket.on('gameEnd', () => {
       clearInterval(this.timerInterval);
       this.handleGameEnd();
     });
+
+  
   },
 };
 </script>

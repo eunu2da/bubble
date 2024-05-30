@@ -57,14 +57,13 @@ export default {
     }
   },
   methods: {
+
     startGame() {
       if (this.participantInfos.length == 0) {
         alert('접속중인 참가자가 없어요!');
       }else{
        socket.emit('startGame');
       }
-
-
     },
 
     startTimer() {
@@ -86,9 +85,31 @@ export default {
       this.winner = winner;
       this.showWinnerModal = true;
     },
-    // requestRankUpdate() {
-    //   socket.emit('updateRanks');
-    // }
+     
+    updateBubbleCount(data) {
+      //현재 참가자 정보에서 해당 참가자를 찾음
+      const currentUserIndex = this.participantInfos.findIndex((p) => p.id === data.id);
+      //조건이 참인경우(해당참가자가 있을때)
+      if (currentUserIndex !== -1) {
+         //기존 참가자의 버블 카운트를 업데이트
+        this.participantInfos[currentUserIndex].bCount = data.bCount;
+      } else {
+        //해당참가자가 없는 경우 새로운 참가자 정보를 추가
+        this.participantInfos.push({ id: data.id, emoji: data.emoji, bCount: data.bCount });
+      }
+       // 버블 카운트에 따라 참가자들을 정렬
+      const newSortedParticipants = [...this.participantInfos].sort((a, b) => b.bCount - a.bCount);
+      // 정렬된 참가자 목록이 기존 목록과 다른 경우에만(랭킹 업데이트가 될때 client에게 변경된 랭킹정보를 전송한다.)
+      if (JSON.stringify(newSortedParticipants) !== JSON.stringify(this.sortedParticipantInfos)) {
+        this.participantInfos = newSortedParticipants;
+        this.requestRankUpdate(this.participantInfos); 
+      }
+    },
+
+    requestRankUpdate(data) {
+      socket.emit('updateRanks', data); //업데이트 된 랭킹 정보
+    },
+
     rankClass(index) {
       switch (index) {
         case 0:
@@ -128,20 +149,8 @@ export default {
     });
 
     socket.on('bubbleBuster', (data) => {
-      const currentUserIndex = this.participantInfos.findIndex((p) => p.id === data.id);
-      if (currentUserIndex !== -1) {
-        this.participantInfos[currentUserIndex].bCount = data.bCount;
-      } else {
-        this.participantInfos.push({ id: data.id, emoji: data.emoji, bCount: data.bCount });
-      }
-      this.participantInfos.sort((a, b) => b.bCount - a.bCount);
-      //this.requestRankUpdate(); // 랭크 업데이트 요청
+      this.updateBubbleCount(data); //해당 참가자의 socket id, emoji, bubbleCount
     });
-   
-    // socket.on('rankUpdate', (sortedParticipants) => {
-    //   this.participantInfos = sortedParticipants;
-    // });
-
   },
 };
 </script>

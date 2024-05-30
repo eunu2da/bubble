@@ -114,12 +114,19 @@ io.on('connection', (socket) => {
           }
           sendInstruction(0); // 시작    
     });
-
-    // 랭크 업데이트
-  // socket.on('updateRanks', () => {
-  //   const sortedParticipants = participants.sort((a, b) => b.bubbleCount - a.bubbleCount);
-  //   io.emit('rankUpdate', sortedParticipants);
-  // });
+    //새로운 랭킹 리스트
+    socket.on('updateRanks', (sortedParticipants) => {
+      console.log('New Rank !!!!!!!!!!!!!!', sortedParticipants);
+      //1순위부터 마지막 순위까지 정렬된 배열 순회
+      sortedParticipants.forEach((participant, index) => {
+        // 각 참가자에게 자신의 랭킹 정보를 개별적으로 전송
+        io.to(participant.id).emit('rankUpdate', { 
+          rank: index + 1,
+          bCount: participant.bCount,
+          firstPlace: sortedParticipants[0]
+        });
+      });
+    });
 
 });
 
