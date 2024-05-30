@@ -1,8 +1,6 @@
 <template>
   <div id="host-info">
     <div class="dashboard-section">
-     
-
       <div v-if="isWaiting">      
         <h2 class="parti">접속자🦰</h2>
         <div v-for="info in participantInfos" :key="info.id">
@@ -11,8 +9,8 @@
       </div>
       <div v-if="recordStart">      
         <h1 class="record">record🏆</h1>
-        <div v-for="info in participantInfos" :key="info.id" >
-          {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
+        <div v-for="(info, index) in sortedParticipantInfos" :key="info.id" :class="rankClass(index)">
+          {{ index + 1 }}등: {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
         </div>
       </div>
       <div class="survivorCount" v-if="recordStart">
@@ -65,7 +63,7 @@ export default {
     },
 
     startTimer() {
-      this.remainingTime = 30;
+      this.remainingTime = 180;
       this.timerInterval = setInterval(() => {
         this.remainingTimeTxt = `남은 종료 시간 :${this.remainingTime--}`; 
         if (this.remainingTime <= 0) {
@@ -81,9 +79,23 @@ export default {
       const winner = this.sortedParticipantInfos[0];
       this.winner = winner;
       this.showWinnerModal = true;
-    }
+    },
+    // requestRankUpdate() {
+    //   socket.emit('updateRanks');
+    // }
+    rankClass(index) {
+      switch (index) {
+        case 0:
+          return 'first-place';
+        case 1:
+          return 'second-place';
+        case 2:
+          return 'third-place';
+        default:
+          return '';
+      }
+    },
   },
-
   mounted() {
 
     socket.on('updateParticipants', (participants) => {
@@ -115,8 +127,13 @@ export default {
         this.participantInfos.push({ id: data.id, emoji: data.emoji, bCount: data.bCount });
       }
       this.participantInfos.sort((a, b) => b.bCount - a.bCount);
+      //this.requestRankUpdate(); // 랭크 업데이트 요청
     });
    
+    // socket.on('rankUpdate', (sortedParticipants) => {
+    //   this.participantInfos = sortedParticipants;
+    // });
+
   },
 };
 </script>
@@ -182,4 +199,23 @@ export default {
   font-size: 1rem;
   z-index: 1000;
 }
+
+.first-place {
+  font-size: 2rem;
+  font-weight: bold;
+  color: gold;
+}
+
+.second-place {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: silver;
+}
+
+.third-place {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: bronze;
+}
+
 </style>

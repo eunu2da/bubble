@@ -45,6 +45,9 @@ io.on('connection', (socket) => {
         };
 
         participants.push(newParticipant);
+
+        console.log(`${participants.length}번째 참가자 ${socket.id}가 입장하였습니다.`);
+        console.log('======================================================');
         console.log('접속 참가자 명단 :', participants);
         io.emit('updateParticipants', participants);
     });
@@ -95,7 +98,7 @@ io.on('connection', (socket) => {
           function sendInstruction(index) {
             if (index < gameInstructions.length) {
               io.emit('gameInstructions', gameInstructions[index]);
-              setTimeout(() => sendInstruction(index + 1), 2000);
+              setTimeout(() => sendInstruction(index + 1), 500); //2000
             } else {
               // 모든 지침을 전송한 후에 마지막으로 빈 문자열을 보냄
               io.emit('gameInstructions', '');
@@ -106,22 +109,18 @@ io.on('connection', (socket) => {
                   gameStarted = false;
                   gameEnded = true; // 게임 종료 상태 true
                 }
-              }, 30000); // 120초 후에 게임 종료
+              }, 180000); // 120초 후에 게임 종료
             }
           }
           sendInstruction(0); // 시작    
     });
-    
-        // 게임 종료
-      //   socket.on('endGame', () => {
-      //     if (!gameEnded) { // 게임이 아직 종료되지 않은 경우에만 종료
-      //         io.emit('gameEnd');
-      //         console.log('게임이 종료되었습니다.');
-      //         gameStarted = true;
-      //         gameEnded = true; // 게임 종료 상태를 true로 설정
-      //     }
-      // });
- 
+
+    // 랭크 업데이트
+  // socket.on('updateRanks', () => {
+  //   const sortedParticipants = participants.sort((a, b) => b.bubbleCount - a.bubbleCount);
+  //   io.emit('rankUpdate', sortedParticipants);
+  // });
+
 });
 
 // 정적 파일 serve

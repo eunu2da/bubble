@@ -213,7 +213,7 @@ export default {
     },
     startTimer() {
       //this.remainingTime = 60;  // 게임 시간 60초로 설정
-      this.remainingTime = 30;
+      this.remainingTime = 180;
       this.gameEndSent = false;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; 

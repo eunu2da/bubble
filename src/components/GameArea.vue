@@ -130,7 +130,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 3rem;
+  font-size: 2.5rem;
   position: absolute;
   transition: all 0.3s ease;
 }
