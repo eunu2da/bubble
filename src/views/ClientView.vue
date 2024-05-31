@@ -119,6 +119,7 @@ export default {
       this.showMyCharacter = false;
       this.showPlaceholder = true;
       this.showNumOfSurvivors = true;
+      this.gameStart = false;
       this.participants = [];
       this.survivorsCount = 0;
       this.currentRank = '';
@@ -126,6 +127,7 @@ export default {
       this.firstPlace = {};
       this.allParticipants = [];
       document.getElementById('main-screen').style.display = 'block';
+      socket.disconnect();
     },
 
     enterGame() {
@@ -328,6 +330,7 @@ export default {
       this.firstPlace = data.whoFianlWinner;
       this.allParticipants = data.resultRank;
     });
+
   },
 };
 </script>
