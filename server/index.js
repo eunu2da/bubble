@@ -109,26 +109,42 @@ io.on('connection', (socket) => {
                   gameStarted = false;
                   gameEnded = true; // 게임 종료 상태 true
                 }
-              }, 180000); // 120초 후에 게임 종료
+              }, 30000); // 120초 후에 게임 종료
             }
           }
           sendInstruction(0); // 시작    
     });
-    //새로운 랭킹 리스트
+  
     socket.on('updateRanks', (sortedParticipants) => {
       console.log('New Rank !!!!!!!!!!!!!!', sortedParticipants);
-      //1순위부터 마지막 순위까지 정렬된 배열 순회
+
+      let currentRank = 1;
       sortedParticipants.forEach((participant, index) => {
-        // 각 참가자에게 자신의 랭킹 정보를 개별적으로 전송
-        io.to(participant.id).emit('rankUpdate', { 
-          rank: index + 1,
-          bCount: participant.bCount,
-          firstPlace: sortedParticipants[0]
-        });
+        if (index > 0 && sortedParticipants[index].bCount === sortedParticipants[index - 1].bCount) {
+          io.to(participant.id).emit('rankUpdate', { 
+            rank: currentRank,
+            bCount: participant.bCount,
+            firstPlace: sortedParticipants[0],
+            allParticipants: sortedParticipants
+          });
+        } else {
+          currentRank = index + 1;
+          io.to(participant.id).emit('rankUpdate', { 
+            rank: currentRank,
+            bCount: participant.bCount,
+            firstPlace: sortedParticipants[0],
+            allParticipants: sortedParticipants
+          });
+        }
       });
     });
 
-});
+
+    socket.on('gameResult', (resultInfoData) => {
+      console.log(`socket.emit('showRank', resultInfoData); ::: ` ,resultInfoData );
+        io.emit('showRank', resultInfoData);
+    })
+  });
 
 // 정적 파일 serve
 app.use(express.static(path.join(__dirname, '../dist')));

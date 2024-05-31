@@ -1,9 +1,19 @@
 <template>
-  <div v-if="visible" class="modal">
+  <div class="modal" >
     <div class="modal-content">
       <span class="close" @click="$emit('close')">&times;</span>
       <h2>우승자 발표 🎉</h2>
-      <p>{{ winner.emoji }} ({{ winner.id }})가 {{ winner.bCount }}개의 버블을 터트렸습니다!</p>
+      <div class="winner-announcement">
+        <p>{{ winner.emoji }} ({{ winner.id }})가 {{ winner.bCount }}개의 버블을 터트렸습니다!</p>
+      </div>
+      <div class="all-rankings">
+        <h3>전체 참가자 랭킹</h3>
+        <ul>
+          <li v-for="(participant, index) in sortedParticipants" :key="participant.id">
+            {{ index + 1 }}등: {{ participant.emoji }} ({{ participant.id }}) - {{ participant.bCount }}개
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -18,6 +28,18 @@ export default {
     winner: {
       type: Object,
       default: () => ({})
+    },
+    sortedParticipants: {
+      type: Array,
+      default: () => []
+    },
+    myRank: {
+      type: Number,
+      default: 0
+    },
+    myBubbleCount: {
+      type: Number,
+      default: 0
     }
   }
 };
@@ -63,4 +85,15 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
+
+.winner-announcement,
+.your-ranking,
+.all-rankings {
+margin-top: 20px;
+}
+
+.ranking-item {
+  margin: 5px 0;
+}
+
 </style>

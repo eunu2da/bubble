@@ -1,21 +1,29 @@
 <template>
   <div id="host-info" class="container">
     <div class="dashboard-section">
+      
+      <!-- 주최자가 start버튼을 클릭하기 이전 화면 -->
       <div v-if="isWaiting">      
         <h2 class="title">접속자🦰</h2>
-        <h3 class="participant-num">{{ survivorsCountText }}</h3>
+        <!-- 현재 대기중인 인원 -->
+        <h3 class="participant-num">{{ survivorsCountText }}</h3>   
         <div class="participant-list">
+          <!--현재 대기중인 인원이 없을때 보여줄 txt -->
           <div v-if="participantInfos.length == 0" class="noParticipant">
             <h2 class="noParti">접속중인 참가자가 없어요.🫨</h2>
           </div>
+          <!--현재 대기중인 인원의 이모지와 socket id -->
           <div v-for="info in participantInfos" :key="info.id" class="participant-info">
             {{ info.emoji }} {{ info.id }}
           </div>
         </div>
       </div>
+      <!-- 주최자가 start버튼을 클릭 하면 보여주는 화면 -->
       <div v-if="!isWaiting">      
         <h1 class="title">record🏆</h1>
         <div class="participant-list">
+          <!--participantInfos를 버블count순으로 sort한 배열 -->
+          <!--rankClass: 랭킹순으로 class 먹이기-->
           <div v-for="(info, index) in sortedParticipantInfos" :key="info.id" :class="['rank-info', rankClass(index)]">
             <div v-if="info.bCount">
              {{ index + 1 }}등: {{ info.emoji }} {{ info.id }} 가 {{ info.bCount }}개!
@@ -23,13 +31,15 @@
           </div>
         </div>
       </div>
+    
     </div>
+
+    <!--대기중 상태에선 startgame이었다가 게임 시작 이후 버튼 정보표시 변경-->
     <div v-if="isWaiting">
       <button class="start-game" @click="startGame">{{clickState}}</button> 
     </div>
     <div class="survivorCount" v-if="!isWaiting">남은 종료 시간 : {{remainingTime}}
     </div>
-   
     <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false" />
   </div>
 </template>
@@ -46,7 +56,7 @@ export default {
       isWaiting: true,
       timerInterval: null,
       remainingTime: 0,
-      howWinnerModal: false,
+      showWinnerModal: false,
       winner: null,
       clickState: 'start 🏃‍♀️',
     };
@@ -67,44 +77,40 @@ export default {
     },
 
     startTimer() {
-      this.remainingTime = 180;
+      this.remainingTime = 30;
       this.isWaiting = false;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; 
         if (this.remainingTime <= 0) {
           clearInterval(this.timerInterval);
-          socket.emit('endGame');
-          this.endGame();
         }
       }, 1000);
     },
-
-    endGame() {
-      socket.emit('endGame');
-      const winner = this.sortedParticipantInfos[0];
-      this.winner = winner;
-      this.showWinnerModal = true;
-    },
      
     updateBubbleCount(data) {
-      //현재 참가자 정보에서 해당 참가자를 찾음
       const currentUserIndex = this.participantInfos.findIndex((p) => p.id === data.id);
-      //조건이 참인경우(해당참가자가 있을때)
       if (currentUserIndex !== -1) {
-         //기존 참가자의 버블 카운트를 업데이트
         this.participantInfos[currentUserIndex].bCount = data.bCount;
       } else {
-        //해당참가자가 없는 경우 새로운 참가자 정보를 추가
         this.participantInfos.push({ id: data.id, emoji: data.emoji, bCount: data.bCount });
       }
-       // 버블 카운트에 따라 참가자들을 정렬
+
       const newSortedParticipants = [...this.participantInfos].sort((a, b) => b.bCount - a.bCount);
-      // 정렬된 참가자 목록이 기존 목록과 다른 경우에만(랭킹 업데이트가 될때 client에게 변경된 랭킹정보를 전송한다.)
-      if (JSON.stringify(newSortedParticipants) !== JSON.stringify(this.sortedParticipantInfos)) {
+      
+      let rankChanged = false;
+      for (let i = 0; i < newSortedParticipants.length; i++) {
+        if (i >= this.sortedParticipantInfos.length || newSortedParticipants[i].id !== this.sortedParticipantInfos[i].id) {
+          rankChanged = true;
+          break;
+        }
+      }
+
+      if (rankChanged) {
         this.participantInfos = newSortedParticipants;
-        this.requestRankUpdate(this.participantInfos); 
+        this.requestRankUpdate(this.participantInfos);
       }
     },
+
 
     requestRankUpdate(data) {
       socket.emit('updateRanks', data); //업데이트 된 랭킹 정보
@@ -151,6 +157,16 @@ export default {
     socket.on('bubbleBuster', (data) => {
       this.updateBubbleCount(data); //해당 참가자의 socket id, emoji, bubbleCount
     });
+
+    
+    socket.on('gameEnd', () => {
+      var resultGame = {
+        whoFianlWinner : this.sortedParticipantInfos[0], //우승자
+        resultRank : this.sortedParticipantInfos,
+      }; 
+      socket.emit('gameResult', resultGame);
+      });
+    
   },
 };
 </script>

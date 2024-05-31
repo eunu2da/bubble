@@ -59,9 +59,12 @@
         </div>
       </div>
     </div>
-    <WinnerModal :visible="showWinnerModal" :winner="winner" @close="showWinnerModal = false"/>
+    <WinnerModal v-if="gameEnd" 
+        :winner="firstPlace" 
+        :sortedParticipants="allParticipants"
+        @close="returnToMain"/> 
   </div>
-</template>
+  </template>
 <script>
 import MainScreen from '@/components/MainScreen.vue';
 import GameArea from '@/components/GameArea.vue';
@@ -102,13 +105,30 @@ export default {
       gameEndSent: false,
       currentRank: '',
       bubbleCount: '',
-      firstPlace: '',
+      firstPlace: {},
+      allParticipants: []
     };
   },
   methods: {
 
+    returnToMain() {
+      this.showWinnerModal = false;
+      this.gameEnd = false;
+      this.showGameArea = false;
+      this.showBackButton = false;
+      this.showMyCharacter = false;
+      this.showPlaceholder = true;
+      this.showNumOfSurvivors = true;
+      this.participants = [];
+      this.survivorsCount = 0;
+      this.currentRank = '';
+      this.bubbleCount = '';
+      this.firstPlace = {};
+      this.allParticipants = [];
+      document.getElementById('main-screen').style.display = 'block';
+    },
+
     enterGame() {
-      
       document.getElementById('main-screen').style.display='none';
       this.showGameArea = true;
       this.showBackButton = true;
@@ -194,7 +214,7 @@ export default {
       this.isRun = false;   
     },
     startMoving(direction) {
-  
+      
       this.move(direction);
       this.moveInterval = setInterval(() => {
         this.move(direction);
@@ -216,22 +236,17 @@ export default {
     },
     startTimer() {
       //this.remainingTime = 60;  // 게임 시간 60초로 설정
-      this.remainingTime = 180;
+      this.remainingTime = 30;
       this.gameEndSent = false;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; 
         if (this.remainingTime <= 0 && !this.gameEndSent) {
           clearInterval(this.timerInterval);
-         // socket.emit('endGame');
           this.gameEndSent = true; // 게임 종료 상태를 true로
         }
       }, 1000);
     },
-    handleGameEnd() {
-        this.gameEnd = true;
-        this.showWinnerModal = true; // 모달 표시
-    },
-    
+   
     //아이폰은 홈 화면 추가
     toggleFullscreen() {
     const elem = document.documentElement;
@@ -303,14 +318,16 @@ export default {
       this.currentRank = data.rank;
       this.bubbleCount = data.bCount;
       this.firstPlace = data.firstPlace;
+      this.allParticipants = data.allParticipants;
     });
 
-    socket.on('gameEnd', () => {
-      clearInterval(this.timerInterval);
-      this.handleGameEnd();
-    });
 
-  
+    socket.on('showRank',(data) => {
+      console.log('datadatadata show Rank', data);
+      this.gameEnd = true;
+      this.firstPlace = data.whoFianlWinner;
+      this.allParticipants = data.resultRank;
+    });
   },
 };
 </script>
@@ -412,7 +429,7 @@ body {
 }
 
 .game_progress_status {
-  width: 65%;
+  width: 60%;
   position: fixed;
   top: 10px;
   right: 150px;
