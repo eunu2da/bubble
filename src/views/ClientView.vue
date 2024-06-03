@@ -32,7 +32,7 @@
           <span style="margin-right: 60px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
           <span> {{ bubbleCountText }}</span>            
         </div>
-       <div class="fullscreen-buttons">
+       <div class="fullscreen-buttons" v-if="isAndroidDevice">
           <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
       </div>
       </div>
@@ -106,7 +106,8 @@ export default {
       currentRank: '',
       bubbleCount: '',
       firstPlace: {},
-      allParticipants: []
+      allParticipants: [],
+      isAndroidDevice: false
     };
   },
   methods: {
@@ -249,30 +250,42 @@ export default {
       }, 1000);
     },
    
-    //아이폰은 홈 화면 추가
-    toggleFullscreen() {
+  //아이폰은 홈 화면 추가
+  toggleFullscreen() {
     const elem = document.documentElement;
+    const toggleButton = document.getElementById('fullscreen-toggle');
+    
     if (!document.fullscreenElement) {
-      elem.requestFullscreen().then(() => {
-        document.getElementById('fullscreen-toggle').textContent = '전체 화면 끄기';
-      }).catch((err) => {
-        console.log(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-      });
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { // Safari
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { // IE11
+        elem.msRequestFullscreen();
+      }
+      toggleButton.textContent = '전체 화면 끄기';
     } else {
-      document.exitFullscreen().then(() => {
-        document.getElementById('fullscreen-toggle').textContent = '전체 화면 켜기';
-      }).catch((err) => {
-        console.log(`Error attempting to exit full-screen mode: ${err.message} (${err.name})`);
-      });
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) { // Safari
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { // IE11
+        document.msExitFullscreen();
+      }
+      toggleButton.textContent = '전체 화면 켜기';
     }
   },
 
   showSocketId() {
     alert(`나의 소켓 ID는 ${socket.id} 입니다 !`);
+  },  
+  isAndroid() {
+      return /Android/i.test(navigator.userAgent);
   }
 },
 
   mounted() {
+    this.isAndroidDevice = this.isAndroid();
 
     socket.on('currentclientCount', (clientCount) => {
       this.survivorsCount = clientCount;
