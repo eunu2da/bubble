@@ -28,8 +28,8 @@
          접속중인 인원 : {{ survivorsCount }} 명
         </div> 
         <div class="game_progress_status" v-if="gameStart">
-          <span style="margin-right: 60px;">my rank 🏆: {{currentRank}} </span>
-          <span style="margin-right: 60px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
+          <span style="margin-right: 35px;">my rank 🏆: {{currentRank}} </span>
+          <span style="margin-right: 40px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
           <span> {{ bubbleCountText }}</span>            
         </div>
        <div class="fullscreen-buttons" v-if="isAndroidDevice">
@@ -62,8 +62,8 @@
     <WinnerModal v-if="gameEnd" 
         :winner="firstPlace" 
         :sortedParticipants="allParticipants"
-        @close="returnToMain"/> 
-  </div>
+        @close="returnToMain"/>
+        </div>
   </template>
 <script>
 import MainScreen from '@/components/MainScreen.vue';
@@ -352,7 +352,6 @@ export default {
 body {
   user-select: none; 
   touch-action: manipulation; 
-  background-color: #e4e4ff;
 }
 
 #orientation-warning {
@@ -404,7 +403,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
 }
 
 .game_area_container {

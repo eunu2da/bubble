@@ -1,19 +1,29 @@
 <template>
-  <div id="game-area">
-    <div ref="gameArea"  
-      v-for="participant in participants"     
-      :key="participant.id"
-      class="participant"
-      :style="{ left: participant.x + 'px', top: participant.y + 'px' }"
-    >
-      {{ participant.emoji }}
+  <div id="app">
+    <div class="board">
+      <div class="joycon joycon-left">
+        <img src="@/assets/left.png" alt="Joy-Con Left" class="joycon-img">
+      </div>
+      <div id="game-area">
+        <div ref="gameArea"  
+          v-for="participant in participants"     
+          :key="participant.id"
+          class="participant"
+          :style="{ left: participant.x + 'px', top: participant.y + 'px' }"
+        >
+          {{ participant.emoji }}
+        </div>
+        <div  
+          v-for="bubble in bubbles"
+          :key="bubble.id"
+          class="bubble"
+          :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
+        ></div>
+      </div>
+      <div class="joycon joycon-right">
+        <img src="@/assets/right.png" alt="Joy-Con Right" class="joycon-img">
+      </div>
     </div>
-    <div  
-      v-for="bubble in bubbles"
-      :key="bubble.id"
-      class="bubble"
-      :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
-    ></div>
   </div>
 </template>
 
@@ -79,16 +89,33 @@ export default {
 </script>
 
 <style scoped>
-#game-area {
+
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
-  background-color: rgb(0 0 255 / 34%);
-  border: 4px solid rgba(0,0,255,.2);
-  border-radius: 1px;
-  padding: 0px;
-  width: 99vw;
-  height: 98vh;
   position: relative;
-  margin-bottom: 20px;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 100px;
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+}
+
+.board {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#game-area {
+  flex-grow: 1;
+
+  position: relative;
+  overflow: hidden;
 }
 
 .bubble {
@@ -120,11 +147,10 @@ export default {
     opacity: 0.5;
   }
   100% {
-    transform: translateY(-50px) scale(1.2); /* 50px 정도만 위로 올라가도록 설정 */
+    transform: translateY(-50px) scale(1.2);
     opacity: 0;
   }
 }
-
 
 .participant {
   justify-content: center;
@@ -134,4 +160,25 @@ export default {
   position: absolute;
   transition: all 0.3s ease;
 }
+
+.joycon {
+  display: flex; 
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.joycon-left {
+  margin-right: 0;
+}
+
+.joycon-right {
+  margin-left: 0;
+}
+
+.joycon-img {
+  width: 20vw;
+  height: 100vh;
+}
+
 </style>
