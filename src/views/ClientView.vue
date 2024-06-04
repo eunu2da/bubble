@@ -39,8 +39,10 @@
       </div>
       <div class="joystick" ref="joystick" v-if="showGameArea">
         <div class="joystick-base" ref="joystickBase">
-          <div class="joystick-stick" ref="joystickStick"></div>
+        <div class="joystick-stick" ref="joystickStick">
+          <span class="joystick-emoji">{{ myEmoji }}</span>
         </div>
+      </div>
       </div>
       <div id="orientation-warning">
         가로 모드로 돌리면 더 재밌게 게임을 즐기실 수 있습니다!
@@ -104,7 +106,7 @@ export default {
       joystickStartY: 0,
       joystickMoveX: 0,
       joystickMoveY: 0,
-      joystickMoveInterval: null
+      joystickMoveInterval: null,
     };
   },
   methods: {
@@ -137,18 +139,19 @@ export default {
       this.showNumOfSurvivors = false;
 
       this.$nextTick(() => {
-        if (this.$refs.gameArea) {
-          var gameAreaSize = this.$refs.gameArea.$el.getBoundingClientRect();
-          
-          this.gameAreaHeight = gameAreaSize.height;
-          this.gameAreaWidth = gameAreaSize.width;
+
+          var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
+          this.gameAreaHeight = gameAreaSize.height - 48;
+          console.log('서버에서 전달 받은 gameAreaHeight', this.gameAreaHeight);
+          this.gameAreaWidth = gameAreaSize.width - 48;
+          console.log('서버에서 전달 받은 gameAreaWidth', this.gameAreaWidth);
           var areaSize = {
             top: gameAreaSize.height,
             right: gameAreaSize.width
           };
           console.log('areaSize:', areaSize);
           socket.emit('newParticipant', { emoji: '', gameAreaSize: areaSize });
-        }
+        
         this.initJoystick();
       });
     },
@@ -189,16 +192,22 @@ export default {
       if (currentUser) {
         switch (direction) {
           case 'up':
-           currentUser.y -= this.isRun ? 20 : 10; //윗 방향키를 클릭 + run =>  20씩 증가
-            break;
+          currentUser.y -= this.isRun ? 5 : 2.5;
+          if (currentUser.y < 0) currentUser.y = 0; // 경계 체크
+            break; 
           case 'down':
-            currentUser.y += this.isRun ? 20 : 10;
+          currentUser.y += this.isRun ? 5 : 2.5;
+          console.log('나의 gameAreaHeight', this.gameAreaHeight);
+          if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight; // 경계 체크  
             break;
           case 'left':
-            currentUser.x -= this.isRun ? 20 : 10;
+          currentUser.x -= this.isRun ? 5 : 2.5;
+          if (currentUser.x < 0) currentUser.x = 0;
             break;
           case 'right':
-            currentUser.x += this.isRun ? 20 : 10;
+          currentUser.x += this.isRun ? 5 : 2.5;
+          console.log('나의 gameAreaWidth', this.gameAreaWidth);
+          if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth; // 경계 체크
             break;
         }
         
@@ -368,6 +377,7 @@ export default {
       if (participant) {
         participant.x = data.x;
         participant.y = data.y;
+        console.log(`${data.id}의 포지션 변경이 발생함 x : ${participant.x}/ y : ${participant.y} `);
         this.updateCurrentPosition();
       }
     });   
@@ -405,7 +415,7 @@ export default {
 </script>
 
 <style scoped>
-body {
+body, html {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -476,6 +486,7 @@ body {
 }
 
 .console-img {
+  overflow: hidden;
   position: absolute;
   width: 113%;
   height: 117%;
@@ -696,12 +707,19 @@ body {
 
 .joystick-stick {
   position: absolute;
-  width: 50%;
-  height: 50%;
+  width: 70%;
+  height: 70%;
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   top: 25%;
   left: 25%;
   transition: transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joystick-emoji {
+  font-size: 2.5rem;
 }
 </style>

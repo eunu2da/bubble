@@ -1,7 +1,6 @@
 <template>
   <div id="host-info" class="container">
     <div class="dashboard-section">
-      
       <!-- 주최자가 start버튼을 클릭하기 이전 화면 -->
       <div v-if="isWaiting">      
         <h2 class="title">접속자🦰</h2>
@@ -10,6 +9,7 @@
         <div class="participant-list">
           <!--현재 대기중인 인원이 없을때 보여줄 txt -->
           <div v-if="participantInfos.length == 0" class="noParticipant">
+            <img src="../assets/host/wait.png" alt="Cute Tropical Fish"  class="cute-fish no-participant-fish">
             <h2 class="noParti">접속중인 참가자가 없어요.🫨</h2>
           </div>
           <!--현재 대기중인 인원의 이모지와 socket id -->
@@ -170,14 +170,29 @@ export default {
   },
 };
 </script>
-
 <style scoped>
-
 #host-info {
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column; 
+  align-items: center;  
+  justify-content: center; 
+  background-color: #001f3f;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cute-fish {
+  width: 300px;   
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.no-participant-fish {
+  width: 150px;    
+  height: auto;
+  margin-bottom: 10px;  
 }
 
 body {
@@ -187,7 +202,8 @@ body {
 
 .participant-list {
   max-height: 50vh; 
-  overflow-y: auto; 
+  overflow-y: auto;
+  margin-top: 20px;
 }
 
 .container {
@@ -200,8 +216,11 @@ body {
 
 .dashboard-section {
   width: 100%;
-  background-color: rgb(93 0 255 / 78%);
-  height : 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  background-color: rgba(0, 31, 63, 0.85);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 .title {
@@ -221,7 +240,6 @@ body {
   }
 }
 
-
 .participant-info {
   font-size: 1.1rem;
   color: #ffffff;
@@ -231,7 +249,7 @@ body {
 
 .noParticipant {
   font-size: 1.5rem;
-  color: hsla(0,0%,100%,.38);
+  color: hsla(0, 0%, 100%, .38);
   text-align: center;
   margin: 10px 0;
 }
@@ -245,55 +263,65 @@ body {
 .first-place {
   font-size: 2rem;
   font-weight: bold;
-  color: #ff0000; /* 금색 */
+  color: #ff0000;
 }
 
 .second-place {
   font-size: 1.75rem;
   font-weight: bold;
-  color: #ff5100;  
+  color: #ff5100;
 }
 
 .third-place {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffbb00;  
+  color: #ffbb00;
 }
 
 .other-ranks {
   font-size: 1.25rem;
-  color: hsla(0,0%,100%,.8);
+  color: hsla(0, 0%, 100%, .8);
 }
 
 .survivorCount {
   font-size: 1.2rem;
   text-align: center;
   color: white;
-  background-color: rgba(0,0,255,.34);
+  background-color: rgba(0, 0, 255, .34);
   padding: 10px;
   border-radius: 10px;
   width: 100%;
-  font-weight : bold;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 .participant-num {
   color: white;
-  background-color: rgba(0,0,0,.18);
+  background-color: rgba(0, 0, 0, .18);
   padding: 10px;
   text-align: center;
+  border-radius: 5px;
+  margin-top: 20px;
 }
  
 .start-game {
   font-size: 1.5rem;
   color: white;
-  background-color: rgba(0,0,255,.2);
+  background-color: rgba(0, 0, 255, .2);
   padding: 10px;
-  border: none; 
-  width: 100vw; 
+  border: none;
+  width: 100vw;
+  max-width: 600px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.start-game:hover {
+  background-color: rgba(0, 0, 255, .4);
 }
 
 .noparti {
-  color : hsl(0deg 0% 100%/40%);
+  color: hsl(0deg 0% 100% / 40%);
 }
-
 </style>

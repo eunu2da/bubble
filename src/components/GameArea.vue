@@ -101,6 +101,7 @@ export default {
 }
 
 .console-img {
+  overflow: hidden;
   position: absolute;
   width: 100%;
   height: 100%;
