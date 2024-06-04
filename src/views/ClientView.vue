@@ -142,9 +142,9 @@ export default {
 
           var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
           this.gameAreaHeight = gameAreaSize.height - 48;
-          console.log('서버에서 전달 받은 gameAreaHeight', this.gameAreaHeight);
+          console.log('서버로 전달할 참가자의 gameArea Height..', this.gameAreaHeight);
           this.gameAreaWidth = gameAreaSize.width - 48;
-          console.log('서버에서 전달 받은 gameAreaWidth', this.gameAreaWidth);
+          console.log('서버로 전달할 참가자의 gameArea width..', this.gameAreaWidth);
           var areaSize = {
             top: gameAreaSize.height,
             right: gameAreaSize.width
