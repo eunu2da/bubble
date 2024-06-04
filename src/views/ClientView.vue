@@ -18,36 +18,28 @@
       </div>
       <div class="game_area_wrapper">
         <div class="game_area_container">
-          <GameArea v-if="showGameArea" :participants="participants" ref="gameArea"  @updateBubbleCount="updateBubbleCount"/>
-        <div class="run-controls" v-if="showGameArea">
-          <button @mousedown="runAction()" @mouseup="runStop()" @mouseleave="runStop()"
-                  @touchstart="runAction()" @touchend="runStop()" class="run-button">run!</button>
-        </div>
+          <img src="@/assets/console.png" alt="Console Background" class="console-img">
+          <GameArea v-if="showGameArea" :participants="participants" ref="gameArea" @updateBubbleCount="updateBubbleCount"/>
+          <div class="run-controls" v-if="showGameArea">
+            <button @mousedown="runAction()" @mouseup="runStop()" @mouseleave="runStop()"
+                    @touchstart="runAction()" @touchend="runStop()" class="run-button">run!</button>
+          </div>
         </div>
         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
-         접속중인 인원 : {{ survivorsCount }} 명
+          접속중인 인원 : {{ survivorsCount }} 명
         </div> 
         <div class="game_progress_status" v-if="gameStart">
           <span style="margin-right: 35px;">my rank 🏆: {{currentRank}} </span>
           <span style="margin-right: 40px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
           <span> {{ bubbleCountText }}</span>            
         </div>
-       <div class="fullscreen-buttons" v-if="isAndroidDevice">
+        <div class="fullscreen-buttons" v-if="isAndroidDevice">
           <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
+        </div> 
       </div>
-      </div>
-      <div class="direct-controls" v-if="showGameArea">
-        <div class="direction-buttons">
-          <button @mousedown="startMoving('up')" @mouseup="stopMoving('up')" @mouseleave="stopMoving('up')"
-                  @touchstart="startMoving('up')" @touchend="stopMoving('up')">↑</button>
-          <div>
-            <button @mousedown="startMoving('left')" @mouseup="stopMoving('left')" @mouseleave="stopMoving('left')"
-                    @touchstart="startMoving('left')" @touchend="stopMoving('left')" >←</button>
-            <button @mousedown="startMoving('down')" @mouseup="stopMoving('down')" @mouseleave="stopMoving('down')"
-                    @touchstart="startMoving('down')" @touchend="stopMoving('down')" >↓</button>
-            <button @mousedown="startMoving('right')" @mouseup="stopMoving('right')" @mouseleave="stopMoving('right')"
-                    @touchstart="startMoving('right')" @touchend="stopMoving('right')">→</button>
-          </div>
+      <div class="joystick" ref="joystick" v-if="showGameArea">
+        <div class="joystick-base" ref="joystickBase">
+          <div class="joystick-stick" ref="joystickStick"></div>
         </div>
       </div>
       <div id="orientation-warning">
@@ -63,8 +55,8 @@
         :winner="firstPlace" 
         :sortedParticipants="allParticipants"
         @close="returnToMain"/>
-        </div>
-  </template>
+  </div>
+</template>
 <script>
 import MainScreen from '@/components/MainScreen.vue';
 import GameArea from '@/components/GameArea.vue';
@@ -107,7 +99,12 @@ export default {
       bubbleCount: '',
       firstPlace: {},
       allParticipants: [],
-      isAndroidDevice: false
+      isAndroidDevice: false,
+      joystickStartX: 0,
+      joystickStartY: 0,
+      joystickMoveX: 0,
+      joystickMoveY: 0,
+      joystickMoveInterval: null
     };
   },
   methods: {
@@ -152,6 +149,7 @@ export default {
           console.log('areaSize:', areaSize);
           socket.emit('newParticipant', { emoji: '', gameAreaSize: areaSize });
         }
+        this.initJoystick();
       });
     },
     goBack() {
@@ -281,7 +279,65 @@ export default {
   },  
   isAndroid() {
       return /Android/i.test(navigator.userAgent);
-  }
+  },
+  
+  initJoystick() {
+      const joystickBase = this.$refs.joystickBase;
+      const joystickStick = this.$refs.joystickStick;
+
+      joystickStick.addEventListener('touchstart', this.startJoystick);
+      joystickStick.addEventListener('touchmove', this.moveJoystick);
+      joystickStick.addEventListener('touchend', this.endJoystick);
+    },
+    startJoystick(event) {
+      const touch = event.touches[0];
+      this.joystickStartX = touch.clientX;
+      this.joystickStartY = touch.clientY;
+      this.joystickMoveX = 0;
+      this.joystickMoveY = 0;
+      this.joystickMoveInterval = setInterval(this.updateMovement, 50);
+    },
+    moveJoystick(event) {
+      event.preventDefault(); // 터치 이동 중 스크롤 방지
+      const touch = event.touches[0];
+      const deltaX = touch.clientX - this.joystickStartX;
+      const deltaY = touch.clientY - this.joystickStartY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      const maxDistance = 50; // 조이스틱 최대 이동 거리
+
+      let moveX = deltaX;
+      let moveY = deltaY;
+
+      if (distance > maxDistance) {
+        const angle = Math.atan2(deltaY, deltaX);
+        moveX = Math.cos(angle) * maxDistance;
+        moveY = Math.sin(angle) * maxDistance;
+      }
+
+      this.joystickMoveX = moveX / maxDistance;
+      this.joystickMoveY = moveY / maxDistance;
+      this.$refs.joystickStick.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    },
+    endJoystick(event) {
+      event.preventDefault(); // 터치 종료 중 스크롤 방지
+      this.$refs.joystickStick.style.transform = 'translate(0, 0)';
+      clearInterval(this.joystickMoveInterval);
+      this.joystickMoveX = 0;
+      this.joystickMoveY = 0;
+    },
+    
+    updateMovement() {
+      const absX = Math.abs(this.joystickMoveX);
+      const absY = Math.abs(this.joystickMoveY);
+
+      if (absX > absY) {
+        if (this.joystickMoveX > 0.1) this.move('right');
+        else if (this.joystickMoveX < -0.1) this.move('left');
+      } else {
+        if (this.joystickMoveY > 0.1) this.move('down');
+        else if (this.joystickMoveY < -0.1) this.move('up');
+      }
+    }
 },
 
   mounted() {
@@ -301,7 +357,7 @@ export default {
         this.myEmoji = currentUser.emoji;
         this.showMyCharacter = true;
         console.log('Current User Emoji:', this.myEmoji);
-        
+        console.log('currentUser가 받은 위치는', currentUser.x, currentUser.y);
       } else {
         console.log('Current user not found in participants.');
       }
@@ -350,8 +406,12 @@ export default {
 
 <style scoped>
 body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
   user-select: none; 
-  touch-action: manipulation; 
+  touch-action: none;
 }
 
 #orientation-warning {
@@ -411,6 +471,14 @@ body {
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+  width: 140vw;
+  height: 121vh;
+}
+
+.console-img {
+  position: absolute;
+  width: 113%;
+  height: 117%;
 }
 
 .myEmojiBox {
@@ -435,7 +503,8 @@ body {
   top: 10px;
   right:150px;
   background-color: rgb(0 0 0 / 18%);
-  color: white;
+  color: #73ff00;
+  font-weight: bold;
   padding: 10px;
   border-radius: 10px;
   font-size: 1rem;
@@ -454,7 +523,6 @@ body {
   font-size: 1rem;
   z-index: 1000;
 }
-
 
 .currentPosition {
   margin-top: 6px;
@@ -552,7 +620,7 @@ body {
   opacity: 0.8;  
 }
 
- .fullscreen-buttons button {
+.fullscreen-buttons button {
   position: fixed;
   top: 10px;
   right: 10px;
@@ -609,4 +677,31 @@ body {
   transform: translateY(2px); 
 }
 
+
+.joystick {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 100px;
+  height: 100px;
+}
+
+.joystick-base {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+}
+
+.joystick-stick {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  top: 25%;
+  left: 25%;
+  transition: transform 0.1s;
+}
 </style>

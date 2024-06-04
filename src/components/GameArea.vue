@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <div class="board">
-      <div class="joycon joycon-left">
-        <img src="@/assets/left.png" alt="Joy-Con Left" class="joycon-img">
-      </div>
+      <img src="@/assets/console.png" alt="Console Background" class="console-img">
       <div id="game-area">
         <div ref="gameArea"  
           v-for="participant in participants"     
@@ -19,9 +17,6 @@
           class="bubble"
           :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
         ></div>
-      </div>
-      <div class="joycon joycon-right">
-        <img src="@/assets/right.png" alt="Joy-Con Right" class="joycon-img">
       </div>
     </div>
   </div>
@@ -87,9 +82,7 @@ export default {
   }
 };
 </script>
-
 <style scoped>
-
 #app {
   display: flex;
   justify-content: center;
@@ -98,23 +91,29 @@ export default {
   height: 100vh;
   overflow: hidden;
   position: relative;
-  border-top-right-radius: 80px;
-  border-bottom-right-radius: 100px;
-  border-top-left-radius: 80px;
-  border-bottom-left-radius: 80px;
 }
 
 .board {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
+  position: relative;
+  width: 90vw;
+  height: 90vh;
   overflow: hidden;
 }
 
-#game-area {
-  flex-grow: 1;
+.console-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
 
-  position: relative;
+#game-area {
+  position: absolute;
+  top: 1%;
+  left: 18%;
+  width: 64%;
+  height: 92%;
   overflow: hidden;
 }
 
@@ -160,25 +159,4 @@ export default {
   position: absolute;
   transition: all 0.3s ease;
 }
-
-.joycon {
-  display: flex; 
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-}
-
-.joycon-left {
-  margin-right: 0;
-}
-
-.joycon-right {
-  margin-left: 0;
-}
-
-.joycon-img {
-  width: 20vw;
-  height: 100vh;
-}
-
 </style>
