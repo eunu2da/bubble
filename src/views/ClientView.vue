@@ -2,6 +2,7 @@
   <div>
     <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
     <div class="container" v-if="!gameEnd">
+    
       <div class="layout_container">
         <div id="back-button" v-if="showBackButton">
           <div class="back-button">
@@ -26,7 +27,7 @@
           </div>
         </div>
         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
-          접속중인 인원 : {{ survivorsCount }} 명
+          접속중인 인원  {{ survivorsCount }} 명
         </div> 
         <div class="game_progress_status" v-if="gameStart">
           <span style="margin-right: 35px;">my rank 🏆: {{currentRank}} </span>
@@ -152,7 +153,9 @@ export default {
           console.log('areaSize:', areaSize);
           socket.emit('newParticipant', { emoji: '', gameAreaSize: areaSize });
         
-        this.initJoystick();
+          if (this.$refs.joystick) {
+            this.initJoystick();
+          }
       });
     },
     goBack() {
@@ -192,20 +195,20 @@ export default {
       if (currentUser) {
         switch (direction) {
           case 'up':
-          currentUser.y -= this.isRun ? 5 : 2.5;
+          currentUser.y -= this.isRun ? 10 : 5;
           if (currentUser.y < 0) currentUser.y = 0; // 경계 체크
             break; 
           case 'down':
-          currentUser.y += this.isRun ? 5 : 2.5;
+          currentUser.y += this.isRun ? 10 : 5;
           console.log('나의 gameAreaHeight', this.gameAreaHeight);
           if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight; // 경계 체크  
             break;
           case 'left':
-          currentUser.x -= this.isRun ? 5 : 2.5;
+          currentUser.x -= this.isRun ? 10 : 5;
           if (currentUser.x < 0) currentUser.x = 0;
             break;
           case 'right':
-          currentUser.x += this.isRun ? 5 : 2.5;
+          currentUser.x += this.isRun ? 10 : 5;
           console.log('나의 gameAreaWidth', this.gameAreaWidth);
           if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth; // 경계 체크
             break;
@@ -333,6 +336,7 @@ export default {
       clearInterval(this.joystickMoveInterval);
       this.joystickMoveX = 0;
       this.joystickMoveY = 0;
+      this.triggerHapticFeedback();
     },
     
     updateMovement() {
@@ -346,9 +350,24 @@ export default {
         if (this.joystickMoveY > 0.1) this.move('down');
         else if (this.joystickMoveY < -0.1) this.move('up');
       }
+    },
+    triggerHapticFeedback() {
+      console.log('Vibration Triggered');
+      if (navigator.vibrate) {
+        navigator.vibrate(50); 
+      } else {
+        //아이폰
+        this.addVisualFeedback();
     }
-},
-
+    },
+    addVisualFeedback() {
+      const joystickStick = this.$refs.joystickStick;
+      joystickStick.classList.add('shake');
+      setTimeout(() => {
+        joystickStick.classList.remove('shake');
+      }, 200);
+    },
+  },
   mounted() {
     this.isAndroidDevice = this.isAndroid();
 
@@ -409,7 +428,6 @@ export default {
       this.firstPlace = data.whoFianlWinner;
       this.allParticipants = data.resultRank;
     });
-
   },
 };
 </script>
@@ -488,13 +506,14 @@ body, html {
 .console-img {
   overflow: hidden;
   position: absolute;
-  width: 113%;
+  width: 114%;
   height: 117%;
 }
 
 .myEmojiBox {
-  width: 70px;
+  width: 100px;
   height: 70px;
+  margin: 10px;
   border: 2px solid rgb(255 255 255 / 50%);
   border-radius: 20px;
   text-align: center;
@@ -695,21 +714,28 @@ body, html {
   left: 20px;
   width: 100px;
   height: 100px;
+  background: radial-gradient(circle at center, #4a90e2, #003366);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .joystick-base {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background: radial-gradient(circle at center, #333, #111);
   border-radius: 50%;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 40px;
 }
 
 .joystick-stick {
   position: absolute;
-  width: 70%;
-  height: 70%;
-  background-color: rgba(255, 255, 255, 0.6);
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle at center, #ccc, #999);
   border-radius: 50%;
   top: 25%;
   left: 25%;
@@ -717,9 +743,27 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .joystick-emoji {
   font-size: 2.5rem;
 }
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(4px, 0); }
+  50% { transform: translate(0, 0); }
+  75% { transform: translate(-4px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.joystick-stick.shake {
+  animation: shake 0.2s linear;
+}
+
+
+
+
+ 
 </style>

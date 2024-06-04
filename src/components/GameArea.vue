@@ -1,6 +1,13 @@
 <template>
   <div id="app">
-    <div class="board">
+  
+      <div class="board">
+        <img class="music-area" src = "../assets/client/sound_on.png" v-if="isPlaying"  @click="toggleMusic">
+    <img class="music-area" src = "../assets/client/sound_off.png" v-if="!isPlaying"  @click="toggleMusic">
+        <audio ref="backgroundMusic" loop>
+        <source src="../assets/music/console.mp4" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
       <img src="@/assets/console.png" alt="Console Background" class="console-img">
       <div id="game-area">
         <div ref="gameArea"  
@@ -33,7 +40,8 @@ export default {
   data() {
     return {
       bubbles: [],
-      bubbleCount: 0
+      bubbleCount: 0,
+      isPlaying: false,
     };
   },
   mounted() {
@@ -47,6 +55,23 @@ export default {
   },
 
   methods: {
+    
+    toggleMusic() {
+
+      const audio = this.$refs.backgroundMusic;
+      console.log('audioaudio', audio);
+      if (this.isPlaying) {
+          console.log('재생중 ? this.isPlaying?', this.isPlaying);
+          audio.pause();
+      } else {
+          // 사용자의 인터랙션 이후에 오디오를 재생
+          audio.play().catch(error => {
+              console.error('재생 오류:', error);
+          });
+      }
+      this.isPlaying = !this.isPlaying;
+    },
+
     startBubbleGeneration() {
       setInterval(() => {
         if (this.bubbles.length >= 20) {
@@ -160,4 +185,20 @@ export default {
   position: absolute;
   transition: all 0.3s ease;
 }
+
+.music-controls {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  cursor: pointer;
+
+}
+
+.music-area{
+  position: fixed;
+  top: 60px;
+  right: 50px;
+  width: 70px;
+}
+
 </style>
