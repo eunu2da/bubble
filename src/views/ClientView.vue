@@ -409,11 +409,7 @@ export default {
       this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
       
       if (currentUser.isHost) {
-        this.gameInstructions = `${currentUser.id}${currentUser.emoji}님이 방장이 되었어요👑`;
         this.host = true;
-        setTimeout(() => {
-          this.gameInstructions = '';
-        }, 3000);  // 3초 후에 gameInstructions를 빈 문자열로 설정
       }
         console.log('Current User role:', this.isHost);
         console.log('Current User Emoji:', this.myEmoji);
@@ -779,13 +775,13 @@ body, html {
   right: 14px;
   position: fixed;
   background-color: rgba(0,0,255,.7);
-  width: 100px;
+  width: 90px;
   height: 70px;
   transition: background-color 0.3s ease;
   border: 3px solid hsl(187.24deg 100% 69.39% / 80%);
   border-radius: 28px;
   text-align: center;
-  bottom: 170px;
+  bottom: 150px;
   color: white;
   font-size: 2em;
 }

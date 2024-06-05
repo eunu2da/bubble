@@ -113,7 +113,7 @@ export default {
 
 
     requestRankUpdate(data) {
-      console.log('여기는 116줄 .. 통과' , data);
+      
       socket.emit('updateRanks', data); //업데이트 된 랭킹 정보
     },
 
@@ -155,7 +155,7 @@ export default {
      }
     });
 
-    socket.on('sendBubbleBuster', (data) => {
+    socket.on('bubbleBuster', (data) => {
       console.log('업데이트 된 버블 카운ㅌ~!', data);
       this.updateBubbleCount(data); //해당 참가자의 socket id, emoji, bubbleCount
     });

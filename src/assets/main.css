@@ -19,7 +19,7 @@ body, html {
 }
 
 img {
-    pointer-events: none; /* 이미지 복사 방지 drag비활성화 */
+    pointer-events: none; /* 이미지 복사 방지 drag */
     -webkit-user-drag: none; /* Safari, Chrome */
     -khtml-user-drag: none; /* Safari, Chrome */
     -moz-user-drag: none; /* Firefox */

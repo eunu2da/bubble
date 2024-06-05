@@ -8,6 +8,12 @@
         <source src="../assets/music/console.mp4" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
+      
+      <audio ref="bubbleSound" preload="auto">
+        <source src="../assets/music/bubble_pop.mp3" type="audio/mpeg">
+      </audio>
+
+
       <img src="@/assets/console.png" alt="Console Background" class="console-img">
       <div id="game-area">
         <div ref="gameArea"  
@@ -99,6 +105,9 @@ export default {
               this.bubbleCount++; // 터진 버블 카운트를 증가시킴
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
               console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
+              this.$refs.bubbleSound.play().catch(error => {
+              console.error('오디오 재생 오류:', error);
+            });
             }
           });
         });
@@ -187,6 +196,7 @@ export default {
 }
 
 .music-controls {
+  pointer-events: auto; 
   width: 50px;
   height: 50px;
   background-size: cover;
@@ -195,6 +205,7 @@ export default {
 }
 
 .music-area{
+  pointer-events: auto; 
   position: fixed;
   top: 52px;
   right: 15px;
