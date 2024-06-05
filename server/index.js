@@ -18,8 +18,11 @@ let gameEnded = true;     // 게임 종료 상태
 let gameStarted = false;   // 게임 시작 상태
 
 const PORT = process.env.PORT || 4000;
+let hostId = null; // 방장 ID 저장
+let isHost = false;
 
 io.on('connection', (socket) => {
+
 
   socket.emit('currentclientCount', participants.length);
 
@@ -33,6 +36,12 @@ io.on('connection', (socket) => {
   
     socket.on('newParticipant', (data) => {
 
+      if (hostId == null) {
+        hostId = socket.id;
+        isHost = true;
+     }else {
+      isHost = false; 
+     }
         data.emoji = emojis[currentEmojiIndex];
         currentEmojiIndex = (currentEmojiIndex + 1) % emojis.length;
 
@@ -42,6 +51,7 @@ io.on('connection', (socket) => {
             x: Math.random() * data.gameAreaSize.right,
             y: Math.random() * data.gameAreaSize.top,
             bubbleCount : 0,
+            isHost : isHost,
         };
 
         participants.push(newParticipant);
@@ -50,21 +60,56 @@ io.on('connection', (socket) => {
         console.log('======================================================');
         console.log('접속 참가자 명단 :', participants);
         io.emit('updateParticipants', participants);
+        console.log('모두에게 participants 정보를 전달', participants);
     });
 
     socket.on('updateParticipantPosition', (updatedParticipant) => {
+      console.log('전달받은 위치', updatedParticipant);
+
         const participant = participants.find(p => p.id === updatedParticipant.id);
         if (participant) {
             participant.x = updatedParticipant.x;
             participant.y = updatedParticipant.y;
+            console.log('다시 모두에게 전달', participant);
             io.emit('positionUpdate', participant);
         }
     });
     
     socket.on('bubbleBuster', (data) => {
-     io.emit('bubbleBuster', data);  
-    });
+      console.log('전달받은data ::', data);
+      
+      const currentUserIndex = participants.findIndex((p) => p.id === data.id);
+      if (currentUserIndex !== -1) {
+        participants[currentUserIndex].bCount = data.bCount;
+      } else {
+        participants.push({ id: data.id, emoji: data.emoji, bCount: data.bCount });
+      }
 
+      const newSortedParticipants = [...participants].sort((a, b) => b.bCount - a.bCount);
+      
+      console.log('버블갯수로 sort된 참가자들 !!!!!!',newSortedParticipants);
+      
+      let currentRank = 1;
+
+      newSortedParticipants.forEach((participant, index) => {
+        if (index > 0 && newSortedParticipants[index].bCount === newSortedParticipants[index - 1].bCount) {
+          io.to(participant.id).emit('rankUpdate', {
+            rank: currentRank,
+            bCount: participant.bCount,
+            firstPlace: newSortedParticipants[0],
+            allParticipants: newSortedParticipants
+          });
+        } else {
+          currentRank = index + 1;
+          io.to(participant.id).emit('rankUpdate', { 
+            rank: currentRank,
+            bCount: participant.bCount,
+            firstPlace: newSortedParticipants[0],
+            allParticipants: newSortedParticipants
+          });
+        }
+      });
+    });
 
     socket.on('goBack', () => {
         participants = participants.filter(p => p.id !== socket.id);
@@ -74,6 +119,10 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+      if (socket.id === hostId) {
+        hostId = null; // 방장이 나가면 방장 ID 초기화
+        isHost = false;
+      }
         participants = participants.filter(p => p.id !== socket.id);
         console.log(`참가자 ${socket.id} 와의 연결이 끊어졌습니다.`);
         console.log('현재 참가자는 ' + participants.length + '명입니다.');
@@ -114,31 +163,6 @@ io.on('connection', (socket) => {
           }
           sendInstruction(0); // 시작    
     });
-  
-    socket.on('updateRanks', (sortedParticipants) => {
-      console.log('New Rank !!!!!!!!!!!!!!', sortedParticipants);
-
-      let currentRank = 1;
-      sortedParticipants.forEach((participant, index) => {
-        if (index > 0 && sortedParticipants[index].bCount === sortedParticipants[index - 1].bCount) {
-          io.to(participant.id).emit('rankUpdate', { 
-            rank: currentRank,
-            bCount: participant.bCount,
-            firstPlace: sortedParticipants[0],
-            allParticipants: sortedParticipants
-          });
-        } else {
-          currentRank = index + 1;
-          io.to(participant.id).emit('rankUpdate', { 
-            rank: currentRank,
-            bCount: participant.bCount,
-            firstPlace: sortedParticipants[0],
-            allParticipants: sortedParticipants
-          });
-        }
-      });
-    });
-
 
     socket.on('gameResult', (resultInfoData) => {
       console.log(`socket.emit('showRank', resultInfoData); ::: ` ,resultInfoData );

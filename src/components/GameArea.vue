@@ -24,10 +24,6 @@
           class="bubble"
           :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
         ></div>
-          <!-- 방장(맨 처음 입장한 사람)일경우 표시 -->
-          <div class="host-controls">
-            <button class="start-game-button">start</button>
-          </div>
       </div>
     </div>
   </div>
@@ -210,29 +206,6 @@ export default {
   border-radius: 25px;
   text-align: center;
 }
-
-.host-controls {
-  position: fixed;
-  right: 5px;
-  top: 150px;
-  z-index: 1000;
-}
-
-.start-game-button {
-  font-size: 2rem;
-  color:#00ffe1;
-  background-color: rgb(0 0 0 / 80%);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 110px;
-  height: 80px;
-  border: 10px solid hsl(0deg 0% 0%);
-  border-radius: 20px;
-  text-align: center;
-}
-
-.start-game-button:hover {
-  background-color: rgba(0, 0, 255, .4);
-}
+ 
 
 </style>

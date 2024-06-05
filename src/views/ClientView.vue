@@ -12,11 +12,12 @@
           {{ currentPosition }}
           </div> 
           <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter" @click="showSocketId">
-            <h3 class="me">It's me</h3>
+            <h5 class="me">{{isHost}}</h5>
             <span class="myCharacter">{{ myEmoji }}</span>
           </div>
         </div>
       </div>
+     
       <div class="game_area_wrapper">
         <div class="game_area_container">
           <img src="@/assets/console.png" alt="Console Background" class="console-img">
@@ -30,14 +31,17 @@
           접속중인 인원  {{ survivorsCount }} 명
         </div> 
         <div class="game_progress_status" v-if="gameStart">
-          <span style="margin-right: 35px;">my rank 🏆: {{currentRank}} </span>
-          <span style="margin-right: 40px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
+          <span style="margin-right: 25px;">my rank 🏆: {{currentRank}} </span>
+          <span style="margin-right: 30px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
           <span> {{ bubbleCountText }}</span>            
         </div>
         <div class="fullscreen-buttons" v-if="isAndroidDevice">
           <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
         </div> 
       </div>
+      <div v-if="host" class="host-controls">
+            <button class="start-game-button" @click="startGame">Start</button>
+        </div> 
       <div class="joystick" ref="joystick" v-if="showGameArea">
         <div class="joystick-base" ref="joystickBase">
         <div class="joystick-stick" ref="joystickStick">
@@ -108,9 +112,19 @@ export default {
       joystickMoveX: 0,
       joystickMoveY: 0,
       joystickMoveInterval: null,
+      isHost: '',
+      host: false,
     };
   },
   methods: {
+    
+    startGame() {
+      if (confirm(`${this.survivorsCount}명으로 게임을 시작하시겠습니까?`)) {
+        socket.emit('startGame');
+      } else {
+        return;
+      }
+    },
 
     returnToMain() {
       this.showWinnerModal = false;
@@ -247,6 +261,7 @@ export default {
     },
     updateBubbleCount(count) {
       this.bubbleCountText = '터트린 🫧 갯수: ' + count;
+      console.log('서버에게 버블카운트 전달');
       socket.emit('bubbleBuster', {id : socket.id, emoji: this.myEmoji, bCount : count});
     },
     startTimer() {
@@ -377,17 +392,30 @@ export default {
 
     socket.on('currentclientCount', (clientCount) => {
       this.survivorsCount = clientCount;
+      console.log('접속인원 ' , this.survivorsCount);
     });
 
     socket.on('updateParticipants', (participants) => {
       console.log(`${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
       this.participants = participants;
       this.survivorsCount = participants.length;
+      console.log('전달받은 participants', participants);
+      
       this.updateCurrentPosition();
       const currentUser = participants.find(p => p.id === socket.id);
       if (currentUser) {
         this.myEmoji = currentUser.emoji;
-        this.showMyCharacter = true;
+      this.showMyCharacter = true;
+      this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
+      
+      if (currentUser.isHost) {
+        this.gameInstructions = `${currentUser.id}${currentUser.emoji}님이 방장이 되었어요👑`;
+        this.host = true;
+        setTimeout(() => {
+          this.gameInstructions = '';
+        }, 3000);  // 3초 후에 gameInstructions를 빈 문자열로 설정
+      }
+        console.log('Current User role:', this.isHost);
         console.log('Current User Emoji:', this.myEmoji);
         console.log('currentUser가 받은 위치는', currentUser.x, currentUser.y);
       } else {
@@ -432,6 +460,7 @@ export default {
       this.firstPlace = data.whoFianlWinner;
       this.allParticipants = data.resultRank;
     });
+    
   },
 };
 </script>
@@ -514,7 +543,7 @@ body, html {
 
 .myEmojiBox {
   width: 100px;
-  height: 70px;
+  height: 80px;
   border: 2px solid rgb(255 255 255 / 50%);
   border-radius: 20px;
   text-align: center;
@@ -522,7 +551,7 @@ body, html {
 
 .me {
   color: white;
-  margin: 0px;
+  margin: 4px;
 }
 
 .myCharacter {
@@ -738,5 +767,38 @@ body, html {
   background: radial-gradient(circle at center, #ffffff80, #fff);   /* 색상 변경 */
   transform: scale(0.95);
 }
+
+.host-controls {
+  bottom: 120px; /* run-controls 위에 배치하기 위해 */
+  right: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.start-game-button {
+  right: 14px;
+  position: fixed;
+  background-color: rgba(0,0,255,.7);
+  width: 100px;
+  height: 70px;
+  transition: background-color 0.3s ease;
+  border: 3px solid hsl(187.24deg 100% 69.39% / 80%);
+  border-radius: 28px;
+  text-align: center;
+  bottom: 170px;
+  color: white;
+  font-size: 2em;
+}
+
+.start-game-button:hover {
+  background-color: rgba(0, 0, 255, .4);
+}
+
+.run-controls {
+  position: fixed;
+  right: 30px;
+  bottom: 50px;
+}
+
  
 </style>
