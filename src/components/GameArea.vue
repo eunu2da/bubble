@@ -24,6 +24,10 @@
           class="bubble"
           :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
         ></div>
+          <!-- 방장(맨 처음 입장한 사람)일경우 표시 -->
+          <div class="host-controls">
+            <button class="start-game-button">start</button>
+          </div>
       </div>
     </div>
   </div>
@@ -136,16 +140,16 @@ export default {
 
 #game-area {
   position: absolute;
-  top: 1%;
-  left: 18%;
-  width: 64%;
-  height: 92%;
+  top: 0%;
+  left: 17%;
+  width: 67%;
+  height: 97%;
   overflow: hidden;
 }
 
 .bubble {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(0, 0, 255, 0.2));
   border-radius: 50%;
   position: absolute;
@@ -181,7 +185,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2rem;
   position: absolute;
   transition: all 0.3s ease;
 }
@@ -196,9 +200,39 @@ export default {
 
 .music-area{
   position: fixed;
-  top: 60px;
-  right: 50px;
-  width: 70px;
+  top: 52px;
+  right: 15px;
+  background-color : hsl(187.24deg 100% 69.39%/80%);
+  cursor: pointer;
+  height: 71px;
+  transition: background-color 0.3s ease;
+  border: 3px solid hsl(187.24deg 100% 69.39% / 80%);
+  border-radius: 25px;
+  text-align: center;
+}
+
+.host-controls {
+  position: fixed;
+  right: 5px;
+  top: 150px;
+  z-index: 1000;
+}
+
+.start-game-button {
+  font-size: 2rem;
+  color:#00ffe1;
+  background-color: rgb(0 0 0 / 80%);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 110px;
+  height: 80px;
+  border: 10px solid hsl(0deg 0% 0%);
+  border-radius: 20px;
+  text-align: center;
+}
+
+.start-game-button:hover {
+  background-color: rgba(0, 0, 255, .4);
 }
 
 </style>

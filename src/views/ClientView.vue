@@ -4,17 +4,17 @@
     <div class="container" v-if="!gameEnd">
     
       <div class="layout_container">
-        <div id="back-button" v-if="showBackButton">
+        <div id="back-button" v-if="showBackButton" @click="goBack">
           <div class="back-button">
-            <img class="back_button_img" src="https://media-public.canva.com/G9aC0/MAFZirG9aC0/1/t.png" draggable="false" alt="Go Back" @click="goBack">
-          </div>
-          <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter" @click="showSocketId">
-            <h3 class="me">It's me</h3>
-            <span class="myCharacter">{{ myEmoji }}</span>
+            <img class="back_button_img" src = "../assets/client/back_btn.png"  draggable="false" alt="Go Back">
           </div>
           <div id="currentPosition" class="currentPosition" v-if="showGameArea">
           {{ currentPosition }}
           </div> 
+          <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter" @click="showSocketId">
+            <h3 class="me">It's me</h3>
+            <span class="myCharacter">{{ myEmoji }}</span>
+          </div>
         </div>
       </div>
       <div class="game_area_wrapper">
@@ -23,7 +23,7 @@
           <GameArea v-if="showGameArea" :participants="participants" ref="gameArea" @updateBubbleCount="updateBubbleCount"/>
           <div class="run-controls" v-if="showGameArea">
             <button @mousedown="runAction()" @mouseup="runStop()" @mouseleave="runStop()"
-                    @touchstart="runAction()" @touchend="runStop()" class="run-button">run!</button>
+                    @touchstart="runAction()" @touchend="runStop()" ref="runButton" class="run-button">🏃‍♀️</button>
           </div>
         </div>
         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
@@ -195,20 +195,20 @@ export default {
       if (currentUser) {
         switch (direction) {
           case 'up':
-          currentUser.y -= this.isRun ? 10 : 5;
+          currentUser.y -= this.isRun ? 7 : 3;
           if (currentUser.y < 0) currentUser.y = 0; // 경계 체크
             break; 
           case 'down':
-          currentUser.y += this.isRun ? 10 : 5;
+          currentUser.y += this.isRun ? 7 : 3;
           console.log('나의 gameAreaHeight', this.gameAreaHeight);
           if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight; // 경계 체크  
             break;
           case 'left':
-          currentUser.x -= this.isRun ? 10 : 5;
+          currentUser.x -= this.isRun ? 7 : 3;
           if (currentUser.x < 0) currentUser.x = 0;
             break;
           case 'right':
-          currentUser.x += this.isRun ? 10 : 5;
+          currentUser.x += this.isRun ? 7 : 3;
           console.log('나의 gameAreaWidth', this.gameAreaWidth);
           if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth; // 경계 체크
             break;
@@ -222,9 +222,11 @@ export default {
 
     runAction(){
       this.isRun = true;
+      this.$refs.runButton.classList.add('active');
     },
     runStop(){
       this.isRun = false;   
+      this.$refs.runButton.classList.remove('active');
     },
     startMoving(direction) {
       
@@ -308,6 +310,7 @@ export default {
       this.joystickMoveX = 0;
       this.joystickMoveY = 0;
       this.joystickMoveInterval = setInterval(this.updateMovement, 50);
+      this.$refs.joystickBase.classList.add('active');
     },
     moveJoystick(event) {
       event.preventDefault(); // 터치 이동 중 스크롤 방지
@@ -337,6 +340,7 @@ export default {
       this.joystickMoveX = 0;
       this.joystickMoveY = 0;
       this.triggerHapticFeedback();
+      this.$refs.joystickBase.classList.remove('active');
     },
     
     updateMovement() {
@@ -459,17 +463,14 @@ body, html {
 }
 
 #back-button {
-  width: 50px;
+  width: 90px;
   height: 50px;
   position: fixed;
-  top: 10px;
-  left: 10px;
+  top: 20px;
+  left: 25px;
   z-index: 1000;
 }
-
-.back-button {
-  animation: floating 3s ease-in-out infinite;
-}
+ 
 
 @keyframes floating {
   0%, 100% {
@@ -485,6 +486,7 @@ body, html {
   height: 100%;
   margin-top: 0;
   margin-left: 0;
+  border-radius: 20px;
 }
 
 .game_area_wrapper {
@@ -513,7 +515,6 @@ body, html {
 .myEmojiBox {
   width: 100px;
   height: 70px;
-  margin: 10px;
   border: 2px solid rgb(255 255 255 / 50%);
   border-radius: 20px;
   text-align: center;
@@ -558,11 +559,11 @@ body, html {
   margin-top: 6px;
   background-color: rgb(0 0 0 / 14%);
   color: white;
-  width: 60px;
-  padding: 0px 10px;
+  width: 100px;
   border-radius: 5px;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   text-align: center;
+  font-weight: bold;
 }
 
 .direct-controls {
@@ -571,11 +572,7 @@ body, html {
   left: 20px;
 }
 
-.run-controls {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
+
 
 .direction-buttons {
   display: flex;
@@ -665,56 +662,31 @@ body, html {
 
 .run-button {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 50px; 
-  height: 50px;
-  font-size: 1.2rem; 
-  background-color: rgba(0,0,255,.34);  
+  right: 30px;
+  bottom: 50px;
+  width: 90px; 
+  height: 90px;
+  font-size: 2rem; 
+  background: radial-gradient(circle at center, rgb(0 0 255 / 0%), #111);
   color: white; 
   border: none; 
   border-radius: 50%; 
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 5px 5px  #fff;
   transition: all 0.3s ease;  
   outline: none;
   z-index: 1000;
   cursor: pointer;
-  position: relative; 
   -webkit-tap-highlight-color: transparent; 
 }
 
-.run-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: linear-gradient(145deg, hsl(0deg 0% 100% / 40%), rgb(255 255 244));
-  transition: all 0.3s ease;
-  z-index: 1;
-}
-
-.run-button:active {
-  background-color: rgba(255, 69, 0, 0.7); 
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
-  transform: translateY(2px);  
-}
-
-.run-button:active::before {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
-  transform: translateY(2px); 
-}
-
+ 
 
 .joystick {
   position: fixed;
-  bottom: 20px;
+  bottom: 30px;
   left: 20px;
   width: 100px;
   height: 100px;
-  background: radial-gradient(circle at center, #4a90e2, #003366);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -725,9 +697,9 @@ body, html {
   position: relative;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, #333, #111);
+  background: radial-gradient(circle at center, rgb(0 0 255 / 0%), #111);
   border-radius: 50%;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 5px #ffffff;
   margin-bottom: 40px;
 }
 
@@ -735,7 +707,7 @@ body, html {
   position: absolute;
   width: 50%;
   height: 50%;
-  background: radial-gradient(circle at center, #ccc, #999);
+  background: radial-gradient(circle at center, #fff0, #fff0);
   border-radius: 50%;
   top: 25%;
   left: 25%;
@@ -747,9 +719,9 @@ body, html {
 }
 
 .joystick-emoji {
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
-
+ 
 @keyframes shake {
   0% { transform: translate(0, 0); }
   25% { transform: translate(4px, 0); }
@@ -762,8 +734,9 @@ body, html {
   animation: shake 0.2s linear;
 }
 
-
-
-
+.joystick-base.active, .run-button.active {
+  background: radial-gradient(circle at center, #ffffff80, #fff);   /* 색상 변경 */
+  transform: scale(0.95);
+}
  
 </style>

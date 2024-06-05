@@ -18,7 +18,13 @@ body, html {
     background-color: black;
 }
 
-
+img {
+    pointer-events: none; /* 이미지 복사 방지 drag비활성화 */
+    -webkit-user-drag: none; /* Safari, Chrome */
+    -khtml-user-drag: none; /* Safari, Chrome */
+    -moz-user-drag: none; /* Firefox */
+    -o-user-drag: none; /* Opera */
+}
 
 /* 가로 모드 안내 메시지 */
 #orientation-warning {
