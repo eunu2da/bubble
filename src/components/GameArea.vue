@@ -10,7 +10,7 @@
       </audio>
       
       <audio ref="bubbleSound" preload="auto">
-        <source src="../assets/music/bubble_pop.mp3" type="audio/mpeg">
+        <source src="../assets/music/bubble_pop.mp4" type="audio/mpeg">
       </audio>
 
 
@@ -65,6 +65,7 @@ export default {
     toggleMusic() {
 
       const audio = this.$refs.backgroundMusic;
+      
       console.log('audioaudio', audio);
       if (this.isPlaying) {
           console.log('재생중 ? this.isPlaying?', this.isPlaying);
@@ -105,6 +106,7 @@ export default {
               this.bubbleCount++; // 터진 버블 카운트를 증가시킴
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
               console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
+              this.$refs.bubbleSound.volume = 1.0;
               this.$refs.bubbleSound.play().catch(error => {
               console.error('오디오 재생 오류:', error);
             });

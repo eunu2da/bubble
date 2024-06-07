@@ -174,14 +174,10 @@ module.exports = __webpack_require__("56d7");
 
 /***/ }),
 
-/***/ "3358":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "1b79":
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_69dd5cb2_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("6855");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_69dd5cb2_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_69dd5cb2_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
-
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -496,8 +492,8 @@ var MainScreen_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var MainScreen = (MainScreen_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c6feb002-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=template&id=69dd5cb2&scoped=true
-var GameAreavue_type_template_id_69dd5cb2_scoped_true_render = function render() {
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c6feb002-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=template&id=22209978&scoped=true
+var GameAreavue_type_template_id_22209978_scoped_true_render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c('div', {
@@ -539,7 +535,7 @@ var GameAreavue_type_template_id_69dd5cb2_scoped_true_render = function render()
     }
   }, [_c('source', {
     attrs: {
-      "src": __webpack_require__("b7c5"),
+      "src": __webpack_require__("7651"),
       "type": "audio/mpeg"
     }
   })]), _c('img', {
@@ -575,9 +571,9 @@ var GameAreavue_type_template_id_69dd5cb2_scoped_true_render = function render()
     });
   })], 2)])]);
 };
-var GameAreavue_type_template_id_69dd5cb2_scoped_true_staticRenderFns = [];
+var GameAreavue_type_template_id_22209978_scoped_true_staticRenderFns = [];
 
-// CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=template&id=69dd5cb2&scoped=true
+// CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=template&id=22209978&scoped=true
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=script&lang=js
 
@@ -646,6 +642,7 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
               this.bubbleCount++; // 터진 버블 카운트를 증가시킴
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
               console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
+              this.$refs.bubbleSound.volume = 1.0;
               this.$refs.bubbleSound.play().catch(error => {
                 console.error('오디오 재생 오류:', error);
               });
@@ -658,8 +655,8 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
 });
 // CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=script&lang=js
  /* harmony default export */ var components_GameAreavue_type_script_lang_js = (GameAreavue_type_script_lang_js); 
-// EXTERNAL MODULE: ./src/components/GameArea.vue?vue&type=style&index=0&id=69dd5cb2&prod&scoped=true&lang=css
-var GameAreavue_type_style_index_0_id_69dd5cb2_prod_scoped_true_lang_css = __webpack_require__("3358");
+// EXTERNAL MODULE: ./src/components/GameArea.vue?vue&type=style&index=0&id=22209978&prod&scoped=true&lang=css
+var GameAreavue_type_style_index_0_id_22209978_prod_scoped_true_lang_css = __webpack_require__("76ba");
 
 // CONCATENATED MODULE: ./src/components/GameArea.vue
 
@@ -672,11 +669,11 @@ var GameAreavue_type_style_index_0_id_69dd5cb2_prod_scoped_true_lang_css = __web
 
 var GameArea_component = Object(componentNormalizer["a" /* default */])(
   components_GameAreavue_type_script_lang_js,
-  GameAreavue_type_template_id_69dd5cb2_scoped_true_render,
-  GameAreavue_type_template_id_69dd5cb2_scoped_true_staticRenderFns,
+  GameAreavue_type_template_id_22209978_scoped_true_render,
+  GameAreavue_type_template_id_22209978_scoped_true_staticRenderFns,
   false,
   null,
-  "69dd5cb2",
+  "22209978",
   null
   
 )
@@ -1454,17 +1451,28 @@ module.exports = __webpack_require__.p + "img/back_btn.e820a96f.png";
 
 /***/ }),
 
-/***/ "6855":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "74dc":
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "img/sound_off.2b67bf50.png";
+
+/***/ }),
+
+/***/ "7651":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "media/bubble_pop.38d450f8.mp4";
+
+/***/ }),
+
+/***/ "76ba":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_22209978_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("1b79");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_22209978_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_22209978_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+
 
 /***/ }),
 
@@ -1501,13 +1509,6 @@ module.exports = __webpack_require__.p + "img/sound_off.2b67bf50.png";
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "img/sound_on.d9f9dc9d.png";
-
-/***/ }),
-
-/***/ "b7c5":
-/***/ (function(module, exports) {
-
-module.exports = "data:audio/mpeg;base64,ZXhwb3J0IGRlZmF1bHQgX193ZWJwYWNrX3B1YmxpY19wYXRoX18gKyAiYXNzZXRzL2J1YmJsZV9wb3AuZWVhNDlmNjIubXAzIjs="
 
 /***/ }),
 
@@ -1558,4 +1559,4 @@ module.exports = __webpack_require__.p + "img/console.c14c380a.png";
 /***/ })
 
 /******/ });
-//# sourceMappingURL=app.4be5eb29.js.map
+//# sourceMappingURL=app.e18d76db.js.map
