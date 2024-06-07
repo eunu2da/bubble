@@ -22,8 +22,7 @@ let hostId = null; // 방장 ID 저장
 let isHost = false;
 
 io.on('connection', (socket) => {
-
-
+  
   socket.emit('currentclientCount', participants.length);
 
   socket.on('checkGameStatus', () => {
@@ -153,7 +152,7 @@ io.on('connection', (socket) => {
               io.emit('gameInstructions', '');
               setTimeout(() => {
                 if(!gameEnded){
-                  io.emit('gameEnd');
+                  io.emit('showRank');
                   console.log('게임이 종료되었습니다.');
                   gameStarted = false;
                   gameEnded = true; // 게임 종료 상태 true

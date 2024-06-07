@@ -41,7 +41,7 @@
         </div> 
       </div>
       <div v-if="host" v-show="!gameStarted" class="host-controls">
-            <button class="start-game-button" @click="attemptStartGame">Start</button>
+            <button :class="['start-game-button', { animated: animateButton }]" @click="attemptStartGame">Start</button>
       </div> 
       <custom-modal v-if="showModal" :message="modalMessage" @confirm="startGame" @cancel="cancelStartGame" />
       <div class="joystick" ref="joystick" v-if="showGameArea">
@@ -120,7 +120,19 @@ export default {
       gameStarted: false,
       showModal: false,
       modalMessage: '',
+      animateButton: false,
     };
+  },
+  watch: {
+    
+    survivorsCount(newValue, oldValue) {
+    if (newValue > oldValue) {
+      this.animateButton = true;
+      setTimeout(() => {
+        this.animateButton = false;
+      }, 1000);
+    }
+  }
   },
   methods: {
 
@@ -129,12 +141,12 @@ export default {
       this.showModal = true;
     },
 
-        startGame() {
+    startGame() {
       this.showModal = false;
       this.gameStarted = true;
-      // 게임 시작 로직
-      socket.emit('startGame');
+      socket.emit('startGame'); //게임시작
     },
+    
     cancelStartGame() {
       this.showModal = false;
     },
@@ -155,12 +167,19 @@ export default {
       this.bubbleCount = '';
       this.firstPlace = {};
       this.allParticipants = [];
-      document.getElementById('main-screen').style.display = 'block';
-      socket.disconnect();
+      const mainScreen = document.getElementById('main-screen');
+      if (mainScreen) {
+        mainScreen.style.display = 'block';
+      }
+      if (socket) {
+       socket.disconnect();
+       socket = null; 
+      }
     },
-
     enterGame() {
+
       document.getElementById('main-screen').style.display='none';
+
       this.showGameArea = true;
       this.showBackButton = true;
       this.showMyCharacter = true;
@@ -460,12 +479,12 @@ export default {
       this.allParticipants = data.allParticipants;
     });
 
-
     socket.on('showRank',(data) => {
       console.log('datadatadata show Rank', data);
       this.gameEnd = true;
       this.firstPlace = data.whoFianlWinner;
       this.allParticipants = data.resultRank;
+      
     });
     
   },
@@ -776,13 +795,29 @@ body, html {
   transform: scale(0.95);
 }
 
+
 .host-controls {
-  bottom: 120px; /* run-controls 위에 배치하기 위해 */
+  bottom: 120px; 
   right: 30px;
   display: flex;
   justify-content: center;
 }
 
+@keyframes move-left-right {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25%, 75% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+.start-game-button.animated {
+  animation: move-left-right 1s ease-in-out 2;
+}
 .start-game-button {
   right: 14px;
   position: fixed;
