@@ -211,12 +211,9 @@ export default {
   position: fixed;
   top: 52px;
   right: 15px;
-  background-color : hsl(187.24deg 100% 69.39%/80%);
   cursor: pointer;
-  height: 71px;
+  height: 25px;
   transition: background-color 0.3s ease;
-  border: 3px solid hsl(187.24deg 100% 69.39% / 80%);
-  border-radius: 25px;
   text-align: center;
 }
  

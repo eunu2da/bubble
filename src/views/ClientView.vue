@@ -4,14 +4,15 @@
     <div class="container" v-if="!gameEnd">
     
       <div class="layout_container">
-        <div id="back-button" v-if="showBackButton" @click="goBack">
+        <div id="back-button">
+        <!-- <div id="back-button" v-if="showBackButton" @click="goBack"> -->
           <div class="back-button">
-            <img class="back_button_img" src = "../assets/client/back_btn.png"  draggable="false" alt="Go Back">
+            <!-- <img class="back_button_img" src = "../assets/client/back_btn.png"  draggable="false" alt="Go Back"> -->
           </div>
           <div id="currentPosition" class="currentPosition" v-if="showGameArea">
           {{ currentPosition }}
           </div> 
-          <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter" @click="showSocketId">
+          <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter">
             <h5 class="me">{{isHost}}</h5>
             <span class="myCharacter">{{ myEmoji }}</span>
           </div>
@@ -39,9 +40,10 @@
           <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
         </div> 
       </div>
-      <div v-if="host" class="host-controls">
-            <button class="start-game-button" @click="startGame">Start</button>
-        </div> 
+      <div v-if="host" v-show="!gameStarted" class="host-controls">
+            <button class="start-game-button" @click="attemptStartGame">Start</button>
+      </div> 
+      <custom-modal v-if="showModal" :message="modalMessage" @confirm="startGame" @cancel="cancelStartGame" />
       <div class="joystick" ref="joystick" v-if="showGameArea">
         <div class="joystick-base" ref="joystickBase">
         <div class="joystick-stick" ref="joystickStick">
@@ -68,7 +70,7 @@
 import MainScreen from '@/components/MainScreen.vue';
 import GameArea from '@/components/GameArea.vue';
 import WinnerModal from '@/components/WinnerModal.vue';
-
+import CustomModal from '@/components/CustomModal.vue';
 
 import io from 'socket.io-client';
 var socket = io();
@@ -77,7 +79,8 @@ export default {
   components: {
     MainScreen,
     GameArea,
-    WinnerModal
+    WinnerModal,
+    CustomModal
   },
   data() {
     return {
@@ -114,17 +117,28 @@ export default {
       joystickMoveInterval: null,
       isHost: '',
       host: false,
+      gameStarted: false,
+      showModal: false,
+      modalMessage: '',
     };
   },
   methods: {
-    
-    startGame() {
-      if (confirm(`${this.survivorsCount}명으로 게임을 시작하시겠습니까?`)) {
-        socket.emit('startGame');
-      } else {
-        return;
-      }
+
+    attemptStartGame (){
+      this.modalMessage = `${this.survivorsCount}명으로 게임을 시작하시겠습니까? (게임 시작 이후 종료가 불가능합니다.)`;
+      this.showModal = true;
     },
+
+        startGame() {
+      this.showModal = false;
+      this.gameStarted = true;
+      // 게임 시작 로직
+      socket.emit('startGame');
+    },
+    cancelStartGame() {
+      this.showModal = false;
+    },
+
 
     returnToMain() {
       this.showWinnerModal = false;
@@ -303,9 +317,6 @@ export default {
     }
   },
 
-  showSocketId() {
-    alert(`나의 소켓 ID는 ${socket.id} 입니다 !`);
-  },  
   isAndroid() {
       return /Android/i.test(navigator.userAgent);
   },
@@ -540,13 +551,14 @@ body, html {
 .myEmojiBox {
   width: 100px;
   height: 80px;
-  border: 2px solid rgb(255 255 255 / 50%);
+  border: 5px solid rgb(0 0 0 / 70%);
   border-radius: 20px;
   text-align: center;
+  background: rgba(0,0,0,.8);
 }
 
 .me {
-  color: white;
+  color: #73ff00;
   margin: 4px;
 }
 
@@ -583,7 +595,7 @@ body, html {
 .currentPosition {
   margin-top: 6px;
   background-color: rgb(0 0 0 / 14%);
-  color: white;
+  color: #73ff00;
   width: 100px;
   border-radius: 5px;
   font-size: 0.7rem;
@@ -774,15 +786,15 @@ body, html {
 .start-game-button {
   right: 14px;
   position: fixed;
-  background-color: rgba(0,0,255,.7);
-  width: 90px;
-  height: 70px;
+  background-color: #000000b0;
+  width: 110px;
+  height: 100px;
+  border: 5px solid rgba(0,0,0,.7000000000000001);
   transition: background-color 0.3s ease;
-  border: 3px solid hsl(187.24deg 100% 69.39% / 80%);
-  border-radius: 28px;
+  border-radius: 20px;
   text-align: center;
   bottom: 150px;
-  color: white;
+  color: #73ff00;
   font-size: 2em;
 }
 
