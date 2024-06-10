@@ -1,36 +1,42 @@
 <template>
   <div id="app">
-  
       <div class="board">
+        <!-- 배경 음악 토글 버튼 -->
         <img class="music-area" src = "../assets/client/sound_on.png" v-if="isPlaying"  @click="toggleMusic">
-    <img class="music-area" src = "../assets/client/sound_off.png" v-if="!isPlaying"  @click="toggleMusic">
+        <img class="music-area" src = "../assets/client/sound_off.png" v-if="!isPlaying"  @click="toggleMusic">
+        
+        <!-- 배경 음악 오디오 요소 -->
         <audio ref="backgroundMusic" loop>
-        <source src="../assets/music/console.mp4" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
-      
-      <audio ref="bubbleSound" preload="auto">
-        <source src="../assets/music/bubble_pop.mp4" type="audio/mpeg">
-      </audio>
-
-
-      <img src="@/assets/console.png" alt="Console Background" class="console-img">
-      <div id="game-area">
-        <div ref="gameArea"  
-          v-for="participant in participants"     
-          :key="participant.id"
-          class="participant"
-          :style="{ left: participant.x + 'px', top: participant.y + 'px' }"
-        >
-          {{ participant.emoji }}
+          <source src="../assets/music/console.mp4" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        
+        <!-- 버블 소리 오디오 요소 -->
+        <audio ref="bubbleSound" preload="auto">
+          <source src="../assets/music/bubble_pop.mp4" type="audio/mpeg">
+        </audio>
+        
+        <!-- 게임 배경 이미지 -->
+        <img src="@/assets/console.png" alt="Console Background" class="console-img">
+        
+        <!-- 게임 영역 -->
+        <div id="game-area">
+          <div ref="gameArea"  
+            v-for="participant in participants"     
+            :key="participant.id"
+            class="participant"
+            :style="{ left: participant.x + 'px', top: participant.y + 'px' }"
+          >
+            {{ participant.emoji }}
+          </div>
+        <!-- 버블 요소 -->
+          <div  
+            v-for="bubble in bubbles"
+            :key="bubble.id"
+            class="bubble"
+            :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
+          ></div>
         </div>
-        <div  
-          v-for="bubble in bubbles"
-          :key="bubble.id"
-          class="bubble"
-          :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
-        ></div>
-      </div>
     </div>
   </div>
 </template>
@@ -41,35 +47,30 @@ var socket = io();
 
 export default {
   props: {
-    participants: Array
+    participants: Array // 참가자 목록
   },
   data() {
     return {
-      bubbles: [],
+      bubbles: [],   // 생성된 버블을 담을 배열   
       bubbleCount: 0,
-      isPlaying: false,
+      isPlaying: false,    
     };
   },
   mounted() {
-    // 무한 버블 생성
+    // 게임 지침이 끝난 후 버블 생성 시작
     socket.on('gameInstructions', (data) => {
       if(data == '') {
         setTimeout(() => this.startBubbleGeneration(), 1000);
       }  
-   });
-   this.detectCollisions();
+    });
+   this.detectCollisions(); // 충돌 감지 시작
   },
-
   methods: {
-    
+    // 배경 음악 토글
     toggleMusic() {
-
       const audio = this.$refs.backgroundMusic;
-      
-      console.log('audioaudio', audio);
       if (this.isPlaying) {
-          console.log('재생중 ? this.isPlaying?', this.isPlaying);
-          audio.pause();
+        audio.pause();
       } else {
           // 사용자의 인터랙션 이후에 오디오를 재생
           audio.play().catch(error => {
@@ -78,7 +79,7 @@ export default {
       }
       this.isPlaying = !this.isPlaying;
     },
-
+    // 버블 생성
     startBubbleGeneration() {
       setInterval(() => {
         if (this.bubbles.length >= 20) {
@@ -93,6 +94,7 @@ export default {
         this.bubbles.push(bubble);
       }, 1000); // 버블 생성 간격
     },
+    // 충돌 감지
     detectCollisions() {
       setInterval(() => {
         this.bubbles.forEach((bubble, bubbleIndex) => {
@@ -102,7 +104,7 @@ export default {
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < 45) { // 버블과 참가자의 반지름을 더한 값보다 작으면 충돌
-              this.bubbles.splice(bubbleIndex, 1);
+              this.bubbles.splice(bubbleIndex, 1); // 버블 제거
               this.bubbleCount++; // 터진 버블 카운트를 증가시킴
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
               console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);

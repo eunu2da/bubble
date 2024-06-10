@@ -1,21 +1,21 @@
 <template>
   <div>
     <div>
-    <!-- 기존 템플릿 코드 유지 -->
-    <audio ref="waitingMusic" src="../assets/music/waiting.mp4" loop></audio>
-  </div>
-    <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
-    <div class="container" v-if="!gameEnd">
+      <!--참가자 대기실 -->
+      <audio ref="waitingMusic" src="../assets/music/waiting.mp4" loop></audio>
+    </div>
+      <!--메인 화면-->
+      <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
     
+      <div class="container" v-if="!gameEnd">
       <div class="layout_container">
         <div id="back-button">
-        <!-- <div id="back-button" v-if="showBackButton" @click="goBack"> -->
-          <div class="back-button">
-            <!-- <img class="back_button_img" src = "../assets/client/back_btn.png"  draggable="false" alt="Go Back"> -->
-          </div>
+           <!-- 현재 위치 표시 -->
+          <div class="back-button"></div>
           <div id="currentPosition" class="currentPosition" v-if="showGameArea">
           {{ currentPosition }}
           </div> 
+          <!--내 이모지 표시 -->
           <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter">
             <h5 class="me">{{isHost}}</h5>
             <span class="myCharacter">{{ myEmoji }}</span>
@@ -25,9 +25,12 @@
      
       <div class="game_area_wrapper">
         <div class="game_area_container">
+          <!-- 게임 배경 이미지 -->
           <img src="@/assets/console.png" alt="Console Background" class="console-img">
+          <!-- GameArea 컴포넌트 -->
           <GameArea v-if="showGameArea" :participants="participants" ref="gameArea" @updateBubbleCount="updateBubbleCount"/>
-            <div class="run-controls" v-if="showGameArea">
+          <!-- 달리기 버튼 -->  
+          <div class="run-controls" v-if="showGameArea">
               <div class="run-button-wrapper">
                 <button 
                   @mousedown="runAction" 
@@ -45,50 +48,68 @@
               </div>
             </div>  
           </div>
+        
+        <!-- 접속중인 인원 표시 -->
         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
           접속중인 인원  {{ survivorsCount }} 명
         </div> 
+        
+        <!-- 게임 진행 상태 표시 -->
         <div class="game_progress_status" v-if="gameStart">
           <span style="margin-right: 25px;">my rank 🏆: {{currentRank}} </span>
           <span style="margin-right: 30px;"> 남은 종료 시간 : {{remainingTime}}⏳️ </span>
           <span> {{ bubbleCountText }}</span>            
         </div>
+
+        <!-- 전체 화면 버튼(android에서만 표시)-->
         <div class="fullscreen-buttons" v-if="isAndroidDevice">
           <button id="fullscreen-toggle" @click="toggleFullscreen">전체 화면 켜기</button>
         </div> 
       </div>
+
+      <!-- 호스트 게임 시작 버튼 -->
       <div v-if="host" v-show="!gameStarted" class="host-controls">
             <button :class="['start-game-button', { animated: animateButton }]" @click="attemptStartGame">Start</button>
       </div> 
+
+      <!-- 방장이 start버튼 클릭시 뜨는 모달팝업 -->
       <custom-modal v-if="showModal" :message="modalMessage" @confirm="startGame" @cancel="cancelStartGame" />
+    
+      <!--조이스틱 -->
       <div class="joystick" ref="joystick" v-if="showGameArea">
         <div class="joystick-base" ref="joystickBase">
-        <div class="joystick-stick" ref="joystickStick">
-          <span class="joystick-emoji">{{ myEmoji }}</span>
+          <div class="joystick-stick" ref="joystickStick">
+            <span class="joystick-emoji">{{ myEmoji }}</span>
+          </div>
         </div>
       </div>
-      </div>
+
+      <!--세로 모드일때 -->
       <div id="orientation-warning">
         가로 모드로 돌리면 더 재밌게 게임을 즐기실 수 있습니다!
       </div>
+
+      <!-- 게임 설명 -->
       <div v-if="gameInstructions" class="game-instructions">
         <div class="game-instructions-content">
           <p>{{ gameInstructions }}</p>
         </div>
       </div>
     </div>
+    
+    <!--게임 종료 이후 뜨는 우승자 모달 -->
     <WinnerModal v-if="gameEnd" 
         :winner="firstPlace" 
         :sortedParticipants="allParticipants"
         @close="returnToMain"/>
   </div>
 </template>
+
 <script>
 import MainScreen from '@/components/MainScreen.vue';
 import GameArea from '@/components/GameArea.vue';
 import WinnerModal from '@/components/WinnerModal.vue';
 import CustomModal from '@/components/CustomModal.vue';
-
 import io from 'socket.io-client';
 var socket = io();
 
@@ -101,102 +122,88 @@ export default {
   },
   data() {
     return {
-      participants: [],
-      showBackButton: false,
-      showMyCharacter: false,
-      myEmoji: '',
-      showPlaceholder: false,
-      currentSurvivorsText: '',
-      showGameArea: false,
-      survivorsCount: 0,
-      bubbleCountText: '터트린 🫧 갯수 : 0',
-      currentPosition: '',
+      participants: [],        // 게임 내 참가자 목록
+      showMyCharacter: false,  // 내 캐릭터 표시 여부
+      myEmoji: '',             // 내 이모지
+      showGameArea: false,     // 게임 영역 표시 여부
+      survivorsCount: 0,       // 접속 중인 인원
+      bubbleCountText: '터트린 🫧 갯수 : 0',  
+      currentPosition: '',     // 현재 위치
       moveInterval: null,
-      gameInstructions: '',
-      gameStart: false,
+      gameInstructions: '',    // 게임 설명 text
+      gameStart: false,        // 게임 시작 여부 
       timerInterval: null, 
-      gameEnd: false,
-      showWinnerModal: false,
-      remainingTime: '',
-      isDescribing: false,
-      isRun: false,
-      direction: null,
+      gameEnd: false,          // 게임 종료 여부
+      remainingTime: '',       // 남은 종료 시간 표시
+      isRun: false,            // 달리기 여부
       gameEndSent: false,
-      currentRank: '',
-      bubbleCount: '',
-      firstPlace: {},
-      allParticipants: [],
-      isAndroidDevice: false,
-      joystickStartX: 0,
-      joystickStartY: 0,
-      joystickMoveX: 0,
-      joystickMoveY: 0,
+      currentRank: '',         // 현재 나의 랭크
+      firstPlace: {},          // 1등 참가자
+      allParticipants: [],     // 모든 참가자 목록
+      isAndroidDevice: false,  // os확인
+      joystickStartX: 0,       // 조이스틱 시작 X 좌표 
+      joystickStartY: 0,       // 조이스틱 시작 X 좌표 
+      joystickMoveX: 0,        // 조이스틱 이동 X 좌표
+      joystickMoveY: 0,        // 조이스틱 이동 Y 좌표
       joystickMoveInterval: null,
-      isHost: '',
-      host: false,
-      gameStarted: false,
-      showModal: false,
-      modalMessage: '',
-      animateButton: false,
-      runCooldown: 5,
-      runDuration: 3,
-      runProgress: 100,
-      runInterval: null,
-      fillInterval: null
+      isHost: '',              // 호스트 여부
+      host: false,             // 호스트 여부
+      gameStarted: false,      // 게임 시작 여부
+      showModal: false,        // 게임시작 확인 팝업
+      modalMessage: '',        // 게임시작 팝업 메세지
+      animateButton: false,    // 버튼 애니메이션
+      runProgress: 100,        // 달리기 진행도
+      runInterval: null,       // 달리기 인터벌
+      fillInterval: null       // 채우기 인터벌
     };
   },
   computed: {
+    // 달리기 진행도 오프셋 계산
     progressOffset() {
       const circumference = 2 * Math.PI * 45;
       return circumference * (1 - this.runProgress / 100);
     }
   },
   watch: {
+    // 접속자 수 변화 감지
     survivorsCount(newValue, oldValue) {
-    if (newValue > oldValue) {
-      this.animateButton = true;
-      setTimeout(() => {
-        this.animateButton = false;
-      }, 1000);
+      if (newValue > oldValue) {
+        this.animateButton = true;
+        setTimeout(() => {
+          this.animateButton = false;
+        }, 1000);
+      }
     }
-  }
   },
   methods: {
-
+    // 방장이 start버튼 클릭 시
     attemptStartGame (){
       this.modalMessage = `${this.survivorsCount}명으로 게임을 시작하시겠습니까? (게임 시작 이후 종료가 불가능합니다.)`;
-      this.showModal = true;
+      this.showModal = true; // start 확인 modal
     },
-
+    // 게임 시작 확인 팝업 버튼 확인 클릭시
     startGame() {
       this.showModal = false;
       this.gameStarted = true;
-      socket.emit('startGame'); //게임시작
+      socket.emit('startGame'); // 게임시작 전송
     },
-    
+    // 게임 시작 확인 팝업 취소 버튼 클릭시
     cancelStartGame() {
       this.showModal = false;
     },
-
-
+    // 게임 종료 이후 새로고침
     returnToMain() {
       window.location.reload();
     },
-
+    // 게임 입장
     enterGame() {
-
-      document.getElementById('main-screen').style.display='none';
-
+      document.getElementById('main-screen').style.display='none';  //main screen hide
       this.showGameArea = true;
-      this.showBackButton = true;
       this.showMyCharacter = true;
-      this.showPlaceholder = false;
-      this.showNumOfSurvivors = false;
-    
-      this.$refs.waitingMusic.play();
+      this.showNumOfSurvivors = false;    
+      this.$refs.waitingMusic.play(); //음악 play
 
       this.$nextTick(() => {
-
           var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
           this.gameAreaHeight = gameAreaSize.height - 48;
           this.gameAreaWidth = gameAreaSize.width - 48;
@@ -204,60 +211,33 @@ export default {
             top: gameAreaSize.height,
             right: gameAreaSize.width
           };
+          //서버에게 해당 참가자의 게임영역 전송
           socket.emit('newParticipant', { emoji: '', gameAreaSize: areaSize });
-        
           if (this.$refs.joystick) {
             this.initJoystick();
           }
       });
     },
+    // 해당 참가자의 이동이 일어났을때
+    move(deltaX, deltaY) {
+        let currentUser = this.participants.find(p => p.id === socket.id);
+        if (currentUser) {
+          currentUser.x += deltaX;
+          currentUser.y += deltaY;
 
-    goBack() {
-      switch (true) {
-        case this.isDescribing == true:
-          alert('지금은 게임 설명중이에요.');
-          break;
-        case this.remainingTime > 0:
-          if (confirm('현재 게임중이에요. 그래도 나가시겠습니까?')) {
-            socket.emit('goBack');
-            this.showGameArea = false;
-            this.showBackButton = false;
-            this.showMyCharacter = false;
-            this.showPlaceholder = true;
-            this.showNumOfSurvivors = true;
-            document.getElementById('main-screen').style.display = 'block';
-          }
-          break;
-        case this.remainingTime == 0:
-          if (confirm('뒤로 나가면 소켓연결이 끊어집니다. 그래도 나가시겠습니까?')) {
-            socket.emit('goBack');
-            this.showGameArea = false;
-            this.showBackButton = false;
-            this.showMyCharacter = false;
-            this.showPlaceholder = true;
-            this.showNumOfSurvivors = true;
-            document.getElementById('main-screen').style.display = 'block';
-          }
-          break;
-      }
-    },
-      move(deltaX, deltaY) {
-          let currentUser = this.participants.find(p => p.id === socket.id);
-          if (currentUser) {
-            currentUser.x += deltaX;
-            currentUser.y += deltaY;
-
-            // 경계 체크
-            if (currentUser.x < 0) currentUser.x = 0;
-            if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth;
-            if (currentUser.y < 0) currentUser.y = 0;
-            if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight;
-
-            socket.emit('updateParticipantPosition', currentUser);
-            this.updateCurrentPosition();
-          }
-        }, 
+          // 경계 체크
+          if (currentUser.x < 0) currentUser.x = 0;
+          if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth;
+          if (currentUser.y < 0) currentUser.y = 0;
+          if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight;
+          //업데이트 된 위치 서버로 전달  
+          socket.emit('updateParticipantPosition', currentUser);
+          this.updateCurrentPosition(); //해당 참가자의 위치 update
+        }
+    }, 
+    //해당 참가자가 달리기 버튼을 클릭 시
     runAction() {
+      //잔여 run이 있을때만
       if (this.runProgress > 0) {
         this.isRun = true;
         this.$refs.runButton.classList.add('active');
@@ -265,102 +245,90 @@ export default {
           if (this.runProgress > 0) {
             this.runProgress -= 3;  
           } else {
-            this.runStop();
+            this.runStop();  // 이동 중지
           }
         }, 30);
       }
     },
-
-  runStop() {
-    this.isRun = false;
-    this.$refs.runButton.classList.remove('active');
-    clearInterval(this.runInterval);
-  },
-
-  startFilling() {
-    this.fillInterval = setInterval(() => {
-      if (this.runProgress < 100 && !this.isRun) {
-        this.runProgress += 0.5;  
-      }
-    }, 100);
-  },
-
-  stopFilling() {
-    clearInterval(this.fillInterval);
-  },
-
-    startMoving(direction) {
-      
-      this.move(direction);
-      this.moveInterval = setInterval(() => {
-        this.move(direction);
+    // 이동 중지
+    runStop() {
+      this.isRun = false;
+      this.$refs.runButton.classList.remove('active');
+      clearInterval(this.runInterval);
+    },
+    // run 채우기
+    startFilling() {
+      this.fillInterval = setInterval(() => {
+        //현재 달리는 중이 아니고 잔여 process가 full fill이 아닐때만
+        if (this.runProgress < 100 && !this.isRun) {
+          this.runProgress += 0.5;  
+        }
       }, 100);
     },
-    stopMoving() {
-      clearInterval(this.moveInterval);
-    },
-     
+    // 해당 참가자의 위치 update 
     updateCurrentPosition() {
       const currentUser = this.participants.find(p => p.id === socket.id);
       if (currentUser) {
         this.currentPosition = `X: ${currentUser.x.toFixed(1)}, Y: ${currentUser.y.toFixed(1)}`;
       }
     },
+    // 해당 참가자의 bubble count 업데이트
     updateBubbleCount(count) {
       this.bubbleCountText = '터트린 🫧 갯수: ' + count;
+      // update된 버블 count를 서버에 전달
       socket.emit('bubbleBuster', {id : socket.id, emoji: this.myEmoji, bCount : count});
     },
+    // 게임 설명 뒤 타이머 시작 
     startTimer() {
       this.remainingTime = 60;
       this.gameEndSent = false;
       this.timerInterval = setInterval(() => {
-        this.remainingTime--; 
+        this.remainingTime--; //1초씩 차감
         if (this.remainingTime <= 0 && !this.gameEndSent) {
           clearInterval(this.timerInterval);
           this.gameEndSent = true; // 게임 종료 상태를 true로
         }
       }, 1000);
     },
-   
-  //아이폰은 홈 화면 추가
-  toggleFullscreen() {
-    const elem = document.documentElement;
-    const toggleButton = document.getElementById('fullscreen-toggle');
-    
-    if (!document.fullscreenElement) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) { // Safari
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { // IE11
-        elem.msRequestFullscreen();
+    // full screen (adroid) toggle
+    toggleFullscreen() {
+      const elem = document.documentElement;
+      const toggleButton = document.getElementById('fullscreen-toggle');
+      //full screen 일때
+      if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {     // IE11
+          elem.msRequestFullscreen();
+        }
+        toggleButton.textContent = '전체 화면 끄기';
+      //full screen이 아닐때
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { // Safari
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {     // IE11
+          document.msExitFullscreen();
+        }
+        toggleButton.textContent = '전체 화면 켜기';
       }
-      toggleButton.textContent = '전체 화면 끄기';
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) { // Safari
-        document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) { // IE11
-        document.msExitFullscreen();
-      }
-      toggleButton.textContent = '전체 화면 켜기';
-    }
-  },
-
-  isAndroid() {
-      return /Android/i.test(navigator.userAgent);
-  },
-  
-  initJoystick() {
-      const joystickBase = this.$refs.joystickBase;
-      const joystickStick = this.$refs.joystickStick;
-
-      joystickStick.addEventListener('touchstart', this.startJoystick);
-      joystickStick.addEventListener('touchmove', this.moveJoystick);
-      joystickStick.addEventListener('touchend', this.endJoystick);
     },
-
+    // 안드로이드 기기 여부 확인
+    isAndroid() {
+        return /Android/i.test(navigator.userAgent);
+    },
+    // 조이스틱 초기화
+    initJoystick() {
+        const joystickBase = this.$refs.joystickBase;
+        const joystickStick = this.$refs.joystickStick;
+        joystickStick.addEventListener('touchstart', this.startJoystick);
+        joystickStick.addEventListener('touchmove', this.moveJoystick);
+        joystickStick.addEventListener('touchend', this.endJoystick);
+      },
+    // 조이스틱 시작
     startJoystick(event) {
       const touch = event.touches[0];
       this.joystickStartX = touch.clientX;
@@ -370,6 +338,7 @@ export default {
       this.joystickMoveInterval = setInterval(this.updateMovement, 50);
       this.$refs.joystickBase.classList.add('active');
     },
+    // 조이스틱 이동
     moveJoystick(event) {
       event.preventDefault(); // 터치 이동 중 스크롤 방지
       const touch = event.touches[0];
@@ -391,7 +360,7 @@ export default {
       this.joystickMoveY = moveY / maxDistance;
       this.$refs.joystickStick.style.transform = `translate(${moveX}px, ${moveY}px)`;
     },
-
+    // 조이스틱 종료
     endJoystick(event) {
       event.preventDefault(); // 터치 종료 중 스크롤 방지
       this.$refs.joystickStick.style.transform = 'translate(0, 0)';
@@ -401,23 +370,24 @@ export default {
       this.triggerHapticFeedback();
       this.$refs.joystickBase.classList.remove('active');
     },
-    
+    //  이동 update
     updateMovement() {
       const moveDistance = this.isRun ? 8 : 4; // 이동 속도 조절
       const deltaX = this.joystickMoveX * moveDistance;
       const deltaY = this.joystickMoveY * moveDistance;
-
       this.move(deltaX, deltaY);
     },
-
+    // 조이스틱 종료 이후 진동
     triggerHapticFeedback() {
+      // adnroid
       if (navigator.vibrate) {
         navigator.vibrate(10); 
       } else {
-        //아이폰
+        // ios
         this.addVisualFeedback();
-    }
+      }
     },
+    // ios 진동
     addVisualFeedback() {
       const joystickStick = this.$refs.joystickStick;
       joystickStick.classList.add('shake');
@@ -427,69 +397,62 @@ export default {
     },
   },
   mounted() {
-    
-    this.isAndroidDevice = this.isAndroid();    
-    this.startFilling();
+    this.isAndroidDevice = this.isAndroid();    // 안드로이드 기기 여부 확인
+    this.startFilling();                        // run fill
 
+    // 서버로부터 현재 참가자들의 인원수를 전달 받는다.
     socket.on('currentclientCount', (clientCount) => {
       this.survivorsCount = clientCount;
     });
-
+    // 업데이트 된 참가자 정보
     socket.on('updateParticipants', (participants) => {
       console.log(`${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
       this.participants = participants;
       this.survivorsCount = participants.length;
       console.log('전달받은 participants', participants);
-      
       this.updateCurrentPosition();
       const currentUser = participants.find(p => p.id === socket.id);
       if (currentUser) {
-        this.myEmoji = currentUser.emoji;
-      this.showMyCharacter = true;
-      this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
-      
+        this.myEmoji = currentUser.emoji; 
+        this.showMyCharacter = true; 
+        this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
         if (currentUser.isHost) {
           this.host = true;
         }
       } 
     });
-
+    // 서버로부터 전달받은 참가자의 위치 정보 업데이트
     socket.on('positionUpdate', (data) => {
       const participant = this.participants.find(p => p.id === data.id);
       if (participant) {
         participant.x = data.x;
         participant.y = data.y;
-        console.log(`${data.id}의 포지션 변경이 발생함 x : ${participant.x}/ y : ${participant.y} `);
         this.updateCurrentPosition();
       }
     });   
-
+   // 방장의 start 신호 이후 게임 설명
    socket.on('gameInstructions', (data) => {
     console.log('게임 지침:', data);
-    this.gameInstructions = data; //게임 지침 설명 text
-    this.isDescribing = true;
-      if(data == '') {              //게임 지침이 끝나고 난뒤 발생하는 버블
+    this.gameInstructions = data;   // 게임 지침 설명 text
+    if(data == '') {               
         console.log('bubbleStart !');
-        this.isDescribing = false;  //설명 종료
-        this.gameStart = true;      //접속자 수 => 버블 갯수
-        this.runProgress = 100;
-        this.startTimer();
+        this.gameStart = true;      
+        this.runProgress = 100;     // run fill
+        this.startTimer();          // count 시작
       }
    });
-    
+   // 참가자들의 bubble count로 순위 업데이트
    socket.on('rankUpdate', (data) => {
       console.log('나의 현재 랭킹 정보:', data);
       this.currentRank = data.rank;
-      this.bubbleCount = data.bCount;
       this.firstPlace = data.firstPlace;
       this.allParticipants = data.allParticipants;
     });
-
+    // 게임 종료 신호
     socket.on('showRank',(data) => {
       this.gameEnd = true;
-      this.firstPlace = data.whoFianlWinner;
-      this.allParticipants = data.resultRank;
-      
+      this.firstPlace = data.whoFianlWinner; 
+      this.allParticipants = data.resultRank; // 전체 참가자의 게임 정보
     });
     
   },
