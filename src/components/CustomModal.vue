@@ -1,10 +1,11 @@
 <template>
     <div class="modal-overlay">
       <div class="modal">
+        <audio ref="buttonSound" src="../assets/music/effect.mp4" preload="auto"></audio>
         <p class="modal-message">{{ message }}</p>
         <div class="modal-buttons">
-          <button class="modal-button confirm" @click="$emit('confirm')">확인</button>
-          <button class="modal-button cancel" @click="$emit('cancel')">취소</button>
+          <button class="modal-button confirm" @click="handleAction('confirm')">확인</button>
+          <button class="modal-button cancel" @click="handleAction('cancel')">취소</button>
         </div>
       </div>
     </div>
@@ -12,7 +13,28 @@
   
   <script>
   export default {
-    props: ['message']
+    props: ['message'],
+    methods: {
+      playButtonSound() {
+        const audio = this.$refs.buttonSound;
+        if (audio) {
+          audio.currentTime = 0;  
+          audio.play().catch(error => {
+            console.error('Audio play error:', error);
+          });
+        }
+      },
+      handleAction(action) {
+        this.playButtonSound();
+        setTimeout(() => {
+          if (action === 'confirm') {
+            this.$emit('confirm');
+          } else if (action === 'cancel') {
+            this.$emit('cancel');
+          }
+        }, 1000);  
+      }
+    }
   };
   </script>
   

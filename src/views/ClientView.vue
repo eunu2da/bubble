@@ -3,6 +3,7 @@
     <div>
       <!--참가자 대기실 -->
       <audio ref="waitingMusic" src="../assets/music/waiting.mp4" loop></audio>
+      <audio ref="buttonSound" src="../assets/music/effect.mp4" preload="auto"></audio>
     </div>
       <!--메인 화면-->
       <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
@@ -176,10 +177,22 @@ export default {
     }
   },
   methods: {
-    // 방장이 start버튼 클릭 시
+    // 효과음 재생
+    playButtonSound() {
+      const audio = this.$refs.buttonSound;
+      if (audio) {
+        audio.currentTime = 0;  // 사운드를 처음부터 재생
+        audio.play().catch(error => {
+          console.error('Audio play error:', error);
+        });
+      }
+    },
     attemptStartGame (){
-      this.modalMessage = `${this.survivorsCount}명으로 게임을 시작하시겠습니까? (게임 시작 이후 종료가 불가능합니다.)`;
-      this.showModal = true; // start 확인 modal
+      this.playButtonSound();
+      setTimeout(() => {
+        this.modalMessage = `${this.survivorsCount}명으로 게임을 시작하시겠습니까? (게임 시작 이후 종료가 불가능합니다.)`;
+        this.showModal = true;
+      }, 1000);  
     },
     // 게임 시작 확인 팝업 버튼 확인 클릭시
     startGame() {
@@ -335,7 +348,7 @@ export default {
       this.joystickStartY = touch.clientY;
       this.joystickMoveX = 0;
       this.joystickMoveY = 0;
-      this.joystickMoveInterval = setInterval(this.updateMovement, 50);
+      this.joystickMoveInterval = setInterval(this.updateMovement, 30);
       this.$refs.joystickBase.classList.add('active');
     },
     // 조이스틱 이동
@@ -372,7 +385,7 @@ export default {
     },
     //  이동 update
     updateMovement() {
-      const moveDistance = this.isRun ? 8 : 4; // 이동 속도 조절
+      const moveDistance = this.isRun ? 10 : 4; // 이동 속도 조절
       const deltaX = this.joystickMoveX * moveDistance;
       const deltaY = this.joystickMoveY * moveDistance;
       this.move(deltaX, deltaY);
@@ -490,7 +503,7 @@ body, html {
   height: 50px;
   position: fixed;
   top: 20px;
-  left: 25px;
+  left: 15px;
   z-index: 1000;
 }
  
@@ -537,16 +550,17 @@ body, html {
 
 .myEmojiBox {
   width: 100px;
-  height: 80px;
-  border: 5px solid rgb(0 0 0 / 70%);
+  height: 130px;
+  border: 2px solid rgb(0 205 255 / 70%);
   border-radius: 20px;
   text-align: center;
   background: rgba(0,0,0,.8);
+  box-shadow: 0px 15px 34px #fff;
 }
 
 .me {
   color: #73ff00;
-  margin: 4px;
+  margin: 8px;
 }
 
 .myCharacter {
@@ -555,12 +569,12 @@ body, html {
 
 .survivorCount {
   position: fixed;
-  top: 10px;
+  top: 12px;
   right:150px;
   background-color: rgb(0 0 0 / 18%);
   color: #73ff00;
   font-weight: bold;
-  padding: 10px;
+  padding: 8px;
   border-radius: 10px;
   font-size: 1rem;
   z-index: 1000;
@@ -569,18 +583,18 @@ body, html {
 .game_progress_status {
   width: 60%;
   position: fixed;
-  top: 10px;
+  top: 12px;
   right: 150px;
   background-color: rgb(0 0 0 / 18%);
-  color: white;
-  padding: 10px;
+  color: #73ff00;
+  padding: 8px;
   border-radius: 10px;
   font-size: 1rem;
   z-index: 1000;
 }
 
 .currentPosition {
-  margin-top: 6px;
+  margin: 4px;
   background-color: rgb(0 0 0 / 14%);
   color: #73ff00;
   width: 100px;
@@ -677,7 +691,7 @@ body, html {
   right: 10px;
   background-color: rgb(0 0 0 / 18%);
   border: rgb(0 0 0 / 18%);
-  color: white;
+  color: #ffffff;
   padding: 10px;
   border-radius: 10px;
   font-size: 1rem;
@@ -690,7 +704,7 @@ body, html {
   bottom: 50px;
   width: 90px; 
   height: 90px;
-  font-size: 2rem; 
+  font-size: 2.5rem; 
   background: radial-gradient(circle at center, rgb(0 0 255 / 0%), #111);
   color: white; 
   border: none; 
@@ -787,18 +801,18 @@ body, html {
   animation: move-left-right 1s ease-in-out 2;
 }
 .start-game-button {
-  right: 18px;
+  right: 20px;
   position: fixed;
-  background-color: #73ff00f2;
-  width: 114px;
-  height: 60px;
-  border: 0px solid rgb(0 0 0 / 0%);
+  background-color: rgba(0,0,0,.8);
+  width: 100px;
+  height: 130px;
+  border: 2px solid rgba(0,205,255,.7000000000000001);
   transition: background-color 0.3s ease;
-  border-radius: 50px;
+  border-radius: 20px;
   text-align: center;
-  bottom: 167px;
-  color: #ffffff;
-  font-size: 1.5em;
+  bottom: 180px;
+  color: #73ff00;
+  box-shadow: 0 15px 34px #fff;
 }
 
 .start-game-button:hover {
@@ -825,7 +839,7 @@ body, html {
   border-radius: 50%;
   z-index: 1;
   border: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 5px 4px rgb(255 255 255);
   transition: background-color 0.3s;
 }
 

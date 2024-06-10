@@ -2,9 +2,9 @@
   <div id="app">
       <div class="board">
         <!-- 배경 음악 토글 버튼 -->
-        <img class="music-area" src = "../assets/client/sound_on.png" v-if="isPlaying"  @click="toggleMusic">
+        <!-- <img class="music-area" src = "../assets/client/sound_on.png" v-if="isPlaying"  @click="toggleMusic">
         <img class="music-area" src = "../assets/client/sound_off.png" v-if="!isPlaying"  @click="toggleMusic">
-        
+         -->
         <!-- 배경 음악 오디오 요소 -->
         <audio ref="backgroundMusic" loop>
           <source src="../assets/music/console.mp4" type="audio/mpeg">
@@ -160,12 +160,12 @@ export default {
 .bubble {
   width: 40px;
   height: 40px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(0, 0, 255, 0.2));
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(0, 0, 255, 0.3));
   border-radius: 50%;
   position: absolute;
-  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 15px rgba(0, 0, 255, 0.5);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(0, 0, 255, 0.7), 0 0 20px rgba(0, 0, 255, 0.5);
   animation: float 2s infinite ease-in-out, rise 3s infinite ease-in-out;
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 @keyframes float {
@@ -182,11 +182,11 @@ export default {
 
 @keyframes rise {
   0% {
-    transform: translateY(0) scale(0.8);
-    opacity: 0.5;
+    transform: translateY(0) scale(0.9);
+    opacity: 0.7;
   }
   100% {
-    transform: translateY(-50px) scale(1.2);
+    transform: translateY(-50px) scale(1.1);
     opacity: 0;
   }
 }

@@ -1,7 +1,8 @@
 <template>
   <div id="main-screen" ref="MainScreen">
     <h3 id="numOfsurvivors">{{ survivorsCount }}</h3>
-    <button @click="enterGame" :disabled="gameStarted" class="enter-button"> {{gameStateTxt}}</button>
+    <audio ref="buttonSound" src="../assets/music/effect.mp4" preload="auto"></audio>
+    <button @click="handleEnterGame" :disabled="gameStarted" class="enter-button"> {{gameStateTxt}}</button>
     <div id="orientation-warning">
       가로 모드로 돌리면 더 재밌게 게임을 즐기실 수 있습니다 !
     </div>
@@ -42,13 +43,22 @@ export default {
 
   },
   methods: {
-    enterGame() {
-
-      if(!this.gameStarted){
-        this.$emit('enter-game');
+    playButtonSound() {
+      const audio = this.$refs.buttonSound;
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play();
       }
-    }
-  },
+    },
+    handleEnterGame() {
+      this.playButtonSound(); // 버튼 클릭 시 사운드 재생
+      setTimeout(() => {
+        if (!this.gameStarted) {
+          this.$emit('enter-game');
+        }
+      }, 1000);  
+    },
+  }
 };
 </script>
 
