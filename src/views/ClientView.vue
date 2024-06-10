@@ -153,29 +153,9 @@ export default {
 
 
     returnToMain() {
-      this.showWinnerModal = false;
-      this.gameEnd = false;
-      this.showGameArea = false;
-      this.showBackButton = false;
-      this.showMyCharacter = false;
-      this.showPlaceholder = true;
-      this.showNumOfSurvivors = true;
-      this.gameStart = false;
-      this.participants = [];
-      this.survivorsCount = 0;
-      this.currentRank = '';
-      this.bubbleCount = '';
-      this.firstPlace = {};
-      this.allParticipants = [];
-      const mainScreen = document.getElementById('main-screen');
-      if (mainScreen) {
-        mainScreen.style.display = 'block';
-      }
-      if (socket) {
-       socket.disconnect();
-       socket = null; 
-      }
+      window.location.reload();
     },
+
     enterGame() {
 
       document.getElementById('main-screen').style.display='none';
@@ -205,6 +185,7 @@ export default {
           }
       });
     },
+
     goBack() {
   switch (true) {
     case this.isDescribing == true:
@@ -403,7 +384,7 @@ export default {
     triggerHapticFeedback() {
       console.log('Vibration Triggered');
       if (navigator.vibrate) {
-        navigator.vibrate(50); 
+        navigator.vibrate(10); 
       } else {
         //아이폰
         this.addVisualFeedback();
@@ -414,11 +395,16 @@ export default {
       joystickStick.classList.add('shake');
       setTimeout(() => {
         joystickStick.classList.remove('shake');
-      }, 200);
+      }, 100);
     },
   },
   mounted() {
+
     this.isAndroidDevice = this.isAndroid();
+
+    // if (!socket) {
+    //   this.setupSocketListeners();
+    // }
 
     socket.on('currentclientCount', (clientCount) => {
       this.survivorsCount = clientCount;

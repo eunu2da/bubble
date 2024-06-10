@@ -108,11 +108,11 @@ export default {
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
               console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
               if (this.$refs.bubbleSound) {
-              this.$refs.bubbleSound.volume = 1.0;
-              this.$refs.bubbleSound.play().catch(error => {
-                console.error('오디오 재생 오류:', error);
-              });
-            }
+                this.$refs.bubbleSound.volume = 1.0;
+                this.$refs.bubbleSound.play().catch(error => {
+                  console.error('오디오 재생 오류:', error);
+                });
+              }
             }
           });
         });

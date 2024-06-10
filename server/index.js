@@ -38,9 +38,9 @@ io.on('connection', (socket) => {
       if (hostId == null) {
         hostId = socket.id;
         isHost = true;
-     }else {
-      isHost = false; 
-     }
+      }else {
+        isHost = false; 
+      }
         data.emoji = emojis[currentEmojiIndex];
         currentEmojiIndex = (currentEmojiIndex + 1) % emojis.length;
 
