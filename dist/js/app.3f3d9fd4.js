@@ -192,14 +192,10 @@ module.exports = __webpack_require__("56d7");
 
 /***/ }),
 
-/***/ "5516":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "562b":
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_03583586_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("afc0");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_03583586_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_03583586_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
-
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -259,8 +255,8 @@ var component = Object(componentNormalizer["a" /* default */])(
 // EXTERNAL MODULE: ./node_modules/vue-router/dist/vue-router.esm.js
 var vue_router_esm = __webpack_require__("8c4f");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c6feb002-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/ClientView.vue?vue&type=template&id=bdc0bee0&scoped=true
-var ClientViewvue_type_template_id_bdc0bee0_scoped_true_render = function render() {
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c6feb002-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/views/ClientView.vue?vue&type=template&id=e8b46214&scoped=true
+var ClientViewvue_type_template_id_e8b46214_scoped_true_render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c('div', [_c('div', [_c('audio', {
@@ -421,9 +417,9 @@ var ClientViewvue_type_template_id_bdc0bee0_scoped_true_render = function render
     }
   }) : _vm._e()], 1);
 };
-var ClientViewvue_type_template_id_bdc0bee0_scoped_true_staticRenderFns = [];
+var ClientViewvue_type_template_id_e8b46214_scoped_true_staticRenderFns = [];
 
-// CONCATENATED MODULE: ./src/views/ClientView.vue?vue&type=template&id=bdc0bee0&scoped=true
+// CONCATENATED MODULE: ./src/views/ClientView.vue?vue&type=template&id=e8b46214&scoped=true
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c6feb002-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/MainScreen.vue?vue&type=template&id=7895b319&scoped=true
 var MainScreenvue_type_template_id_7895b319_scoped_true_render = function render() {
@@ -519,8 +515,8 @@ var MainScreen_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var MainScreen = (MainScreen_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c6feb002-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=template&id=03583586&scoped=true
-var GameAreavue_type_template_id_03583586_scoped_true_render = function render() {
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"c6feb002-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=template&id=51da4c9a&scoped=true
+var GameAreavue_type_template_id_51da4c9a_scoped_true_render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c('div', {
@@ -598,39 +594,39 @@ var GameAreavue_type_template_id_03583586_scoped_true_render = function render()
     });
   })], 2)])]);
 };
-var GameAreavue_type_template_id_03583586_scoped_true_staticRenderFns = [];
+var GameAreavue_type_template_id_51da4c9a_scoped_true_staticRenderFns = [];
 
-// CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=template&id=03583586&scoped=true
+// CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=template&id=51da4c9a&scoped=true
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=script&lang=js
 
 var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
 /* harmony default export */ var GameAreavue_type_script_lang_js = ({
   props: {
-    participants: Array
+    participants: Array // 참가자 목록
   },
   data() {
     return {
       bubbles: [],
+      // 생성된 버블을 담을 배열   
       bubbleCount: 0,
       isPlaying: false
     };
   },
   mounted() {
-    // 무한 버블 생성
+    // 게임 지침이 끝난 후 버블 생성 시작
     GameAreavue_type_script_lang_js_socket.on('gameInstructions', data => {
       if (data == '') {
         setTimeout(() => this.startBubbleGeneration(), 1000);
       }
     });
-    this.detectCollisions();
+    this.detectCollisions(); // 충돌 감지 시작
   },
   methods: {
+    // 배경 음악 토글
     toggleMusic() {
       const audio = this.$refs.backgroundMusic;
-      console.log('audioaudio', audio);
       if (this.isPlaying) {
-        console.log('재생중 ? this.isPlaying?', this.isPlaying);
         audio.pause();
       } else {
         // 사용자의 인터랙션 이후에 오디오를 재생
@@ -640,6 +636,7 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
       }
       this.isPlaying = !this.isPlaying;
     },
+    // 버블 생성
     startBubbleGeneration() {
       setInterval(() => {
         if (this.bubbles.length >= 20) {
@@ -656,6 +653,7 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
         this.bubbles.push(bubble);
       }, 1000); // 버블 생성 간격
     },
+    // 충돌 감지
     detectCollisions() {
       setInterval(() => {
         this.bubbles.forEach((bubble, bubbleIndex) => {
@@ -665,7 +663,7 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < 45) {
               // 버블과 참가자의 반지름을 더한 값보다 작으면 충돌
-              this.bubbles.splice(bubbleIndex, 1);
+              this.bubbles.splice(bubbleIndex, 1); // 버블 제거
               this.bubbleCount++; // 터진 버블 카운트를 증가시킴
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
               console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
@@ -683,8 +681,8 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
 });
 // CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=script&lang=js
  /* harmony default export */ var components_GameAreavue_type_script_lang_js = (GameAreavue_type_script_lang_js); 
-// EXTERNAL MODULE: ./src/components/GameArea.vue?vue&type=style&index=0&id=03583586&prod&scoped=true&lang=css
-var GameAreavue_type_style_index_0_id_03583586_prod_scoped_true_lang_css = __webpack_require__("5516");
+// EXTERNAL MODULE: ./src/components/GameArea.vue?vue&type=style&index=0&id=51da4c9a&prod&scoped=true&lang=css
+var GameAreavue_type_style_index_0_id_51da4c9a_prod_scoped_true_lang_css = __webpack_require__("cd60");
 
 // CONCATENATED MODULE: ./src/components/GameArea.vue
 
@@ -697,11 +695,11 @@ var GameAreavue_type_style_index_0_id_03583586_prod_scoped_true_lang_css = __web
 
 var GameArea_component = Object(componentNormalizer["a" /* default */])(
   components_GameAreavue_type_script_lang_js,
-  GameAreavue_type_template_id_03583586_scoped_true_render,
-  GameAreavue_type_template_id_03583586_scoped_true_staticRenderFns,
+  GameAreavue_type_template_id_51da4c9a_scoped_true_render,
+  GameAreavue_type_template_id_51da4c9a_scoped_true_staticRenderFns,
   false,
   null,
-  "03583586",
+  "51da4c9a",
   null
   
 )
@@ -872,52 +870,71 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
       // 내 캐릭터 표시 여부
       myEmoji: '',
       // 내 이모지
-      currentSurvivorsText: '',
       showGameArea: false,
+      // 게임 영역 표시 여부
       survivorsCount: 0,
+      // 접속 중인 인원
       bubbleCountText: '터트린 🫧 갯수 : 0',
       currentPosition: '',
+      // 현재 위치
       moveInterval: null,
       gameInstructions: '',
+      // 게임 설명 text
       gameStart: false,
+      // 게임 시작 여부 
       timerInterval: null,
       gameEnd: false,
-      showWinnerModal: false,
+      // 게임 종료 여부
       remainingTime: '',
-      isDescribing: false,
+      // 남은 종료 시간 표시
       isRun: false,
-      direction: null,
+      // 달리기 여부
       gameEndSent: false,
       currentRank: '',
-      bubbleCount: '',
+      // 현재 나의 랭크
       firstPlace: {},
+      // 1등 참가자
       allParticipants: [],
+      // 모든 참가자 목록
       isAndroidDevice: false,
+      // os확인
       joystickStartX: 0,
+      // 조이스틱 시작 X 좌표 
       joystickStartY: 0,
+      // 조이스틱 시작 X 좌표 
       joystickMoveX: 0,
+      // 조이스틱 이동 X 좌표
       joystickMoveY: 0,
+      // 조이스틱 이동 Y 좌표
       joystickMoveInterval: null,
       isHost: '',
+      // 호스트 여부
       host: false,
+      // 호스트 여부
       gameStarted: false,
+      // 게임 시작 여부
       showModal: false,
+      // 게임시작 확인 팝업
       modalMessage: '',
+      // 게임시작 팝업 메세지
       animateButton: false,
-      runCooldown: 5,
-      runDuration: 3,
+      // 버튼 애니메이션
       runProgress: 100,
+      // 달리기 진행도
       runInterval: null,
-      fillInterval: null
+      // 달리기 인터벌
+      fillInterval: null // 채우기 인터벌
     };
   },
   computed: {
+    // 달리기 진행도 오프셋 계산
     progressOffset() {
       const circumference = 2 * Math.PI * 45;
       return circumference * (1 - this.runProgress / 100);
     }
   },
   watch: {
+    // 접속자 수 변화 감지
     survivorsCount(newValue, oldValue) {
       if (newValue > oldValue) {
         this.animateButton = true;
@@ -928,27 +945,33 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
     }
   },
   methods: {
+    // 방장이 start버튼 클릭 시
     attemptStartGame() {
       this.modalMessage = `${this.survivorsCount}명으로 게임을 시작하시겠습니까? (게임 시작 이후 종료가 불가능합니다.)`;
-      this.showModal = true;
+      this.showModal = true; // start 확인 modal
     },
+    // 게임 시작 확인 팝업 버튼 확인 클릭시
     startGame() {
       this.showModal = false;
       this.gameStarted = true;
-      ClientViewvue_type_script_lang_js_socket.emit('startGame'); //게임시작
+      ClientViewvue_type_script_lang_js_socket.emit('startGame'); // 게임시작 전송
     },
+    // 게임 시작 확인 팝업 취소 버튼 클릭시
     cancelStartGame() {
       this.showModal = false;
     },
+    // 게임 종료 이후 새로고침
     returnToMain() {
       window.location.reload();
     },
+    // 게임 입장
     enterGame() {
-      document.getElementById('main-screen').style.display = 'none';
+      document.getElementById('main-screen').style.display = 'none'; //main screen hide
       this.showGameArea = true;
       this.showMyCharacter = true;
       this.showNumOfSurvivors = false;
-      this.$refs.waitingMusic.play();
+      this.$refs.waitingMusic.play(); //음악 play
+
       this.$nextTick(() => {
         var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
         this.gameAreaHeight = gameAreaSize.height - 48;
@@ -957,6 +980,7 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
           top: gameAreaSize.height,
           right: gameAreaSize.width
         };
+        //서버에게 해당 참가자의 게임영역 전송
         ClientViewvue_type_script_lang_js_socket.emit('newParticipant', {
           emoji: '',
           gameAreaSize: areaSize
@@ -966,31 +990,7 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
         }
       });
     },
-    goBack() {
-      switch (true) {
-        case this.isDescribing == true:
-          alert('지금은 게임 설명중이에요.');
-          break;
-        case this.remainingTime > 0:
-          if (confirm('현재 게임중이에요. 그래도 나가시겠습니까?')) {
-            ClientViewvue_type_script_lang_js_socket.emit('goBack');
-            this.showGameArea = false;
-            this.showMyCharacter = false;
-            this.showNumOfSurvivors = true;
-            document.getElementById('main-screen').style.display = 'block';
-          }
-          break;
-        case this.remainingTime == 0:
-          if (confirm('뒤로 나가면 소켓연결이 끊어집니다. 그래도 나가시겠습니까?')) {
-            ClientViewvue_type_script_lang_js_socket.emit('goBack');
-            this.showGameArea = false;
-            this.showMyCharacter = false;
-            this.showNumOfSurvivors = true;
-            document.getElementById('main-screen').style.display = 'block';
-          }
-          break;
-      }
-    },
+    // 해당 참가자의 이동이 일어났을때
     move(deltaX, deltaY) {
       let currentUser = this.participants.find(p => p.id === ClientViewvue_type_script_lang_js_socket.id);
       if (currentUser) {
@@ -1002,11 +1002,14 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
         if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth;
         if (currentUser.y < 0) currentUser.y = 0;
         if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight;
+        //업데이트 된 위치 서버로 전달  
         ClientViewvue_type_script_lang_js_socket.emit('updateParticipantPosition', currentUser);
-        this.updateCurrentPosition();
+        this.updateCurrentPosition(); //해당 참가자의 위치 update
       }
     },
+    //해당 참가자가 달리기 버튼을 클릭 시
     runAction() {
+      //잔여 run이 있을때만
       if (this.runProgress > 0) {
         this.isRun = true;
         this.$refs.runButton.classList.add('active');
@@ -1014,64 +1017,60 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
           if (this.runProgress > 0) {
             this.runProgress -= 3;
           } else {
-            this.runStop();
+            this.runStop(); // 이동 중지
           }
         }, 30);
       }
     },
+    // 이동 중지
     runStop() {
       this.isRun = false;
       this.$refs.runButton.classList.remove('active');
       clearInterval(this.runInterval);
     },
+    // run 채우기
     startFilling() {
       this.fillInterval = setInterval(() => {
+        //현재 달리는 중이 아니고 잔여 process가 full fill이 아닐때만
         if (this.runProgress < 100 && !this.isRun) {
           this.runProgress += 0.5;
         }
       }, 100);
     },
-    stopFilling() {
-      clearInterval(this.fillInterval);
-    },
-    startMoving(direction) {
-      this.move(direction);
-      this.moveInterval = setInterval(() => {
-        this.move(direction);
-      }, 100);
-    },
-    stopMoving() {
-      clearInterval(this.moveInterval);
-    },
+    // 해당 참가자의 위치 update 
     updateCurrentPosition() {
       const currentUser = this.participants.find(p => p.id === ClientViewvue_type_script_lang_js_socket.id);
       if (currentUser) {
         this.currentPosition = `X: ${currentUser.x.toFixed(1)}, Y: ${currentUser.y.toFixed(1)}`;
       }
     },
+    // 해당 참가자의 bubble count 업데이트
     updateBubbleCount(count) {
       this.bubbleCountText = '터트린 🫧 갯수: ' + count;
+      // update된 버블 count를 서버에 전달
       ClientViewvue_type_script_lang_js_socket.emit('bubbleBuster', {
         id: ClientViewvue_type_script_lang_js_socket.id,
         emoji: this.myEmoji,
         bCount: count
       });
     },
+    // 게임 설명 뒤 타이머 시작 
     startTimer() {
       this.remainingTime = 60;
       this.gameEndSent = false;
       this.timerInterval = setInterval(() => {
-        this.remainingTime--;
+        this.remainingTime--; //1초씩 차감
         if (this.remainingTime <= 0 && !this.gameEndSent) {
           clearInterval(this.timerInterval);
           this.gameEndSent = true; // 게임 종료 상태를 true로
         }
       }, 1000);
     },
-    //아이폰은 홈 화면 추가
+    // full screen (adroid) toggle
     toggleFullscreen() {
       const elem = document.documentElement;
       const toggleButton = document.getElementById('fullscreen-toggle');
+      //full screen 일때
       if (!document.fullscreenElement) {
         if (elem.requestFullscreen) {
           elem.requestFullscreen();
@@ -1083,6 +1082,7 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
           elem.msRequestFullscreen();
         }
         toggleButton.textContent = '전체 화면 끄기';
+        //full screen이 아닐때
       } else {
         if (document.exitFullscreen) {
           document.exitFullscreen();
@@ -1096,9 +1096,11 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
         toggleButton.textContent = '전체 화면 켜기';
       }
     },
+    // 안드로이드 기기 여부 확인
     isAndroid() {
       return /Android/i.test(navigator.userAgent);
     },
+    // 조이스틱 초기화
     initJoystick() {
       const joystickBase = this.$refs.joystickBase;
       const joystickStick = this.$refs.joystickStick;
@@ -1106,6 +1108,7 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
       joystickStick.addEventListener('touchmove', this.moveJoystick);
       joystickStick.addEventListener('touchend', this.endJoystick);
     },
+    // 조이스틱 시작
     startJoystick(event) {
       const touch = event.touches[0];
       this.joystickStartX = touch.clientX;
@@ -1115,6 +1118,7 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
       this.joystickMoveInterval = setInterval(this.updateMovement, 50);
       this.$refs.joystickBase.classList.add('active');
     },
+    // 조이스틱 이동
     moveJoystick(event) {
       event.preventDefault(); // 터치 이동 중 스크롤 방지
       const touch = event.touches[0];
@@ -1134,6 +1138,7 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
       this.joystickMoveY = moveY / maxDistance;
       this.$refs.joystickStick.style.transform = `translate(${moveX}px, ${moveY}px)`;
     },
+    // 조이스틱 종료
     endJoystick(event) {
       event.preventDefault(); // 터치 종료 중 스크롤 방지
       this.$refs.joystickStick.style.transform = 'translate(0, 0)';
@@ -1143,20 +1148,24 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
       this.triggerHapticFeedback();
       this.$refs.joystickBase.classList.remove('active');
     },
+    //  이동 update
     updateMovement() {
       const moveDistance = this.isRun ? 8 : 4; // 이동 속도 조절
       const deltaX = this.joystickMoveX * moveDistance;
       const deltaY = this.joystickMoveY * moveDistance;
       this.move(deltaX, deltaY);
     },
+    // 조이스틱 종료 이후 진동
     triggerHapticFeedback() {
+      // adnroid
       if (navigator.vibrate) {
         navigator.vibrate(10);
       } else {
-        //아이폰
+        // ios
         this.addVisualFeedback();
       }
     },
+    // ios 진동
     addVisualFeedback() {
       const joystickStick = this.$refs.joystickStick;
       joystickStick.classList.add('shake');
@@ -1166,11 +1175,14 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
     }
   },
   mounted() {
-    this.isAndroidDevice = this.isAndroid();
-    this.startFilling();
+    this.isAndroidDevice = this.isAndroid(); // 안드로이드 기기 여부 확인
+    this.startFilling(); // run fill
+
+    // 서버로부터 현재 참가자들의 인원수를 전달 받는다.
     ClientViewvue_type_script_lang_js_socket.on('currentclientCount', clientCount => {
       this.survivorsCount = clientCount;
     });
+    // 업데이트 된 참가자 정보
     ClientViewvue_type_script_lang_js_socket.on('updateParticipants', participants => {
       console.log(`${ClientViewvue_type_script_lang_js_socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
       this.participants = participants;
@@ -1187,46 +1199,45 @@ var ClientViewvue_type_script_lang_js_socket = Object(esm["a" /* default */])();
         }
       }
     });
+    // 서버로부터 전달받은 참가자의 위치 정보 업데이트
     ClientViewvue_type_script_lang_js_socket.on('positionUpdate', data => {
       const participant = this.participants.find(p => p.id === data.id);
       if (participant) {
         participant.x = data.x;
         participant.y = data.y;
-        console.log(`${data.id}의 포지션 변경이 발생함 x : ${participant.x}/ y : ${participant.y} `);
         this.updateCurrentPosition();
       }
     });
+    // 방장의 start 신호 이후 게임 설명
     ClientViewvue_type_script_lang_js_socket.on('gameInstructions', data => {
       console.log('게임 지침:', data);
-      this.gameInstructions = data; //게임 지침 설명 text
-      this.isDescribing = true;
+      this.gameInstructions = data; // 게임 지침 설명 text
       if (data == '') {
-        //게임 지침이 끝나고 난뒤 발생하는 버블
         console.log('bubbleStart !');
-        this.isDescribing = false; //설명 종료
-        this.gameStart = true; //접속자 수 => 버블 갯수
-        this.runProgress = 100;
-        this.startTimer();
+        this.gameStart = true;
+        this.runProgress = 100; // run fill
+        this.startTimer(); // count 시작
       }
     });
+    // 참가자들의 bubble count로 순위 업데이트
     ClientViewvue_type_script_lang_js_socket.on('rankUpdate', data => {
       console.log('나의 현재 랭킹 정보:', data);
       this.currentRank = data.rank;
-      this.bubbleCount = data.bCount;
       this.firstPlace = data.firstPlace;
       this.allParticipants = data.allParticipants;
     });
+    // 게임 종료 신호
     ClientViewvue_type_script_lang_js_socket.on('showRank', data => {
       this.gameEnd = true;
       this.firstPlace = data.whoFianlWinner;
-      this.allParticipants = data.resultRank;
+      this.allParticipants = data.resultRank; // 전체 참가자의 게임 정보
     });
   }
 });
 // CONCATENATED MODULE: ./src/views/ClientView.vue?vue&type=script&lang=js
  /* harmony default export */ var views_ClientViewvue_type_script_lang_js = (ClientViewvue_type_script_lang_js); 
-// EXTERNAL MODULE: ./src/views/ClientView.vue?vue&type=style&index=0&id=bdc0bee0&prod&scoped=true&lang=css
-var ClientViewvue_type_style_index_0_id_bdc0bee0_prod_scoped_true_lang_css = __webpack_require__("880e");
+// EXTERNAL MODULE: ./src/views/ClientView.vue?vue&type=style&index=0&id=e8b46214&prod&scoped=true&lang=css
+var ClientViewvue_type_style_index_0_id_e8b46214_prod_scoped_true_lang_css = __webpack_require__("8a16");
 
 // CONCATENATED MODULE: ./src/views/ClientView.vue
 
@@ -1239,11 +1250,11 @@ var ClientViewvue_type_style_index_0_id_bdc0bee0_prod_scoped_true_lang_css = __w
 
 var ClientView_component = Object(componentNormalizer["a" /* default */])(
   views_ClientViewvue_type_script_lang_js,
-  ClientViewvue_type_template_id_bdc0bee0_scoped_true_render,
-  ClientViewvue_type_template_id_bdc0bee0_scoped_true_staticRenderFns,
+  ClientViewvue_type_template_id_e8b46214_scoped_true_render,
+  ClientViewvue_type_template_id_e8b46214_scoped_true_staticRenderFns,
   false,
   null,
-  "bdc0bee0",
+  "e8b46214",
   null
   
 )
@@ -1540,6 +1551,13 @@ module.exports = __webpack_require__.p + "media/bubble_pop.b69add8a.mp4";
 
 /***/ }),
 
+/***/ "7e28":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "802b":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1558,12 +1576,12 @@ module.exports = __webpack_require__.p + "media/bubble_pop.b69add8a.mp4";
 
 /***/ }),
 
-/***/ "880e":
+/***/ "8a16":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientView_vue_vue_type_style_index_0_id_bdc0bee0_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("ab91");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientView_vue_vue_type_style_index_0_id_bdc0bee0_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientView_vue_vue_type_style_index_0_id_bdc0bee0_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientView_vue_vue_type_style_index_0_id_e8b46214_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("562b");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientView_vue_vue_type_style_index_0_id_e8b46214_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ClientView_vue_vue_type_style_index_0_id_e8b46214_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
 
 
@@ -1587,24 +1605,21 @@ module.exports = __webpack_require__.p + "img/sound_on.d9f9dc9d.png";
 
 /***/ }),
 
-/***/ "ab91":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
-/***/ "afc0":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "c0d6":
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "img/wait.afbadb5e.png";
+
+/***/ }),
+
+/***/ "cd60":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_51da4c9a_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("7e28");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_51da4c9a_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_51da4c9a_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+
 
 /***/ }),
 
@@ -1655,4 +1670,4 @@ module.exports = __webpack_require__.p + "media/waiting.ecf485ee.mp4";
 /***/ })
 
 /******/ });
-//# sourceMappingURL=app.e64262b1.js.map
+//# sourceMappingURL=app.3f3d9fd4.js.map

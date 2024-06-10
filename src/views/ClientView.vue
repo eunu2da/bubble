@@ -450,7 +450,7 @@ export default {
     });
     // 게임 종료 신호
     socket.on('showRank',(data) => {
-      this.gameEnd = true;
+      this.gameEnd = true;  
       this.firstPlace = data.whoFianlWinner; 
       this.allParticipants = data.resultRank; // 전체 참가자의 게임 정보
     });
