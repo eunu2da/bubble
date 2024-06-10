@@ -72,7 +72,6 @@ export default {
           audio.pause();
       } else {
           // 사용자의 인터랙션 이후에 오디오를 재생
-          audio.volume = 0.1;
           audio.play().catch(error => {
               console.error('재생 오류:', error);
           });
@@ -108,7 +107,6 @@ export default {
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
               console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
               if (this.$refs.bubbleSound) {
-                this.$refs.bubbleSound.volume = 1.0;
                 this.$refs.bubbleSound.play().catch(error => {
                   console.error('오디오 재생 오류:', error);
                 });

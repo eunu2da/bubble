@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div>
+    <!-- 기존 템플릿 코드 유지 -->
+    <audio ref="waitingMusic" src="../assets/music/waiting.mp4" loop></audio>
+  </div>
     <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
     <div class="container" v-if="!gameEnd">
     
@@ -23,11 +27,24 @@
         <div class="game_area_container">
           <img src="@/assets/console.png" alt="Console Background" class="console-img">
           <GameArea v-if="showGameArea" :participants="participants" ref="gameArea" @updateBubbleCount="updateBubbleCount"/>
-          <div class="run-controls" v-if="showGameArea">
-            <button @mousedown="runAction()" @mouseup="runStop()" @mouseleave="runStop()"
-                    @touchstart="runAction()" @touchend="runStop()" ref="runButton" class="run-button">🏃‍♀️</button>
+            <div class="run-controls" v-if="showGameArea">
+              <div class="run-button-wrapper">
+                <button 
+                  @mousedown="runAction" 
+                  @mouseup="runStop" 
+                  @mouseleave="runStop"
+                  @touchstart="runAction" 
+                  @touchend="runStop" 
+                  ref="runButton" 
+                  class="run-button">
+                  🏃‍♀️
+                </button>
+                <svg class="run-button-progress" width="100" height="100">
+                  <circle cx="50" cy="50" r="45" :style="{ strokeDashoffset: progressOffset }"></circle>
+                </svg>
+              </div>
+            </div>  
           </div>
-        </div>
         <div id="survivorCount" class="survivorCount" v-if="!gameStart">
           접속중인 인원  {{ survivorsCount }} 명
         </div> 
@@ -121,10 +138,20 @@ export default {
       showModal: false,
       modalMessage: '',
       animateButton: false,
+      runCooldown: 5,
+      runDuration: 3,
+      runProgress: 100,
+      runInterval: null,
+      fillInterval: null
     };
   },
+  computed: {
+    progressOffset() {
+      const circumference = 2 * Math.PI * 45;
+      return circumference * (1 - this.runProgress / 100);
+    }
+  },
   watch: {
-    
     survivorsCount(newValue, oldValue) {
     if (newValue > oldValue) {
       this.animateButton = true;
@@ -165,19 +192,18 @@ export default {
       this.showMyCharacter = true;
       this.showPlaceholder = false;
       this.showNumOfSurvivors = false;
+    
+      this.$refs.waitingMusic.play();
 
       this.$nextTick(() => {
 
           var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
           this.gameAreaHeight = gameAreaSize.height - 48;
-          console.log('서버로 전달할 참가자의 gameArea Height..', this.gameAreaHeight);
           this.gameAreaWidth = gameAreaSize.width - 48;
-          console.log('서버로 전달할 참가자의 gameArea width..', this.gameAreaWidth);
           var areaSize = {
             top: gameAreaSize.height,
             right: gameAreaSize.width
           };
-          console.log('areaSize:', areaSize);
           socket.emit('newParticipant', { emoji: '', gameAreaSize: areaSize });
         
           if (this.$refs.joystick) {
@@ -187,75 +213,82 @@ export default {
     },
 
     goBack() {
-  switch (true) {
-    case this.isDescribing == true:
-      alert('지금은 게임 설명중이에요.');
-      break;
-    case this.remainingTime > 0:
-      if (confirm('현재 게임중이에요. 그래도 나가시겠습니까?')) {
-        socket.emit('goBack');
-        this.showGameArea = false;
-        this.showBackButton = false;
-        this.showMyCharacter = false;
-        this.showPlaceholder = true;
-        this.showNumOfSurvivors = true;
-        document.getElementById('main-screen').style.display = 'block';
+      switch (true) {
+        case this.isDescribing == true:
+          alert('지금은 게임 설명중이에요.');
+          break;
+        case this.remainingTime > 0:
+          if (confirm('현재 게임중이에요. 그래도 나가시겠습니까?')) {
+            socket.emit('goBack');
+            this.showGameArea = false;
+            this.showBackButton = false;
+            this.showMyCharacter = false;
+            this.showPlaceholder = true;
+            this.showNumOfSurvivors = true;
+            document.getElementById('main-screen').style.display = 'block';
+          }
+          break;
+        case this.remainingTime == 0:
+          if (confirm('뒤로 나가면 소켓연결이 끊어집니다. 그래도 나가시겠습니까?')) {
+            socket.emit('goBack');
+            this.showGameArea = false;
+            this.showBackButton = false;
+            this.showMyCharacter = false;
+            this.showPlaceholder = true;
+            this.showNumOfSurvivors = true;
+            document.getElementById('main-screen').style.display = 'block';
+          }
+          break;
       }
-      break;
-    case this.remainingTime == 0:
-      if (confirm('뒤로 나가면 소켓연결이 끊어집니다. 그래도 나가시겠습니까?')) {
-        socket.emit('goBack');
-        this.showGameArea = false;
-        this.showBackButton = false;
-        this.showMyCharacter = false;
-        this.showPlaceholder = true;
-        this.showNumOfSurvivors = true;
-        document.getElementById('main-screen').style.display = 'block';
-      }
-      break;
-  }
-},
+    },
+      move(deltaX, deltaY) {
+          let currentUser = this.participants.find(p => p.id === socket.id);
+          if (currentUser) {
+            currentUser.x += deltaX;
+            currentUser.y += deltaY;
 
-    move(direction) {
-     
-      console.log(`Move ${direction}`);
-      let currentUser = this.participants.find(p => p.id === socket.id);
-      if (currentUser) {
-        switch (direction) {
-          case 'up':
-          currentUser.y -= this.isRun ? 7 : 3;
-          if (currentUser.y < 0) currentUser.y = 0; // 경계 체크
-            break; 
-          case 'down':
-          currentUser.y += this.isRun ? 7 : 3;
-          console.log('나의 gameAreaHeight', this.gameAreaHeight);
-          if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight; // 경계 체크  
-            break;
-          case 'left':
-          currentUser.x -= this.isRun ? 7 : 3;
-          if (currentUser.x < 0) currentUser.x = 0;
-            break;
-          case 'right':
-          currentUser.x += this.isRun ? 7 : 3;
-          console.log('나의 gameAreaWidth', this.gameAreaWidth);
-          if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth; // 경계 체크
-            break;
-        }
-        
-        console.log(`나의 현재 위치는 x: ${currentUser.x}, y: ${currentUser.y}`);
-        socket.emit('updateParticipantPosition', currentUser);
-        this.updateCurrentPosition();
+            // 경계 체크
+            if (currentUser.x < 0) currentUser.x = 0;
+            if (currentUser.x > this.gameAreaWidth) currentUser.x = this.gameAreaWidth;
+            if (currentUser.y < 0) currentUser.y = 0;
+            if (currentUser.y > this.gameAreaHeight) currentUser.y = this.gameAreaHeight;
+
+            socket.emit('updateParticipantPosition', currentUser);
+            this.updateCurrentPosition();
+          }
+        }, 
+    runAction() {
+      if (this.runProgress > 0) {
+        this.isRun = true;
+        this.$refs.runButton.classList.add('active');
+        this.runInterval = setInterval(() => {
+          if (this.runProgress > 0) {
+            this.runProgress -= 3;  
+          } else {
+            this.runStop();
+          }
+        }, 30);
       }
     },
 
-    runAction(){
-      this.isRun = true;
-      this.$refs.runButton.classList.add('active');
-    },
-    runStop(){
-      this.isRun = false;   
-      this.$refs.runButton.classList.remove('active');
-    },
+  runStop() {
+    this.isRun = false;
+    this.$refs.runButton.classList.remove('active');
+    clearInterval(this.runInterval);
+  },
+
+  startFilling() {
+    this.fillInterval = setInterval(() => {
+      if (this.runProgress < 100 && !this.isRun) {
+        this.runProgress += 0.5;  
+      }
+    }, 100);
+  },
+
+  stopFilling() {
+    clearInterval(this.fillInterval);
+  },
+
     startMoving(direction) {
       
       this.move(direction);
@@ -275,12 +308,10 @@ export default {
     },
     updateBubbleCount(count) {
       this.bubbleCountText = '터트린 🫧 갯수: ' + count;
-      console.log('서버에게 버블카운트 전달');
       socket.emit('bubbleBuster', {id : socket.id, emoji: this.myEmoji, bCount : count});
     },
     startTimer() {
-      //this.remainingTime = 60;  // 게임 시간 60초로 설정
-      this.remainingTime = 30;
+      this.remainingTime = 60;
       this.gameEndSent = false;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; 
@@ -329,6 +360,7 @@ export default {
       joystickStick.addEventListener('touchmove', this.moveJoystick);
       joystickStick.addEventListener('touchend', this.endJoystick);
     },
+
     startJoystick(event) {
       const touch = event.touches[0];
       this.joystickStartX = touch.clientX;
@@ -359,6 +391,7 @@ export default {
       this.joystickMoveY = moveY / maxDistance;
       this.$refs.joystickStick.style.transform = `translate(${moveX}px, ${moveY}px)`;
     },
+
     endJoystick(event) {
       event.preventDefault(); // 터치 종료 중 스크롤 방지
       this.$refs.joystickStick.style.transform = 'translate(0, 0)';
@@ -370,19 +403,14 @@ export default {
     },
     
     updateMovement() {
-      const absX = Math.abs(this.joystickMoveX);
-      const absY = Math.abs(this.joystickMoveY);
+      const moveDistance = this.isRun ? 8 : 4; // 이동 속도 조절
+      const deltaX = this.joystickMoveX * moveDistance;
+      const deltaY = this.joystickMoveY * moveDistance;
 
-      if (absX > absY) {
-        if (this.joystickMoveX > 0.1) this.move('right');
-        else if (this.joystickMoveX < -0.1) this.move('left');
-      } else {
-        if (this.joystickMoveY > 0.1) this.move('down');
-        else if (this.joystickMoveY < -0.1) this.move('up');
-      }
+      this.move(deltaX, deltaY);
     },
+
     triggerHapticFeedback() {
-      console.log('Vibration Triggered');
       if (navigator.vibrate) {
         navigator.vibrate(10); 
       } else {
@@ -399,16 +427,12 @@ export default {
     },
   },
   mounted() {
-
-    this.isAndroidDevice = this.isAndroid();
-
-    // if (!socket) {
-    //   this.setupSocketListeners();
-    // }
+    
+    this.isAndroidDevice = this.isAndroid();    
+    this.startFilling();
 
     socket.on('currentclientCount', (clientCount) => {
       this.survivorsCount = clientCount;
-      console.log('접속인원 ' , this.survivorsCount);
     });
 
     socket.on('updateParticipants', (participants) => {
@@ -424,15 +448,10 @@ export default {
       this.showMyCharacter = true;
       this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
       
-      if (currentUser.isHost) {
-        this.host = true;
-      }
-        console.log('Current User role:', this.isHost);
-        console.log('Current User Emoji:', this.myEmoji);
-        console.log('currentUser가 받은 위치는', currentUser.x, currentUser.y);
-      } else {
-        console.log('Current user not found in participants.');
-      }
+        if (currentUser.isHost) {
+          this.host = true;
+        }
+      } 
     });
 
     socket.on('positionUpdate', (data) => {
@@ -453,6 +472,7 @@ export default {
         console.log('bubbleStart !');
         this.isDescribing = false;  //설명 종료
         this.gameStart = true;      //접속자 수 => 버블 갯수
+        this.runProgress = 100;
         this.startTimer();
       }
    });
@@ -466,7 +486,6 @@ export default {
     });
 
     socket.on('showRank',(data) => {
-      console.log('datadatadata show Rank', data);
       this.gameEnd = true;
       this.firstPlace = data.whoFianlWinner;
       this.allParticipants = data.resultRank;
@@ -805,18 +824,18 @@ body, html {
   animation: move-left-right 1s ease-in-out 2;
 }
 .start-game-button {
-  right: 14px;
+  right: 18px;
   position: fixed;
-  background-color: #000000b0;
-  width: 110px;
-  height: 100px;
-  border: 5px solid rgba(0,0,0,.7000000000000001);
+  background-color: #73ff00f2;
+  width: 114px;
+  height: 60px;
+  border: 0px solid rgb(0 0 0 / 0%);
   transition: background-color 0.3s ease;
-  border-radius: 20px;
+  border-radius: 50px;
   text-align: center;
-  bottom: 150px;
-  color: #73ff00;
-  font-size: 2em;
+  bottom: 167px;
+  color: #ffffff;
+  font-size: 1.5em;
 }
 
 .start-game-button:hover {
@@ -828,6 +847,43 @@ body, html {
   right: 30px;
   bottom: 50px;
 }
+.run-button-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
 
- 
+.run-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  z-index: 1;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s;
+}
+
+.run-button:active {
+  background-color: #ff0000;
+}
+
+.run-button-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  transform: rotate(-90deg);
+}
+
+.run-button-progress circle {
+  fill: none;
+  stroke:#00fff3;
+  stroke-width: 12;
+  stroke-dasharray: 282; /* 2 * Math.PI * 45 */
+  transition: stroke-dashoffset 0.3s;
+}
 </style>
