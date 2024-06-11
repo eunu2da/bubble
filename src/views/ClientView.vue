@@ -10,7 +10,7 @@
     
       <div class="container" v-if="!gameEnd">
       <div class="layout_container">
-        <div id="back-button">rankUpdate
+        <div id="back-button">
            <!-- 현재 위치 표시 -->
           <div class="back-button"></div>
           <div id="currentPosition" class="currentPosition" v-if="showGameArea">
