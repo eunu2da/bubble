@@ -220,8 +220,15 @@ export default {
       this.showGameArea = true;
       this.showMyCharacter = true;
       this.showNumOfSurvivors = false;    
-      this.$refs.waitingMusic.play(); //음악 play
-
+      
+      const playMusic = () => {
+      this.$refs.waitingMusic.play().catch(error => {
+        console.error('Audio play error:', error);
+      });
+      document.removeEventListener('touchstart', playMusic);
+      };
+      document.addEventListener('touchstart', playMusic);
+      
       this.$nextTick(() => {
           var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
           this.gameAreaHeight = gameAreaSize.height - 48;
