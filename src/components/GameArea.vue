@@ -27,6 +27,7 @@
             class="participant"
             :style="{ left: participant.x + 'px', top: participant.y + 'px' }"
           >
+          <span v-if="firstPlace && participant.id === firstPlace.id" class="crown">👑</span>
             {{ participant.emoji }}
           </div>
         <!-- 버블 요소 -->
@@ -47,7 +48,8 @@ var socket = io();
 
 export default {
   props: {
-    participants: Array // 참가자 목록
+    participants: Array, // 참가자 목록
+    firstPlace: Object
   },
   data() {
     return {
@@ -198,6 +200,12 @@ export default {
   font-size: 2rem;
   position: absolute;
   transition: all 0.3s ease;
+}
+
+.crown {
+  position: absolute;
+  top: -20px;
+  font-size: 2.0rem;
 }
 
 .music-controls {

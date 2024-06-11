@@ -10,7 +10,7 @@
     
       <div class="container" v-if="!gameEnd">
       <div class="layout_container">
-        <div id="back-button">
+        <div id="back-button">rankUpdate
            <!-- 현재 위치 표시 -->
           <div class="back-button"></div>
           <div id="currentPosition" class="currentPosition" v-if="showGameArea">
@@ -20,6 +20,9 @@
           <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter">
             <h5 class="me">{{isHost}}</h5>
             <span class="myCharacter">{{ myEmoji }}</span>
+            <div v-if="gameStart && currentRank" >
+              <span class="myRank">현재 {{currentRank}}등!</span>
+            </div>
           </div>
         </div>
       </div>
@@ -29,7 +32,7 @@
           <!-- 게임 배경 이미지 -->
           <img src="@/assets/console.png" alt="Console Background" class="console-img">
           <!-- GameArea 컴포넌트 -->
-          <GameArea v-if="showGameArea" :participants="participants" ref="gameArea" @updateBubbleCount="updateBubbleCount"/>
+          <GameArea v-if="showGameArea" :participants="participants" :firstPlace="firstPlace" ref="gameArea" @updateBubbleCount="updateBubbleCount"/>
           <!-- 달리기 버튼 -->  
           <div class="run-controls" v-if="showGameArea">
               <div class="run-button-wrapper">
@@ -41,7 +44,7 @@
                   @touchend="runStop" 
                   ref="runButton" 
                   class="run-button">
-                  🏃‍♀️
+                  <img src="../assets/client/run.gif" alt="Running" class="run-emoji" />
                 </button>
                 <svg class="run-button-progress" width="100" height="100">
                   <circle cx="50" cy="50" r="45" :style="{ strokeDashoffset: progressOffset }"></circle>
@@ -72,7 +75,9 @@
       <div v-if="host" v-show="!gameStarted" class="host-controls">
             <button :class="['start-game-button', { animated: animateButton }]" @click="attemptStartGame">Start</button>
       </div> 
-
+      <div v-show="gameStart" class="updatedRank">
+           {{ Currently1stPlace }}
+      </div> 
       <!-- 방장이 start버튼 클릭시 뜨는 모달팝업 -->
       <custom-modal v-if="showModal" :message="modalMessage" @confirm="startGame" @cancel="cancelStartGame" />
     
@@ -155,7 +160,8 @@ export default {
       animateButton: false,    // 버튼 애니메이션
       runProgress: 100,        // 달리기 진행도
       runInterval: null,       // 달리기 인터벌
-      fillInterval: null       // 채우기 인터벌
+      fillInterval: null,       // 채우기 인터벌
+      Currently1stPlace: '',
     };
   },
   computed: {
@@ -293,7 +299,7 @@ export default {
     },
     // 게임 설명 뒤 타이머 시작 
     startTimer() {
-      this.remainingTime = 60;
+      this.remainingTime = 30;
       this.gameEndSent = false;
       this.timerInterval = setInterval(() => {
         this.remainingTime--; //1초씩 차감
@@ -371,7 +377,9 @@ export default {
 
       this.joystickMoveX = moveX / maxDistance;
       this.joystickMoveY = moveY / maxDistance;
-      this.$refs.joystickStick.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      if (this.$refs.joystickStick) {
+        this.$refs.joystickStick.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      }
     },
     // 조이스틱 종료
     endJoystick(event) {
@@ -419,15 +427,13 @@ export default {
     });
     // 업데이트 된 참가자 정보
     socket.on('updateParticipants', (participants) => {
-      console.log(`${socket.id}가 updateParticipants 이벤트 수신하였습니다.`);
       this.participants = participants;
       this.survivorsCount = participants.length;
-      console.log('전달받은 participants', participants);
       this.updateCurrentPosition();
       const currentUser = participants.find(p => p.id === socket.id);
       if (currentUser) {
         this.myEmoji = currentUser.emoji; 
-        this.showMyCharacter = true; 
+        this.showMyCharacter = true;
         this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
         if (currentUser.isHost) {
           this.host = true;
@@ -445,10 +451,8 @@ export default {
     });   
    // 방장의 start 신호 이후 게임 설명
    socket.on('gameInstructions', (data) => {
-    console.log('게임 지침:', data);
     this.gameInstructions = data;   // 게임 지침 설명 text
     if(data == '') {               
-        console.log('bubbleStart !');
         this.gameStart = true;      
         this.runProgress = 100;     // run fill
         this.startTimer();          // count 시작
@@ -456,10 +460,10 @@ export default {
    });
    // 참가자들의 bubble count로 순위 업데이트
    socket.on('rankUpdate', (data) => {
-      console.log('나의 현재 랭킹 정보:', data);
       this.currentRank = data.rank;
       this.firstPlace = data.firstPlace;
       this.allParticipants = data.allParticipants;
+      this.Currently1stPlace = `현재 1등 참가자는 ${data.firstPlace.emoji}이며, 터트린 갯수는 ${data.firstPlace.bCount}개 입니다.`;
     });
     // 게임 종료 신호
     socket.on('showRank',(data) => {
@@ -467,7 +471,6 @@ export default {
       this.firstPlace = data.whoFianlWinner; 
       this.allParticipants = data.resultRank; // 전체 참가자의 게임 정보
     });
-    
   },
 };
 </script>
@@ -554,12 +557,12 @@ body, html {
   border: 2px solid rgb(0 205 255 / 70%);
   border-radius: 20px;
   text-align: center;
-  background: rgba(0,0,0,.8);
+  background: rgba(0,205,255,.7000000000000001);
   box-shadow: 0px 15px 34px #fff;
 }
 
 .me {
-  color: #73ff00;
+  color: #ffffff;
   margin: 8px;
 }
 
@@ -596,7 +599,7 @@ body, html {
 .currentPosition {
   margin: 4px;
   background-color: rgb(0 0 0 / 14%);
-  color: #73ff00;
+  color: #ffffff;
   width: 100px;
   border-radius: 5px;
   font-size: 0.7rem;
@@ -674,10 +677,10 @@ body, html {
   left: 50%;
   border-radius: 20px;
   transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,.18); 
+  background-color: rgb(0 0 0 / 73%); 
   border: rgba(0,0,0,.18);
   color: white;
-  padding: 0px 20px;
+  padding: 7px 30px;
   max-width: 80%;
 }
 
@@ -700,16 +703,14 @@ body, html {
 
 .run-button {
   position: fixed;
-  right: 30px;
-  bottom: 50px;
+  right: 25px;
+  bottom: 48px;
   width: 90px; 
   height: 90px;
   font-size: 2.5rem; 
-  background: radial-gradient(circle at center, rgb(0 0 255 / 0%), #111);
-  color: white; 
+  background: #c8f1ff8f; 
   border: none; 
   border-radius: 50%; 
-  box-shadow: 0 5px 5px  #fff;
   transition: all 0.3s ease;  
   outline: none;
   z-index: 1000;
@@ -717,35 +718,39 @@ body, html {
   -webkit-tap-highlight-color: transparent; 
 }
 
- 
+.run-emoji {
+  width: 50px;  
+  height: 50px;
+}
 
 .joystick {
   position: fixed;
   bottom: 30px;
-  left: 20px;
+  left: 10px;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
 }
 
 .joystick-base {
   position: relative;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgb(0 0 255 / 0%), #111);
+  background: #c8f1ff8f;
   border-radius: 50%;
-  box-shadow: 0 5px 5px #ffffff;
-  margin-bottom: 40px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 0 5px 15px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .joystick-stick {
   position: absolute;
   width: 50%;
   height: 50%;
-  background: radial-gradient(circle at center, #fff0, #fff0);
   border-radius: 50%;
   top: 25%;
   left: 25%;
@@ -753,11 +758,16 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 5px 15px rgba(0, 0, 0, 0.5);
+  transition: transform 0.1s;
 }
 
 .joystick-emoji {
-  font-size: 3rem;
+  font-size: 2.5rem;
+}
+
+.joystick-stick:active {
+  background: radial-gradient(circle at center, #d0d0d0, #a0a0a0);
 }
  
 @keyframes shake {
@@ -785,6 +795,21 @@ body, html {
   justify-content: center;
 }
 
+.updatedRank {
+  right: 20px;
+  position: fixed;
+  background-color:  rgba(0,205,255,.7000000000000001);
+  width: 100px;
+  height: 130px;
+  border: 2px solid rgba(0,205,255,.7000000000000001);
+  transition: background-color 0.3s ease;
+  border-radius: 20px;
+  text-align: center;
+  bottom: 180px;
+  color: #fff;
+  box-shadow: 0 15px 34px #fff;
+}
+
 @keyframes move-left-right {
   0%, 100% {
     transform: translateX(0);
@@ -803,7 +828,7 @@ body, html {
 .start-game-button {
   right: 20px;
   position: fixed;
-  background-color: rgba(0,0,0,.8);
+  background-color:  rgba(0,205,255,.7000000000000001);
   width: 100px;
   height: 130px;
   border: 2px solid rgba(0,205,255,.7000000000000001);
@@ -811,7 +836,7 @@ body, html {
   border-radius: 20px;
   text-align: center;
   bottom: 180px;
-  color: #73ff00;
+  color: #fff;
   box-shadow: 0 15px 34px #fff;
 }
 
@@ -826,25 +851,13 @@ body, html {
 }
 .run-button-wrapper {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 91px;
+  height: 93px;
 }
-
-.run-button {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  z-index: 1;
-  border: none;
-  box-shadow: 0px 5px 4px rgb(255 255 255);
-  transition: background-color 0.3s;
-}
-
+ 
 .run-button:active {
-  background-color: #ff0000;
+  box-shadow: 0 2px #666;
+  transform: translateY(4px);
 }
 
 .run-button-progress {
@@ -858,9 +871,25 @@ body, html {
 
 .run-button-progress circle {
   fill: none;
-  stroke:#00fff3;
+  stroke:#7fff00;
   stroke-width: 12;
   stroke-dasharray: 282; /* 2 * Math.PI * 45 */
   transition: stroke-dashoffset 0.3s;
 }
+
+.myRank {
+  color:yellowgreen; 
+  font-weight: bold;
+  animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, -20px);
+  }
+}
+
 </style>

@@ -58,6 +58,7 @@ io.on('connection', (socket) => {
           y: Math.random() * data.gameAreaSize.top,
           bubbleCount : 0,
           isHost : isHost,
+          rank : 0,
       };
       // 참가자를 배열에 추가
       participants.push(newParticipant);
@@ -71,21 +72,18 @@ io.on('connection', (socket) => {
    
     // 참가자의 위치가 업데이트 되었을 때
     socket.on('updateParticipantPosition', (updatedParticipant) => {
-      console.log('전달받은 위치', updatedParticipant);
       const participant = participants.find(p => p.id === updatedParticipant.id);
      
       if (participant) {
           participant.x = updatedParticipant.x;
-          participant.y = updatedParticipant.y;
-          console.log('다시 모두에게 전달', participant);
+          participant.y = updatedParticipant.y; 
           io.emit('positionUpdate', participant);
       }
     });
     
     // 참가자가 버블을 터뜨렸을 때
     socket.on('bubbleBuster', (data) => {
-      console.log('전달받은data ::', data);
-      
+     
       const currentUserIndex = participants.findIndex((p) => p.id === data.id);
       if (currentUserIndex !== -1) {
         participants[currentUserIndex].bCount = data.bCount;
@@ -154,7 +152,7 @@ io.on('connection', (socket) => {
                   gameStarted = false;
                   gameEnded = true; // 게임 종료 상태 true
                 }
-              }, 60000); // 120초 후에 게임 종료
+              }, 30000); // 120초 후에 게임 종료
             }
           }
           sendInstruction(0); // 시작    
