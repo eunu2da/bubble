@@ -228,7 +228,7 @@ export default {
       document.removeEventListener('touchstart', playMusic);
       };
       document.addEventListener('touchstart', playMusic);
-      
+
       this.$nextTick(() => {
           var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
           this.gameAreaHeight = gameAreaSize.height - 48;
@@ -400,7 +400,7 @@ export default {
     },
     //  이동 update
     updateMovement() {
-      const moveDistance = this.isRun ? 10 : 4; // 이동 속도 조절
+      const moveDistance = this.isRun ? 15 : 10; // 이동 속도 조절
       const deltaX = this.joystickMoveX * moveDistance;
       const deltaY = this.joystickMoveY * moveDistance;
       this.move(deltaX, deltaY);
