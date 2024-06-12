@@ -132,6 +132,8 @@ export default {
   height: 100vh;
   overflow: hidden;
   position: relative;
+  background-color: #3b9aff2b;
+
 }
 
 .board {

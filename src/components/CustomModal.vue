@@ -2,7 +2,7 @@
     <div class="modal-overlay">
       <div class="modal">
         <audio ref="buttonSound" src="../assets/music/effect.mp4" preload="auto"></audio>
-        <p class="modal-message">{{ message }}</p>
+        <p class="modal-message" >{{ message }}</p>
         <div class="modal-buttons">
           <button class="modal-button confirm" @click="handleAction('confirm')">확인</button>
           <button class="modal-button cancel" @click="handleAction('cancel')">취소</button>
@@ -45,7 +45,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,20 +52,20 @@
   }
   
   .modal {
-    background:rgb(0 0 0 / 70%);
-    padding: 30px;
+    background: rgba(0, 0, 0, 0.733);
+    padding: 14px 10px 10px 11px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgb(255 255 255 / 20%);
-    max-width: 180px;
+    max-width: 200px;
     width: 100%;
     text-align: center;
   }
   
   .modal-message {
-    font-weight: bold;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    color: #73ff00;
+    font-weight: 500;
+    font-size: 0.8rem;
+    line-height:1.8;
+    color:  white;
   }
   
   .modal-buttons {
@@ -75,8 +74,8 @@
   }
   
   .modal-button {
-    padding: 10px 20px;
-    font-size: 1rem;
+    padding: 9px 25px;
+    font-size: 0.9rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -84,21 +83,14 @@
   }
   
   .modal-button.confirm {
-    background-color: #007bff;
+    background-color: #000aff8f;
     color: white;
-  }
-  
-  .modal-button.confirm:hover {
-    background-color: #0056b3;
   }
   
   .modal-button.cancel {
-    background-color: #dc3545;
-    color: white;
+    background-color: #ff00188a;
+    color:  white;
   }
   
-  .modal-button.cancel:hover {
-    background-color: #c82333;
-  }
   </style>
   

@@ -196,7 +196,7 @@ export default {
     attemptStartGame (){
       this.playButtonSound();
       setTimeout(() => {
-        this.modalMessage = `${this.survivorsCount}명으로 게임을 시작하시겠습니까? (게임 시작 이후 종료가 불가능합니다.)`;
+        this.modalMessage = `${this.survivorsCount}명으로 게임을 시작하시겠습니까? 게임 시작 이후 종료가 불가능 합니다.`;
         this.showModal = true;
       }, 1000);  
     },
@@ -269,7 +269,7 @@ export default {
         this.$refs.runButton.classList.add('active');
         this.runInterval = setInterval(() => {
           if (this.runProgress > 0) {
-            this.runProgress -= 3;  
+            this.runProgress -= 1;  
           } else {
             this.runStop();  // 이동 중지
           }
@@ -400,7 +400,7 @@ export default {
     },
     //  이동 update
     updateMovement() {
-      const moveDistance = this.isRun ? 15 : 10; // 이동 속도 조절
+      const moveDistance = this.isRun ? 10 : 5; // 이동 속도 조절
       const deltaX = this.joystickMoveX * moveDistance;
       const deltaY = this.joystickMoveY * moveDistance;
       this.move(deltaX, deltaY);
@@ -561,11 +561,11 @@ body, html {
 .myEmojiBox {
   width: 100px;
   height: 130px;
-  border: 2px solid rgb(0 205 255 / 70%);
+  border: 3px solid rgba(200,241,255,.5607843137254902);
   border-radius: 20px;
   text-align: center;
-  background: rgba(0,205,255,.7000000000000001);
-  box-shadow: 0px 15px 34px #fff;
+  background: rgb(0 0 255 / 25%);
+  box-shadow: 0 8px 12px #fff;
 }
 
 .me {
@@ -581,8 +581,7 @@ body, html {
   position: fixed;
   top: 12px;
   right:150px;
-  background-color: rgb(0 0 0 / 18%);
-  color: #73ff00;
+  color: rgb(255 255 255 / 70%);
   font-weight: bold;
   padding: 8px;
   border-radius: 10px;
@@ -605,8 +604,7 @@ body, html {
 
 .currentPosition {
   margin: 4px;
-  background-color: rgb(0 0 0 / 14%);
-  color: #ffffff;
+  color:hsla(0,0%,100%,.7000000000000001);
   width: 100px;
   border-radius: 5px;
   font-size: 0.7rem;
@@ -684,7 +682,7 @@ body, html {
   left: 50%;
   border-radius: 20px;
   transform: translate(-50%, -50%);
-  background-color: rgb(0 0 0 / 73%); 
+  background-color: rgba(0, 0, 0, 0.733);
   border: rgba(0,0,0,.18);
   color: white;
   padding: 7px 30px;
@@ -701,7 +699,7 @@ body, html {
   right: 10px;
   background-color: rgb(0 0 0 / 18%);
   border: rgb(0 0 0 / 18%);
-  color: #ffffff;
+  color: hsla(0,0%,100%,.7000000000000001);
   padding: 10px;
   border-radius: 10px;
   font-size: 1rem;
@@ -710,12 +708,12 @@ body, html {
 
 .run-button {
   position: fixed;
-  right: 25px;
-  bottom: 48px;
+  right: 27px;
+  bottom: 40px;
   width: 90px; 
   height: 90px;
   font-size: 2.5rem; 
-  background: #c8f1ff8f; 
+  background: rgb(255 255 255 / 23%);
   border: none; 
   border-radius: 50%; 
   transition: all 0.3s ease;  
@@ -732,8 +730,8 @@ body, html {
 
 .joystick {
   position: fixed;
-  bottom: 30px;
-  left: 10px;
+  bottom: 37px;
+  left: 14px;
   width: 100px;
   height: 100px;
   display: flex;
@@ -805,16 +803,19 @@ body, html {
 .updatedRank {
   right: 20px;
   position: fixed;
-  background-color:  rgba(0,205,255,.7000000000000001);
-  width: 100px;
-  height: 130px;
-  border: 2px solid rgba(0,205,255,.7000000000000001);
+  background-color: #007bff2b;
+  width: 90px;
+  height: 120px;
+  border: 2px solid rgba(200,241,255,.5607843137254902);
   transition: background-color 0.3s ease;
   border-radius: 20px;
   text-align: center;
+  font-size: smaller;
   bottom: 180px;
+  padding: 10px;
   color: #fff;
-  box-shadow: 0 15px 34px #fff;
+  font-weight:500;
+  box-shadow: 0 8px 12px #fff;
 }
 
 @keyframes move-left-right {
@@ -835,16 +836,18 @@ body, html {
 .start-game-button {
   right: 20px;
   position: fixed;
-  background-color:  rgba(0,205,255,.7000000000000001);
+  background-color: rgb(0 0 255 / 25%);
   width: 100px;
   height: 130px;
-  border: 2px solid rgba(0,205,255,.7000000000000001);
+  border: 3px solid rgba(200,241,255,.5607843137254902);
   transition: background-color 0.3s ease;
   border-radius: 20px;
   text-align: center;
+  font-size: larger;
   bottom: 180px;
   color: #fff;
-  box-shadow: 0 15px 34px #fff;
+  font-weight:500;
+  box-shadow: 0 8px 12px #fff;
 }
 
 .start-game-button:hover {
@@ -854,7 +857,7 @@ body, html {
 .run-controls {
   position: fixed;
   right: 30px;
-  bottom: 50px;
+  bottom: 41px;
 }
 .run-button-wrapper {
   position: relative;
@@ -878,7 +881,7 @@ body, html {
 
 .run-button-progress circle {
   fill: none;
-  stroke:#7fff00;
+  stroke:rgba(200,241,255,.5607843137254902);
   stroke-width: 12;
   stroke-dasharray: 282; /* 2 * Math.PI * 45 */
   transition: stroke-dashoffset 0.3s;
