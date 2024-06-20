@@ -142,7 +142,7 @@ io.on('connection', (socket) => {
           function sendInstruction(index) {
             if (index < gameInstructions.length) {
               io.emit('gameInstructions', gameInstructions[index]);
-              setTimeout(() => sendInstruction(index + 1), 1000); 
+              setTimeout(() => sendInstruction(index + 1), 1600); 
             } else {
               io.emit('gameInstructions', ''); // 모든 지침 전송 이후 마지막으로 빈 문자열을 보냄
               setTimeout(() => {

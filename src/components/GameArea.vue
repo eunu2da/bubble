@@ -15,7 +15,7 @@
         <audio ref="bubbleSound" preload="auto">
           <source src="../assets/music/bubble_pop.mp4" type="audio/mpeg">
         </audio>
-        
+          
         <!-- 게임 배경 이미지 -->
         <img src="@/assets/console.png" alt="Console Background" class="console-img">
         

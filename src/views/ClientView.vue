@@ -4,6 +4,7 @@
       <!--참가자 대기실 -->
       <audio ref="waitingMusic" src="../assets/music/waiting.mp4" loop></audio>
       <audio ref="buttonSound" src="../assets/music/effect.mp4" preload="auto"></audio>
+      <audio ref="countDownAudio" src="../assets/music/count_down.mp4" preload="auto"></audio>
     </div>
       <!--메인 화면-->
       <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
@@ -459,11 +460,16 @@ export default {
    // 방장의 start 신호 이후 게임 설명
    socket.on('gameInstructions', (data) => {
     this.gameInstructions = data;   // 게임 지침 설명 text
+    if(data == '3') {               
+      const countDownAudio = this.$refs.countDownAudio;
+      countDownAudio.play();
+    }
     if(data == '') {               
         this.gameStart = true;      
         this.runProgress = 100;     // run fill
         this.startTimer();          // count 시작
       }
+      
    });
    // 참가자들의 bubble count로 순위 업데이트
    socket.on('rankUpdate', (data) => {

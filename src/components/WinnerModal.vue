@@ -23,6 +23,7 @@
           </ul>
         </div>
       </div>
+      <audio ref="applauseAudio" src="../assets/music/applause.mp4"></audio>
     </div>
   </div>
 </template>
@@ -50,7 +51,11 @@ export default {
       type: Number,
       default: 0
     }
-  }
+  },
+  mounted() {
+    const audio = this.$refs.applauseAudio;
+    audio.play();
+  },
 };
 </script>
 
