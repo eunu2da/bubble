@@ -199,7 +199,7 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.7rem;
   position: absolute;
   transition: all 0.3s ease;
 }

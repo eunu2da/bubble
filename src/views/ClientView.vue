@@ -2,9 +2,13 @@
   <div>
     <div>
       <!--참가자 대기실 -->
+      <audio ref="gameStartedMusic" src="../assets/music/startGame.mp4" loop></audio>
       <audio ref="waitingMusic" src="../assets/music/waiting.mp4" loop></audio>
       <audio ref="buttonSound" src="../assets/music/effect.mp4" preload="auto"></audio>
       <audio ref="countDownAudio" src="../assets/music/count_down.mp4" preload="auto"></audio>
+    
+      <!-- 일등으로 변경됬을 때 효과음 -->
+      <audio ref="changeFirstAudio" src="../assets/music/change_1st.mp4" preload="auto"></audio>
     </div>
       <!--메인 화면-->
       <MainScreen @enter-game="enterGame" ref="mainScreen" v-if="!gameEnd" />
@@ -177,6 +181,7 @@ export default {
     survivorsCount(newValue, oldValue) {
       if (newValue > oldValue) {
         this.animateButton = true;
+        this.playButtonSound();
         setTimeout(() => {
           this.animateButton = false;
         }, 1000);
@@ -362,6 +367,12 @@ export default {
       this.joystickStartY = touch.clientY;
       this.joystickMoveX = 0;
       this.joystickMoveY = 0;
+
+    // 기존의 setInterval 정리
+    if (this.joystickMoveInterval) {
+      clearInterval(this.joystickMoveInterval);
+    }
+
       this.joystickMoveInterval = setInterval(this.updateMovement, 30);
       this.$refs.joystickBase.classList.add('active');
     },
@@ -459,6 +470,10 @@ export default {
     });   
    // 방장의 start 신호 이후 게임 설명
    socket.on('gameInstructions', (data) => {
+
+    const waitingMusic = this.$refs.waitingMusic;
+    const gameStartedMusic = this.$refs.gameStartedMusic;
+
     this.gameInstructions = data;   // 게임 지침 설명 text
     if(data == '3') {               
       const countDownAudio = this.$refs.countDownAudio;
@@ -467,13 +482,24 @@ export default {
     if(data == '') {               
         this.gameStart = true;      
         this.runProgress = 100;     // run fill
+        waitingMusic.pause();
+        gameStartedMusic.play();
         this.startTimer();          // count 시작
       }
       
    });
    // 참가자들의 bubble count로 순위 업데이트
    socket.on('rankUpdate', (data) => {
+    // if (this.previousFirstPlace && this.previousFirstPlace.id !== data.firstPlace.id) {
+      //   const downToSecondAudio = this.$refs.downToSecondAudio;
+      //   downToSecondAudio.play();
+      // }
+
       this.currentRank = data.rank;
+      if(this.currentRank == '1'){
+        const changeFirstAudio = this.$refs.changeFirstAudio;
+        changeFirstAudio.play();
+      }
       this.firstPlace = data.firstPlace;
       this.allParticipants = data.allParticipants;
       this.Currently1stPlace = `현재 1등 참가자는 ${data.firstPlace.emoji}이며, 터트린 갯수는 ${data.firstPlace.bCount}개 입니다.`;
