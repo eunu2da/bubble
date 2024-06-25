@@ -9,14 +9,24 @@ body, html {
     align-items: center;
     flex-direction: column; /* 가로로 배치 */
     background-position: center;
-    font-family: 'Roboto', sans-serif;
-    -webkit-user-select: none; /* Safari, Chrome */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+ */
     user-select: none; /* 표준 문법 */
     touch-action: none; /* 두 번 클릭 확대 방지 */
     background-color: black;
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
+
+button{
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+
 
 img {
     pointer-events: none; /* 이미지 복사 방지 drag */

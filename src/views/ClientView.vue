@@ -6,7 +6,7 @@
       <audio ref="waitingMusic" src="../assets/music/waiting.mp4" loop></audio>
       <audio ref="buttonSound" src="../assets/music/effect.mp4" preload="auto"></audio>
       <audio ref="countDownAudio" src="../assets/music/count_down.mp4" preload="auto"></audio>
-    
+      <audio ref="laugh" src="../assets/music/laugh.mp4" preload="auto"></audio>
       <!-- 일등으로 변경됬을 때 효과음 -->
       <audio ref="changeFirstAudio" src="../assets/music/change_1st.mp4" preload="auto"></audio>
     </div>
@@ -325,6 +325,7 @@ export default {
     // full screen (adroid) toggle
     toggleFullscreen() {
       const elem = document.documentElement;
+      elem.requestFullscreen();
       const toggleButton = document.getElementById('fullscreen-toggle');
       //full screen 일때
       if (!document.fullscreenElement) {
@@ -456,6 +457,8 @@ export default {
         this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
         if (currentUser.isHost) {
           this.host = true;
+          const laughAudio = this.$refs.laugh;
+          laughAudio.play();
         }
       } 
     });
@@ -613,11 +616,9 @@ body, html {
   position: fixed;
   top: 12px;
   right:150px;
-  color: rgb(255 255 255 / 70%);
-  font-weight: bold;
+  color: hsl(0deg 0% 100%);
   padding: 8px;
   border-radius: 10px;
-  font-size: 1rem;
   z-index: 1000;
 }
 
@@ -736,6 +737,7 @@ body, html {
   border-radius: 10px;
   font-size: 1rem;
   z-index: 1000;
+  letter-spacing: -1px;
 } 
 
 .run-button {
