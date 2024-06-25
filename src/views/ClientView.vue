@@ -18,12 +18,16 @@
         <div id="back-button">
            <!-- 현재 위치 표시 -->
           <div class="back-button"></div>
+          <!-- 방장의 시작을 기다리는 중일때만 show -->
+          <div class="neon-container" v-if="nickname && !gameStart">
+            <div class="neon-text">{{nickname}}님 환영합니다. Good luck 🤞</div>
+          </div>
           <div id="currentPosition" class="currentPosition" v-if="showGameArea">
           {{ currentPosition }}
           </div> 
           <!--내 이모지 표시 -->
           <div id="myEmoji" class="myEmojiBox" v-if="showMyCharacter">
-            <h5 class="me">{{isHost}}</h5>
+            <h5 class="me">{{isHost}}</h5> 
             <span class="myCharacter">{{ myEmoji }}</span>
             <div v-if="gameStart && currentRank" >
               <span class="myRank">현재 {{currentRank}}등!</span>
@@ -221,19 +225,14 @@ export default {
       window.location.reload();
     },
     // 게임 입장
-    enterGame() {
+    enterGame(nickname) {
       document.getElementById('main-screen').style.display='none';  //main screen hide
       this.showGameArea = true;
       this.showMyCharacter = true;
       this.showNumOfSurvivors = false;    
-      
-      const playMusic = () => {
-      this.$refs.waitingMusic.play().catch(error => {
-        console.error('Audio play error:', error);
-      });
-      document.removeEventListener('touchstart', playMusic);
-      };
-      document.addEventListener('touchstart', playMusic);
+      this.nickname = nickname; //mainvue에서 전달받은 닉네임
+      console.log('this.nickname?', this.nickname);
+      this.$refs.waitingMusic.play();
 
       this.$nextTick(() => {
           var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
@@ -244,7 +243,7 @@ export default {
             right: gameAreaSize.width
           };
           //서버에게 해당 참가자의 게임영역 전송
-          socket.emit('newParticipant', { emoji: '', gameAreaSize: areaSize });
+          socket.emit('newParticipant', { emoji: '', gameAreaSize: areaSize, nickname: this.nickname });
           if (this.$refs.joystick) {
             this.initJoystick();
           }
@@ -603,6 +602,7 @@ body, html {
   box-shadow: 0 8px 12px #fff;
 }
 
+
 .me {
   color: #ffffff;
   margin: 8px;
@@ -935,5 +935,40 @@ body, html {
     transform: translate(0, -20px);
   }
 }
+
+
+@keyframes neon-move {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .neon-container {
+      position: fixed;
+      width: 100%;
+      height: 100px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .neon-text {
+      font-size: 2rem;
+      color: #fff;
+      text-shadow: 
+        0 0 5px #00ffaa,   
+        0 0 10px #00ffaa, 
+        0 0 15px #00ffaa, 
+        0 0 20px #0000ff,   
+        0 0 25px #0000ff,
+        0 0 30px #ffffff,   
+        0 0 35px #ffffff;
+      position: absolute;
+      white-space: nowrap;
+      animation: neon-move 10s linear infinite;
+    }
 
 </style>

@@ -27,6 +27,8 @@
             class="participant"
             :style="{ left: participant.x + 'px', top: participant.y + 'px' }"
           >
+           
+          <span>{{ nickname }}</span>
           <span v-if="firstPlace && participant.id === firstPlace.id" class="crown">👑</span>
             {{ participant.emoji }}
           </div>
@@ -43,22 +45,25 @@
 </template>
 
 <script>
-import io from 'socket.io-client';
+import io from 'socket.io-client'; 
 var socket = io();
 
 export default {
+  
   props: {
     participants: Array, // 참가자 목록
-    firstPlace: Object
+    firstPlace: Object,
   },
   data() {
     return {
       bubbles: [],   // 생성된 버블을 담을 배열   
       bubbleCount: 0,
       isPlaying: false,    
+      nickname: '',
     };
   },
   mounted() {
+    
     // 게임 지침이 끝난 후 버블 생성 시작
     socket.on('gameInstructions', (data) => {
       if(data == '') {
@@ -68,6 +73,7 @@ export default {
    this.detectCollisions(); // 충돌 감지 시작
   },
   methods: {
+     
     // 배경 음악 토글
     toggleMusic() {
       const audio = this.$refs.backgroundMusic;

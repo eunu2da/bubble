@@ -5,7 +5,10 @@
     <audio ref="gameStartedMusic" src="../assets/music/startGame.mp4" loop></audio>
     <audio ref="keyboard" src="../assets/music/keyboard.mp4" preload="auto"></audio>
     <button v-if="!showNicknameInput" @click="handleEnterGame" :disabled="gameStarted" class="enter-button">{{gameStateTxt}}</button>
-   
+    
+     <div class="neon-container" v-show="neonText">
+      <div class="neon-text">{{nickname}}님 환영합니다. Good luck🤞</div>
+    </div> 
     <!-- 닉네임 입력 필드 -->
     <div v-if="showNicknameInput" class="nickname-input-container">
       <span v-if="showNicknameInput && !isNickName" :disabled="gameStarted" class="none-nickName">닉네임 등록 후 입장이 가능합니다</span>
@@ -47,7 +50,8 @@ export default {
       nickStateTxt: '닉네임 등록 후 입장이 가능합니다',
       isNickName: false,
       isKeyboardVisible: false,
-      keyboard: null
+      keyboard: null,
+      neonText: false,
     };
   },
 
@@ -104,6 +108,7 @@ export default {
       audio.play();
       this.$refs.nicknameButton.style.display = 'none'; //입장버튼 클릭하고 나면 remove
       this.isKeyboardVisible = false; // 키보드 숨기기 시작
+      this.neonText = true;
 
       // 닉네임 회전 애니메이션 추가
       setTimeout(() => {
@@ -122,7 +127,7 @@ export default {
       gameStartedMusic.pause();
       const audio = this.$refs.buttonSound;
       audio.play();       
-      this.$emit('enter-game');
+      this.$emit('enter-game', this.nickname); // 닉네임 전송
   },
 
     
@@ -390,4 +395,39 @@ export default {
     transform: rotate(360deg);
   }
 }
+
+@keyframes neon-move {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+  .neon-container {
+    position: fixed;
+    width: 100%;
+    height: 100px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top:10%;
+  }
+
+  .neon-text {
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 
+      0 0 5px #00ffaa,   
+      0 0 10px #00ffaa, 
+      0 0 15px #00ffaa, 
+      0 0 20px #0000ff,   
+      0 0 25px #0000ff,
+      0 0 30px #ffffff,   
+      0 0 35px #ffffff;
+    position: absolute;
+    white-space: nowrap;
+    animation: neon-move 10s linear infinite;
+  }
 </style>

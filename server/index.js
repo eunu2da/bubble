@@ -59,6 +59,7 @@ io.on('connection', (socket) => {
           bubbleCount : 0,
           isHost : isHost,
           rank : 0,
+          nickname : data.nickname
       };
       // 참가자를 배열에 추가
       participants.push(newParticipant);
