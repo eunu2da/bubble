@@ -12,6 +12,7 @@
     "dependencies": {
         "core-js": "^3.6.5",
         "express": "^4.17.1",
+        "gsap": "^3.12.5",
         "hangul-js": "^0.2.6",
         "path": "^0.12.7",
         "simple-keyboard": "^3.7.87",

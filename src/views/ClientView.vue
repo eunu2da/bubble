@@ -63,7 +63,7 @@
           </div>
         
         <!-- 접속중인 인원 표시 -->
-        <div id="survivorCount" class="survivorCount" v-if="!gameStart">
+        <div id="survivorCount" class="survivorCount" @click="toggleParticipantsList" v-if="!gameStart">
           접속중인 인원  {{ survivorsCount }} 명
         </div> 
         
@@ -102,6 +102,17 @@
       <!--세로 모드일때 -->
       <div id="orientation-warning">
         가로 모드로 돌리면 더 재밌게 게임을 즐기실 수 있습니다!
+      </div>
+      
+      <!-- Participants List Popup -->
+      <div v-if="showParticipantsList" class="participants-list-popup">
+        <div class="popup-header">
+          <h3>접속자 명단</h3>
+          <button @click="toggleParticipantsList">닫기</button>
+        </div>
+        <ul>
+          <li v-for="participant in participants" :key="participant.id">{{ participant.nickname }}</li>
+        </ul>
       </div>
 
       <!-- 게임 설명 -->
@@ -171,6 +182,7 @@ export default {
       runInterval: null,       // 달리기 인터벌
       fillInterval: null,       // 채우기 인터벌
       Currently1stPlace: '',
+      showParticipantsList: false,
     };
   },
   computed: {
@@ -435,6 +447,9 @@ export default {
         joystickStick.classList.remove('shake');
       }, 100);
     },
+    toggleParticipantsList() {
+      this.showParticipantsList = !this.showParticipantsList;
+    },
   },
   mounted() {
     this.isAndroidDevice = this.isAndroid();    // 안드로이드 기기 여부 확인
@@ -512,6 +527,7 @@ export default {
       this.firstPlace = data.whoFianlWinner; 
       this.allParticipants = data.resultRank; // 전체 참가자의 게임 정보
     });
+  
   },
 };
 </script>
@@ -867,6 +883,7 @@ body, html {
 .start-game-button.animated {
   animation: move-left-right 1s ease-in-out 2;
 }
+
 .start-game-button {
   right: 20px;
   position: fixed;
@@ -938,37 +955,100 @@ body, html {
 
 
 @keyframes neon-move {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
-    }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
 
-    .neon-container {
-      position: fixed;
-      width: 100%;
-      height: 100px; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+.neon-container {
+  position: fixed;
+  width: 100%;
+  height: 100px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .neon-text {
-      font-size: 2rem;
-      color: #fff;
-      text-shadow: 
-        0 0 5px #00ffaa,   
-        0 0 10px #00ffaa, 
-        0 0 15px #00ffaa, 
-        0 0 20px #0000ff,   
-        0 0 25px #0000ff,
-        0 0 30px #ffffff,   
-        0 0 35px #ffffff;
-      position: absolute;
-      white-space: nowrap;
-      animation: neon-move 10s linear infinite;
-    }
+.neon-text {
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 
+    0 0 5px #00ffaa,   
+    0 0 10px #00ffaa, 
+    0 0 15px #00ffaa, 
+    0 0 20px #0000ff,   
+    0 0 25px #0000ff,
+    0 0 30px #ffffff,   
+    0 0 35px #ffffff;
+  position: absolute;
+  white-space: nowrap;
+  animation: neon-move 10s linear infinite;
+}
+.participants-list-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  padding: 20px;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.participants-list-popup .popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.participants-list-popup h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.participants-list-popup button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #007BFF;
+}
+
+.participants-list-popup button:hover {
+  text-decoration: underline;
+}
+
+.participants-list-popup ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.participants-list-popup li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
 
 </style>
