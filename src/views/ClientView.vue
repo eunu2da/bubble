@@ -20,7 +20,8 @@
           <div class="back-button"></div>
           <!-- 방장의 시작을 기다리는 중일때만 show -->
           <div class="neon-container" v-if="nickname && !gameStart">
-            <div class="neon-text">{{nickname}}님 환영합니다. Good luck 🤞</div>
+            <div v-if="showWelcomeMessage" class="newPartiMsg">{{ welcomeMessage }}</div>
+            <div v-else class="welcomeMsg">{{nickname}}님 환영합니다. Good luck 🤞</div>
           </div>
           <div id="currentPosition" class="currentPosition" v-if="showGameArea">
           {{ currentPosition }}
@@ -180,9 +181,13 @@ export default {
       animateButton: false,    // 버튼 애니메이션
       runProgress: 100,        // 달리기 진행도
       runInterval: null,       // 달리기 인터벌
-      fillInterval: null,       // 채우기 인터벌
+      fillInterval: null,      // 채우기 인터벌
       Currently1stPlace: '',
       showParticipantsList: false,
+      showWelcomeMessage: false,
+      welcomeMessage: '',
+      welcomeMessageTimeout: null,
+      previousParticipants: [], //현재까지 접속한 참가자배열
     };
   },
   computed: {
@@ -243,9 +248,8 @@ export default {
       this.showMyCharacter = true;
       this.showNumOfSurvivors = false;    
       this.nickname = nickname; //mainvue에서 전달받은 닉네임
+      this.$refs.gameStartedMusic.play();
       console.log('this.nickname?', this.nickname);
-      this.$refs.waitingMusic.play();
-
       this.$nextTick(() => {
           var gameAreaSize = document.getElementById('game-area').getBoundingClientRect();
           this.gameAreaHeight = gameAreaSize.height - 48;
@@ -450,6 +454,45 @@ export default {
     toggleParticipantsList() {
       this.showParticipantsList = !this.showParticipantsList;
     },
+    updateParticipants(participants) {
+      this.previousParticipants = [...this.participants];
+      this.participants = participants;
+      this.survivorsCount = participants.length;
+      this.updateCurrentPosition();
+
+      const currentUser = participants.find(p => p.id === socket.id);
+      if (currentUser) {
+        this.myEmoji = currentUser.emoji; 
+        this.showMyCharacter = true;
+        this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
+        if (currentUser.isHost) {
+          this.host = true;
+          const laughAudio = this.$refs.laugh;
+          laughAudio.play();
+        }
+      }
+
+      // 새로운 참가자 확인
+      const newParticipants = participants.filter(p => !this.previousParticipants.some(prev => prev.id === p.id));
+      newParticipants.forEach(newParticipant => {
+        if (newParticipant.id !== socket.id) {  //본인이 아닌 새로운 참가자가 접속한 경우 welcome message
+        this.handleNewUserJoin(newParticipant.nickname);
+        }
+      });
+    },
+    handleNewUserJoin(newUserNickname) {
+      // 새로운 사용자가 입장하면 환영 메시지 표시
+      this.welcomeMessage = `${newUserNickname}님이 입장하셨습니다.`;
+      this.showWelcomeMessage = true;
+
+      // 일정 시간 후에 원래 메시지로 복귀
+      if (this.welcomeMessageTimeout) {
+        clearTimeout(this.welcomeMessageTimeout);
+      }
+      this.welcomeMessageTimeout = setTimeout(() => {
+        this.showWelcomeMessage = false;
+      }, 5000); // 5초 후에 원래 메시지로 복귀
+    },
   },
   mounted() {
     this.isAndroidDevice = this.isAndroid();    // 안드로이드 기기 여부 확인
@@ -461,21 +504,8 @@ export default {
     });
     // 업데이트 된 참가자 정보
     socket.on('updateParticipants', (participants) => {
-      this.participants = participants;
-      this.survivorsCount = participants.length;
-      this.updateCurrentPosition();
-      const currentUser = participants.find(p => p.id === socket.id);
-      if (currentUser) {
-        this.myEmoji = currentUser.emoji; 
-        this.showMyCharacter = true;
-        this.isHost = currentUser.isHost ? '👑방장👑' : '👔참가자👔';
-        if (currentUser.isHost) {
-          this.host = true;
-          const laughAudio = this.$refs.laugh;
-          laughAudio.play();
-        }
-      } 
-    });
+      this.updateParticipants(participants);
+    }); 
     // 서버로부터 전달받은 참가자의 위치 정보 업데이트
     socket.on('positionUpdate', (data) => {
       const participant = this.participants.find(p => p.id === data.id);
@@ -487,9 +517,9 @@ export default {
     });   
    // 방장의 start 신호 이후 게임 설명
    socket.on('gameInstructions', (data) => {
-
     const waitingMusic = this.$refs.waitingMusic;
     const gameStartedMusic = this.$refs.gameStartedMusic;
+    this.gameStart = true;
 
     this.gameInstructions = data;   // 게임 지침 설명 text
     if(data == '3') {               
@@ -497,10 +527,9 @@ export default {
       countDownAudio.play();
     }
     if(data == '') {               
-        this.gameStart = true;      
         this.runProgress = 100;     // run fill
-        waitingMusic.pause();
-        gameStartedMusic.play();
+        this.$refs.gameStartedMusic.pause();
+        this.$refs.waitingMusic.play();
         this.startTimer();          // count 시작
       }
       
@@ -972,7 +1001,7 @@ body, html {
   justify-content: center;
 }
 
-.neon-text {
+.welcomeMsg {
   font-size: 2rem;
   color: #fff;
   text-shadow: 
@@ -981,6 +1010,22 @@ body, html {
     0 0 15px #00ffaa, 
     0 0 20px #0000ff,   
     0 0 25px #0000ff,
+    0 0 30px #ffffff,   
+    0 0 35px #ffffff;
+  position: absolute;
+  white-space: nowrap;
+  animation: neon-move 10s linear infinite;
+}
+
+.newPartiMsg {
+  font-size: 2rem;
+  color: #fff;
+  text-shadow: 
+    0 0 5px #ff0000,   
+    0 0 10px #ff0000, 
+    0 0 15px #ff0000, 
+    0 0 20px #ff4500,   
+    0 0 25px #ff4500,
     0 0 30px #ffffff,   
     0 0 35px #ffffff;
   position: absolute;

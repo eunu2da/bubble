@@ -100,6 +100,7 @@ export default {
           delay: Math.random() * 2 
         };
         this.bubbles.push(bubble);
+        console.log('this.bubble현재 갯수는?', this.bubbles);
       }, 1000); // 버블 생성 간격
     },
     // 충돌 감지
@@ -111,7 +112,7 @@ export default {
             const dy = bubble.y - participant.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < 45) { // 버블과 참가자의 반지름을 더한 값보다 작으면 충돌
+            if (distance < 35) { // 버블과 참가자의 반지름을 더한 값보다 작으면 충돌
               this.bubbles.splice(bubbleIndex, 1); // 버블 제거
               this.bubbleCount++; // 터진 버블 카운트를 증가시킴
               this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit

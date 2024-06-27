@@ -118,7 +118,6 @@ export default {
       onComplete: () => {
         setTimeout(() => {
           burstContainer.remove();
-          gameStartedMusic.play();
           this.showNicknameInput = true;
         }, 2000); // 애니메이션 종료 후 5초 대기
       }
@@ -233,20 +232,15 @@ export default {
         setTimeout(() => {
           this.transitionToNextScene(); // 다음 장면으로 전환
         }, 3000); // 애니메이션 시간과 동일하게 설정
-      }, 1000);   // 회전 애니메이션 시간과 동일하게 설정
+      }, 1000);  
     }
   },
-
-    
     transitionToNextScene() {
-      const gameStartedMusic = this.$refs.gameStartedMusic;
-      gameStartedMusic.pause();
       const audio = this.$refs.buttonSound;
       audio.play();       
       this.$emit('enter-game', this.nickname); // 닉네임 전송
   },
-
-    
+  
     showCustomKeyboard() {
       this.isKeyboardVisible = true;
 
