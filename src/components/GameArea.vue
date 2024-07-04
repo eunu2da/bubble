@@ -33,11 +33,11 @@
             {{ participant.emoji }}
           </div>
         <!-- 버블 요소 -->
-          <div  
+          <div
             v-for="bubble in bubbles"
             :key="bubble.id"
             class="bubble"
-            :style="{ left: bubble.x + 'px', top: bubble.y + 'px', animationDelay: bubble.delay + 's' }"
+            :style="{ left: bubble.x * gameAreaWidth + 'px', top: bubble.y * gameAreaHeight + 'px', animationDelay: bubble.delay + 's' }"
           ></div>
         </div>
     </div>
@@ -60,18 +60,22 @@ export default {
       bubbleCount: 0,
       isPlaying: false,    
       nickname: '',
+      gameAreaWidth: window.innerWidth * 0.9, // 게임 영역 너비의 90%
+      gameAreaHeight: window.innerHeight * 0.7, // 게임 영역 높이의 70%
     };
   },
   mounted() {
     
-    // 게임 지침이 끝난 후 버블 생성 시작
-    socket.on('gameInstructions', (data) => {
-      if(data == '') {
-        setTimeout(() => this.startBubbleGeneration(), 1000);
-      }  
+    socket.on('newBubble', (bubble) => {
+      if (this.bubbles.length >= 20) {
+        this.bubbles.shift(); // 오래된 버블 제거
+      }
+      this.bubbles.push(bubble);
     });
+
    this.detectCollisions(); // 충돌 감지 시작
   },
+
   methods: {
      
     // 배경 음악 토글
@@ -88,28 +92,30 @@ export default {
       this.isPlaying = !this.isPlaying;
     },
     // 버블 생성
-    startBubbleGeneration() {
-      setInterval(() => {
-        if (this.bubbles.length >= 20) {
-          this.bubbles.shift(); // 오래된 버블 제거
-        }
-        const bubble = {
-          id: Date.now() + Math.random(),
-          x: Math.random() * (window.innerWidth * 0.9), // 게임 영역 너비의 90%
-          y: Math.random() * (window.innerHeight * 0.7), // 게임 영역 높이의 70%
-          delay: Math.random() * 2 
-        };
-        this.bubbles.push(bubble);
-        console.log('this.bubble현재 갯수는?', this.bubbles);
-      }, 1000); // 버블 생성 간격
-    },
+    // startBubbleGeneration() {
+    //   setInterval(() => {
+    //     if (this.bubbles.length >= 20) {
+    //       this.bubbles.shift(); // 오래된 버블 제거
+    //     }
+    //     const bubble = {
+    //       id: Date.now() + Math.random(),
+    //       x: Math.random() * (window.innerWidth * 0.9), // 게임 영역 너비의 90%
+    //       y: Math.random() * (window.innerHeight * 0.7), // 게임 영역 높이의 70%
+    //       delay: Math.random() * 2 
+    //     };
+    //     this.bubbles.push(bubble);
+    //     console.log('this.bubble현재 갯수는?', this.bubbles);
+    //   }, 1000); // 버블 생성 간격
+    // },
     // 충돌 감지
     detectCollisions() {
       setInterval(() => {
         this.bubbles.forEach((bubble, bubbleIndex) => {
           this.participants.forEach((participant) => {
-            const dx = bubble.x - participant.x;
-            const dy = bubble.y - participant.y;
+            const bubbleX = bubble.x * this.gameAreaWidth;
+            const bubbleY = bubble.y * this.gameAreaHeight;
+            const dx = bubbleX - participant.x;
+            const dy = bubbleY - participant.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < 35) { // 버블과 참가자의 반지름을 더한 값보다 작으면 충돌

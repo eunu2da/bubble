@@ -558,8 +558,9 @@ export default {
   font-family: "Jua", sans-serif;  
   background: hsla(0,0%,100%,0);
   width: 70%;
+  padding: 20px;
   color : #005bff;
-  font-size: xx-large;
+  font-size: x-large;
   block-size: auto;
   margin: -45px;
   animation: borderBlink 2.5s infinite;

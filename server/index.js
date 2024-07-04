@@ -20,6 +20,27 @@ let gameStarted = false;   // 게임 시작 상태
 const PORT = process.env.PORT || 4000;
 let hostId = null;  // 방장 ID 저장
 let isHost = false; // 방장 여부 저장
+let bubbles = [];
+
+
+// 버블 생성 함수
+function startBubbleGeneration() {
+  setInterval(() => {
+    if (bubbles.length >= 20) {
+      bubbles.shift(); // 오래된 버블 제거
+    }
+    const bubble = {
+      id: Date.now() + Math.random(),
+      x: Math.random() * 0.9, // 비율로 전송
+      y: Math.random() * 0.7, // 비율로 전송
+      delay: Math.random() * 2
+    };
+    bubbles.push(bubble);
+    io.emit('newBubble', bubble); // 모든 클라이언트에게 전송
+  }, 1000); // 1초마다 버블 생성
+}
+
+
 
 // 클라이언트가 소켓에 연결되었을 때
 io.on('connection', (socket) => {
@@ -129,23 +150,24 @@ io.on('connection', (socket) => {
     });
     // 방장의 start game 신호
     socket.on('startGame', () => {
-        gameStarted = true;
-        gameEnded = false; // 게임 시작 시 게임 종료 상태를 초기화
-        const gameInstructions = [
-            '이 게임은 방울을 많이 터트리는 사람이 우승하는 게임이에요.',
-            '어떤 방울 안에는 특별한 선물도 들어있답니다~ㅎㅎ',
-            '그럼 준비하시고 ~',
-            3,
-            2,
-            1,
-            'start!',
-          ];
-          function sendInstruction(index) {
-            if (index < gameInstructions.length) {
-              io.emit('gameInstructions', gameInstructions[index]);
-              setTimeout(() => sendInstruction(index + 1), 1600); 
-            } else {
-              io.emit('gameInstructions', ''); // 모든 지침 전송 이후 마지막으로 빈 문자열을 보냄
+      gameStarted = true;
+      gameEnded = false; // 게임 시작 시 게임 종료 상태를 초기화
+      const gameInstructions = [
+        '이 게임은 방울을 많이 터트리는 사람이 우승하는 게임이에요.',
+        '어떤 방울 안에는 특별한 선물도 들어있답니다~ㅎㅎ',
+        '그럼 준비하시고 ~',
+        3,
+        2,
+        1,
+        'start!',
+      ];
+      function sendInstruction(index) {
+        if (index < gameInstructions.length) {
+          io.emit('gameInstructions', gameInstructions[index]);
+          setTimeout(() => sendInstruction(index + 1), 1600); 
+        } else {
+          io.emit('gameInstructions', ''); // 모든 지침 전송 이후 마지막으로 빈 문자열을 보냄
+          startBubbleGeneration(); // 버블 생성 시작
               setTimeout(() => {
                 if(!gameEnded){
                   io.emit('showRank');
