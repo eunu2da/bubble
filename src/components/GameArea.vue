@@ -13,7 +13,7 @@
         
         <!-- 버블 소리 오디오 요소 -->
         <audio ref="bubbleSound" preload="auto">
-          <source src="../assets/music/bubble_pop.mp4" type="audio/mpeg">
+          <source src="../assets/music/water.mp4" type="audio/mpeg">
         </audio>
           
         <!-- 게임 배경 이미지 -->
@@ -33,12 +33,14 @@
             {{ participant.emoji }}
           </div>
         <!-- 버블 요소 -->
-          <div
-            v-for="bubble in bubbles"
-            :key="bubble.id"
-            class="bubble"
-            :style="{ left: bubble.x * gameAreaWidth + 'px', top: bubble.y * gameAreaHeight + 'px', animationDelay: bubble.delay + 's' }"
-          ></div>
+        <div
+          v-for="bubble in bubbles"
+          :key="bubble.id"
+          :ref="'bubble-' + bubble.id"
+          :class="['bubble', { 'exploded': bubble.exploded }]"
+          :style="{ left: bubble.x * gameAreaWidth + 'px', top: bubble.y * gameAreaHeight + 'px', animationDelay: bubble.delay + 's' }"
+        >
+        </div>
         </div>
     </div>
   </div>
@@ -107,6 +109,18 @@ export default {
     //     console.log('this.bubble현재 갯수는?', this.bubbles);
     //   }, 1000); // 버블 생성 간격
     // },
+    
+    popBubble(bubble) {
+      const bubbleElement = this.$refs['bubble-' + bubble.id][0];
+      if (bubbleElement) {
+        bubble.exploded = true;
+  
+        setTimeout(() => {
+          this.bubbles = this.bubbles.filter(b => b.id !== bubble.id);
+        }, 400); // 0.5초 후에 버블 제거
+      }
+    },
+
     // 충돌 감지
     detectCollisions() {
       setInterval(() => {
@@ -118,20 +132,21 @@ export default {
             const dy = bubbleY - participant.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < 35) { // 버블과 참가자의 반지름을 더한 값보다 작으면 충돌
-              this.bubbles.splice(bubbleIndex, 1); // 버블 제거
-              this.bubbleCount++; // 터진 버블 카운트를 증가시킴
-              this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
-              console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
-              if (this.$refs.bubbleSound) {
-                this.$refs.bubbleSound.play().catch(error => {
-                  console.error('오디오 재생 오류:', error);
-                });
-              }
+
+            if (distance < 35 && !bubble.exploded) { // 버블과 참가자의 반지름을 더한 값보다 작으면 충돌 및 터지지 않은 버블만
+            this.popBubble(bubble);
+            this.bubbleCount++; // 터진 버블 카운트를 증가시킴
+            this.$emit('updateBubbleCount', this.bubbleCount); // 이벤트 emit
+            console.log(`현재 터트린 버블갯수!! : ${this.bubbleCount}`);
+            if (this.$refs.bubbleSound) {
+              this.$refs.bubbleSound.play().catch(error => {
+                console.error('오디오 재생 오류:', error);
+              });
             }
-          });
+          }
         });
-      }, 50); // 50ms마다 충돌 감지
+      });
+    }, 50); // 50ms마다 충돌 감지
   },
   }
 };
@@ -173,17 +188,36 @@ export default {
   height: 97%;
   overflow: hidden;
 }
+.bubble-container {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+}
 
 .bubble {
   width: 40px;
   height: 40px;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(0, 0, 255, 0.3));
+  background: radial-gradient(circle at 30% 30%, rgba(97, 197, 255, 0.9), rgba(73, 198, 255, 0.3));
   border-radius: 50%;
   position: absolute;
-  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(0, 0, 255, 0.7), 0 0 20px rgba(0, 0, 255, 0.5);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(48, 196, 255, 0.7), 0 0 20px rgba(54, 118, 255, 0.5);
   animation: float 2s infinite ease-in-out, rise 3s infinite ease-in-out;
   opacity: 0.9;
 }
+
+.exploded {
+  width: 30px;
+  height: 90px;
+  background: url('../assets/boom.gif') no-repeat center center !important;
+  background-size: cover !important;
+  box-shadow: none !important;
+  animation:none;
+  border-radius: none;
+  position: none;
+}
+
+
+
 
 @keyframes float {
   0% {
@@ -212,15 +246,15 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   position: absolute;
   transition: all 0.3s ease;
 }
 
 .crown {
   position: absolute;
-  top: -20px;
-  font-size: 2.0rem;
+  top: -11px;
+  font-size: 1.5rem;
 }
 
 .music-controls {
@@ -242,6 +276,8 @@ export default {
   transition: background-color 0.3s ease;
   text-align: center;
 }
+
+
  
 
 </style>
