@@ -191,32 +191,21 @@ module.exports = __webpack_require__.p + "media/laugh.bfdaf31b.mp4";
 
 /***/ }),
 
-/***/ "2d14":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_1a4339c4_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("6e63");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_1a4339c4_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_1a4339c4_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
-
-
-/***/ }),
-
-/***/ "3915":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WinnerModal_vue_vue_type_style_index_0_id_38cd5888_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("9bc5");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WinnerModal_vue_vue_type_style_index_0_id_38cd5888_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WinnerModal_vue_vue_type_style_index_0_id_38cd5888_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
-
-
-/***/ }),
-
 /***/ "4185":
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "img/winner.843b48c6.gif";
+
+/***/ }),
+
+/***/ "45e9":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WinnerModal_vue_vue_type_style_index_0_id_7b4309ae_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("5aaa");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WinnerModal_vue_vue_type_style_index_0_id_7b4309ae_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WinnerModal_vue_vue_type_style_index_0_id_7b4309ae_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+
 
 /***/ }),
 
@@ -962,8 +951,8 @@ var MainScreen_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* harmony default export */ var MainScreen = (MainScreen_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7e739f98-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=template&id=1a4339c4&scoped=true
-var GameAreavue_type_template_id_1a4339c4_scoped_true_render = function render() {
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7e739f98-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=template&id=7ac74dcd&scoped=true
+var GameAreavue_type_template_id_7ac74dcd_scoped_true_render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c('div', {
@@ -1031,9 +1020,9 @@ var GameAreavue_type_template_id_1a4339c4_scoped_true_render = function render()
     });
   })], 2)])]);
 };
-var GameAreavue_type_template_id_1a4339c4_scoped_true_staticRenderFns = [];
+var GameAreavue_type_template_id_7ac74dcd_scoped_true_staticRenderFns = [];
 
-// CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=template&id=1a4339c4&scoped=true
+// CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=template&id=7ac74dcd&scoped=true
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/GameArea.vue?vue&type=script&lang=js
 
@@ -1079,23 +1068,6 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
       }
       this.isPlaying = !this.isPlaying;
     },
-    // 버블 생성
-    // startBubbleGeneration() {
-    //   setInterval(() => {
-    //     if (this.bubbles.length >= 20) {
-    //       this.bubbles.shift(); // 오래된 버블 제거
-    //     }
-    //     const bubble = {
-    //       id: Date.now() + Math.random(),
-    //       x: Math.random() * (window.innerWidth * 0.9), // 게임 영역 너비의 90%
-    //       y: Math.random() * (window.innerHeight * 0.7), // 게임 영역 높이의 70%
-    //       delay: Math.random() * 2 
-    //     };
-    //     this.bubbles.push(bubble);
-    //     console.log('this.bubble현재 갯수는?', this.bubbles);
-    //   }, 1000); // 버블 생성 간격
-    // },
-
     popBubble(bubble) {
       const bubbleElement = this.$refs['bubble-' + bubble.id][0];
       if (bubbleElement) {
@@ -1135,8 +1107,8 @@ var GameAreavue_type_script_lang_js_socket = Object(esm["a" /* default */])();
 });
 // CONCATENATED MODULE: ./src/components/GameArea.vue?vue&type=script&lang=js
  /* harmony default export */ var components_GameAreavue_type_script_lang_js = (GameAreavue_type_script_lang_js); 
-// EXTERNAL MODULE: ./src/components/GameArea.vue?vue&type=style&index=0&id=1a4339c4&prod&scoped=true&lang=css
-var GameAreavue_type_style_index_0_id_1a4339c4_prod_scoped_true_lang_css = __webpack_require__("2d14");
+// EXTERNAL MODULE: ./src/components/GameArea.vue?vue&type=style&index=0&id=7ac74dcd&prod&scoped=true&lang=css
+var GameAreavue_type_style_index_0_id_7ac74dcd_prod_scoped_true_lang_css = __webpack_require__("ae29");
 
 // CONCATENATED MODULE: ./src/components/GameArea.vue
 
@@ -1149,18 +1121,18 @@ var GameAreavue_type_style_index_0_id_1a4339c4_prod_scoped_true_lang_css = __web
 
 var GameArea_component = Object(componentNormalizer["a" /* default */])(
   components_GameAreavue_type_script_lang_js,
-  GameAreavue_type_template_id_1a4339c4_scoped_true_render,
-  GameAreavue_type_template_id_1a4339c4_scoped_true_staticRenderFns,
+  GameAreavue_type_template_id_7ac74dcd_scoped_true_render,
+  GameAreavue_type_template_id_7ac74dcd_scoped_true_staticRenderFns,
   false,
   null,
-  "1a4339c4",
+  "7ac74dcd",
   null
   
 )
 
 /* harmony default export */ var GameArea = (GameArea_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7e739f98-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WinnerModal.vue?vue&type=template&id=38cd5888&scoped=true
-var WinnerModalvue_type_template_id_38cd5888_scoped_true_render = function render() {
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7e739f98-vue-loader-template"}!./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WinnerModal.vue?vue&type=template&id=7b4309ae&scoped=true
+var WinnerModalvue_type_template_id_7b4309ae_scoped_true_render = function render() {
   var _vm = this,
     _c = _vm._self._c;
   return _c('div', {
@@ -1192,7 +1164,7 @@ var WinnerModalvue_type_template_id_38cd5888_scoped_true_render = function rende
       "src": __webpack_require__("4185"),
       "alt": "Winner GIF"
     }
-  })]), _c('p', [_vm._v(" (" + _vm._s(_vm.winner.id) + ")가 "), _c('br'), _vm._v(_vm._s(_vm.winner.bCount) + "개의 버블을 터트렸습니다! ")])])]), _c('div', {
+  })]), _c('p', [_vm._v(" " + _vm._s(_vm.winner.nickname) + "님이 "), _c('br'), _vm._v(_vm._s(_vm.winner.bCount) + "개의 버블을 터트렸습니다! ")])])]), _c('div', {
     staticClass: "ranking-section"
   }, [_c('ul', {
     staticClass: "ranking-list"
@@ -1202,7 +1174,7 @@ var WinnerModalvue_type_template_id_38cd5888_scoped_true_render = function rende
       staticClass: "ranking-item"
     }, [_c('span', {
       staticClass: "rank"
-    }, [_vm._v(_vm._s(index + 1) + "등:")]), _vm._v(" " + _vm._s(participant.emoji) + " (" + _vm._s(participant.id) + ") - " + _vm._s(participant.bCount) + "개 ")]);
+    }, [_vm._v(_vm._s(index + 1) + "등:")]), _vm._v(" " + _vm._s(participant.emoji) + _vm._s(participant.nickname) + " - " + _vm._s(participant.bCount) + "개 ")]);
   }), 0)])]), _c('audio', {
     ref: "applauseAudio",
     attrs: {
@@ -1210,9 +1182,9 @@ var WinnerModalvue_type_template_id_38cd5888_scoped_true_render = function rende
     }
   })])]);
 };
-var WinnerModalvue_type_template_id_38cd5888_scoped_true_staticRenderFns = [];
+var WinnerModalvue_type_template_id_7b4309ae_scoped_true_staticRenderFns = [];
 
-// CONCATENATED MODULE: ./src/components/WinnerModal.vue?vue&type=template&id=38cd5888&scoped=true
+// CONCATENATED MODULE: ./src/components/WinnerModal.vue?vue&type=template&id=7b4309ae&scoped=true
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/WinnerModal.vue?vue&type=script&lang=js
 /* harmony default export */ var WinnerModalvue_type_script_lang_js = ({
@@ -1245,8 +1217,8 @@ var WinnerModalvue_type_template_id_38cd5888_scoped_true_staticRenderFns = [];
 });
 // CONCATENATED MODULE: ./src/components/WinnerModal.vue?vue&type=script&lang=js
  /* harmony default export */ var components_WinnerModalvue_type_script_lang_js = (WinnerModalvue_type_script_lang_js); 
-// EXTERNAL MODULE: ./src/components/WinnerModal.vue?vue&type=style&index=0&id=38cd5888&prod&scoped=true&lang=css
-var WinnerModalvue_type_style_index_0_id_38cd5888_prod_scoped_true_lang_css = __webpack_require__("3915");
+// EXTERNAL MODULE: ./src/components/WinnerModal.vue?vue&type=style&index=0&id=7b4309ae&prod&scoped=true&lang=css
+var WinnerModalvue_type_style_index_0_id_7b4309ae_prod_scoped_true_lang_css = __webpack_require__("45e9");
 
 // CONCATENATED MODULE: ./src/components/WinnerModal.vue
 
@@ -1259,11 +1231,11 @@ var WinnerModalvue_type_style_index_0_id_38cd5888_prod_scoped_true_lang_css = __
 
 var WinnerModal_component = Object(componentNormalizer["a" /* default */])(
   components_WinnerModalvue_type_script_lang_js,
-  WinnerModalvue_type_template_id_38cd5888_scoped_true_render,
-  WinnerModalvue_type_template_id_38cd5888_scoped_true_staticRenderFns,
+  WinnerModalvue_type_template_id_7b4309ae_scoped_true_render,
+  WinnerModalvue_type_template_id_7b4309ae_scoped_true_staticRenderFns,
   false,
   null,
-  "38cd5888",
+  "7b4309ae",
   null
   
 )
@@ -2107,6 +2079,20 @@ new vue_runtime_esm["a" /* default */]({
 
 /***/ }),
 
+/***/ "5aaa":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "5c8e":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "5de8":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2125,13 +2111,6 @@ module.exports = __webpack_require__.p + "media/keyboard.76ffa9c0.mp4";
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "media/applause.f30d1fc3.mp4";
-
-/***/ }),
-
-/***/ "6e63":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -2167,17 +2146,21 @@ module.exports = __webpack_require__.p + "media/effect.19a355e0.mp4";
 
 /***/ }),
 
-/***/ "9bc5":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "a672":
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "media/startGame.097a603f.mp4";
+
+/***/ }),
+
+/***/ "ae29":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_7ac74dcd_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("5c8e");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_7ac74dcd_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GameArea_vue_vue_type_style_index_0_id_7ac74dcd_prod_scoped_true_lang_css__WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+
 
 /***/ }),
 
@@ -2278,4 +2261,4 @@ module.exports = __webpack_require__.p + "media/waiting.ecf485ee.mp4";
 /***/ })
 
 /******/ });
-//# sourceMappingURL=app.9b4a888d.js.map
+//# sourceMappingURL=app.1634d3df.js.map

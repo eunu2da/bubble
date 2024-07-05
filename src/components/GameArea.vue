@@ -93,23 +93,7 @@ export default {
       }
       this.isPlaying = !this.isPlaying;
     },
-    // 버블 생성
-    // startBubbleGeneration() {
-    //   setInterval(() => {
-    //     if (this.bubbles.length >= 20) {
-    //       this.bubbles.shift(); // 오래된 버블 제거
-    //     }
-    //     const bubble = {
-    //       id: Date.now() + Math.random(),
-    //       x: Math.random() * (window.innerWidth * 0.9), // 게임 영역 너비의 90%
-    //       y: Math.random() * (window.innerHeight * 0.7), // 게임 영역 높이의 70%
-    //       delay: Math.random() * 2 
-    //     };
-    //     this.bubbles.push(bubble);
-    //     console.log('this.bubble현재 갯수는?', this.bubbles);
-    //   }, 1000); // 버블 생성 간격
-    // },
-    
+ 
     popBubble(bubble) {
       const bubbleElement = this.$refs['bubble-' + bubble.id][0];
       if (bubbleElement) {

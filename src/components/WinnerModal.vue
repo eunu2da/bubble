@@ -11,14 +11,14 @@
               <img src="../assets/client/winner.gif" alt="Winner GIF" class="winner-gif" />
             </div>
             <p>
-              ({{ winner.id }})가 <br>{{ winner.bCount }}개의 버블을 터트렸습니다!
+              {{ winner.nickname }}님이 <br>{{ winner.bCount }}개의 버블을 터트렸습니다!
             </p>
           </div>
         </div>
         <div class="ranking-section">
           <ul class="ranking-list">
             <li v-for="(participant, index) in sortedParticipants" :key="participant.id" class="ranking-item">
-              <span class="rank">{{ index + 1 }}등:</span> {{ participant.emoji }} ({{ participant.id }}) - {{ participant.bCount }}개
+              <span class="rank">{{ index + 1 }}등:</span> {{ participant.emoji }}{{ participant.nickname }} - {{ participant.bCount }}개
             </li>
           </ul>
         </div>
