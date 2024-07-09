@@ -109,6 +109,7 @@ h2 {
   font-size: 1.8em;
 }
 
+
 .content-wrapper {
   display: flex;
   justify-content: space-between;

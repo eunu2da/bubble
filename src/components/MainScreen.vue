@@ -18,7 +18,7 @@
       <span v-if="showNicknameInput && !isNickName" :disabled="gameStarted" class="none-nickName">닉네임 등록 후 입장이 가능합니다</span>
       <label for="nickname" class="nickname-label">나의 닉네임은</label>
       <!--닉네임이 없는경우 애니메이션 추가 -->
-      <div v-if="!isNickName" @click="showCustomKeyboard" class="nickname-display">
+      <div v-if="!isNickName" @click="showCustomKeyboard" class="your-nick">
         <span v-for="(char, index) in splitText('닉네임을 입력하세요')" :key="index" class="char" :style="{'animation-delay': `${index * 0.2}s`}">{{char}}</span>
       </div>
       <!--닉네임이 있을때 -->
@@ -222,8 +222,8 @@ export default {
       const audio = this.$refs.buttonSound;
       audio.play();
       this.$refs.nicknameButton.style.display = 'none'; //입장버튼 클릭하고 나면 remove
-      this.isKeyboardVisible = false; // 키보드 숨기기 시작
-      this.neonText = true;
+      document.getElementById('keyboard-container').remove(); // 시작이후 키보드 삭제
+      this.neonText = true; 
 
       // 닉네임 회전 애니메이션 추가
       setTimeout(() => {
@@ -486,6 +486,18 @@ export default {
   animation: borderRainbow 5s infinite;
 }
 
+.your-nick {
+  background-color: transparent;
+  color:#c0ff00;
+  border: none;
+  font-size: 2.5rem;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  animation: blink 5s infinite ease-in-out, textRainbow 5s infinite linear;
+}
+
 @keyframes borderRainbow {
   0% {
     border-bottom-color: rgb(255, 105, 180); /* 핫핑크 */
@@ -578,10 +590,6 @@ export default {
   border-bottom: 1px solid #ffffff0f; 
 }
 
-.nickname-display .char {
-  display: inline-block;
-  animation: blink 5s infinite ease-in-out, textRainbow 5s infinite linear;
-}
 
 @keyframes textRainbow {
   0% {
