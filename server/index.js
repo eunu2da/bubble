@@ -47,6 +47,11 @@ io.on('connection', (socket) => {
   
     // 현재 접속자 수를 클라이언트에게 전송
     socket.emit('currentclientCount', participants.length);
+    // 현재 접속자들의 이름을 클라이언트에게 전송 (중복 네임 체크)
+    
+    socket.on('reqCurrentClientNames', () => {
+      socket.emit('sendCurrentClientNames', participants);
+    });
 
     // 게임 시작 상태를 체크
     socket.on('checkGameStatus', () => {

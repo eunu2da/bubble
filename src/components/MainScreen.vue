@@ -24,7 +24,8 @@
       <!--닉네임이 있을때 -->
       <div v-if="isNickName" @click="showCustomKeyboard" class="nickname-display" ref="nicknameDisplay">{{nickname}}</div>
       <span class="nickname-label">입니다</span>
-      <button v-if="showNicknameInput && isNickName" @click="nicknameCheck" :disabled="gameStarted" class="nickname-button" ref="nicknameButton">{{nickStateTxt}}</button>  
+      <button v-show="!isDuplicate" v-if="showNicknameInput && isNickName" @click="nicknameCheck" :disabled="gameStarted" class="nickname-button" ref="nicknameButton">{{nickStateTxt}}</button>  
+      <button v-if="isDuplicate" :disabled="gameStarted" class="nickname-button">{{nickStateTxt}}</button>  
     </div>
     <!-- 커스텀 키보드 -->
     <div id="keyboard-container" class="customKeyBoard" ref="keyboardContainer" v-show="isKeyboardVisible"></div>
@@ -57,20 +58,15 @@ export default {
       isKeyboardVisible: false,
       keyboard: null,
       neonText: false,
+      isDuplicate: false,
     };
   },
 
   watch: {
 
     nickname(newVal) {
-      if (newVal.trim() !== '') {
-      this.isNickName = true;
-      this.nickStateTxt = '좋은 닉네임입니다. 바로 게임을 시작해보세요!';
-    } else {
-      this.isNickName = false;
-      this.nickStateTxt = '닉네임 등록 후 입장이 가능합니다';
+      this.checkNickname(newVal);
     }
-  }
 },
 
   mounted() {
@@ -90,10 +86,43 @@ export default {
       this.gameStateTxt = '게임 입장하기';
       this.gameStarted = false;
     });
+
+    socket.on('sendCurrentClientNames', (data) => {
+      this.handleCurrentClientNames(data);
+    });
+
+   
   },
 
   methods: {
     
+    checkNickname(name) {
+      const newVal = name.trim();
+      if (newVal !== '') {
+        socket.emit('reqCurrentClientNames');
+      } else {
+        this.isNickName = false;
+        this.nickStateTxt = '닉네임 등록 후 입장이 가능합니다';
+      }
+    },
+
+    handleCurrentClientNames(data) {
+      console.log('sendCurrentClientNames:::', data);
+      this.participants = data;
+
+      const newVal = this.nickname.trim();
+      const nicknames = this.participants.map(participant => participant.nickname);
+      const isDuplicate = nicknames.includes(newVal);
+      if (isDuplicate) {
+        this.nickStateTxt = '이미 사용 중인 닉네임 입니다.';
+        this.isDuplicate = true;
+      } else {
+        this.isNickName = true;
+        this.isDuplicate = false;
+        this.nickStateTxt = '좋은 닉네임입니다. 바로 게임을 시작해보세요!';
+      }
+    },
+
     handleEnterGame() {
     const gameStartedMusic = this.$refs.gameStartedMusic;
     const hello = this.$refs.hello;
@@ -217,7 +246,8 @@ export default {
     }
 },
 
-    nicknameCheck() {
+  nicknameCheck() {
+
     if (this.nickname.trim() !== '' && !this.gameStarted) {
       const audio = this.$refs.buttonSound;
       audio.play();
@@ -341,9 +371,8 @@ export default {
 
   splitText(text) {
     return text.split('');
-  }
-
   },
+},
 
 
 };
@@ -387,17 +416,15 @@ export default {
 
 
 .nickname-button {
-  width: 351px;
-  height: 25px;
-  margin-bottom: 11px;
-  margin-left: 44px;
+  width: 50%;
+  height: 39px;
+  margin: 11px;
   cursor: pointer;
   border-radius: 8px;
   color: #ffffff;
-  font-size: 1.2rem;
-  display: block;
+  font-size: 1.1rem;
   border: none;
-  animation: floating 3s ease-in-out infinite;
+  /* animation: floating 3s ease-in-out infinite; */
   background: linear-gradient(to right, 
     rgb(255, 105, 180), 
     rgb(255, 20, 147), 
@@ -694,4 +721,13 @@ export default {
   animation: shake 0.5s infinite, neonGlow 2s infinite;
 }
 
+.duplicate-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 </style>
